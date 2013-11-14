@@ -1,0 +1,11 @@
+﻿<Window x:Class="ASK.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+     Title="Net Config" 
+        Height="{DynamicResource {x:Static SystemParameters.PrimaryScreenHeightKey}}" 
+        Width="525" ResizeMode="NoResize" WindowStyle="None" Top="0" Topmost="True" Loaded="Window_Loaded" MouseLeave="Window_MouseLeave" MouseEnter="Window_MouseEnter" ShowInTaskbar="False">
+    <Grid Background="#FF2222B8">
+        <Button x:Name="closingButton" Content="Zamknij" HorizontalAlignment="Left" Height="36" Margin="446,10,0,0" VerticalAlignment="Top" Width="69" Click="closingButton_Click"/>
+
+    </Grid>
+</Window>
