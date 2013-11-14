@@ -58,5 +58,10 @@ namespace ASK
             else
                 Left = 0.95 * SystemParameters.PrimaryScreenWidth;
         }
+
+        private void newConfigButton_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.MessageBox.Show("Not yet implemented");
+        }
     }
 }
