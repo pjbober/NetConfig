@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ASK.ViewModels;
 
 namespace ASK.GUI
 {
@@ -22,6 +23,7 @@ namespace ASK.GUI
         public NetsList()
         {
             InitializeComponent();
+            DataContext = new DummyNetsListModel();
         }
     }
 }
