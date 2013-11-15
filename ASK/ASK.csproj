@@ -54,6 +54,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\NetInterface.cs" />
+    <Compile Include="Model\Profile.cs" />
     <Compile Include="ViewModels\DummyNetsListModel.cs" />
     <Page Include="GUI\NetsList.xaml">
       <SubType>Designer</SubType>

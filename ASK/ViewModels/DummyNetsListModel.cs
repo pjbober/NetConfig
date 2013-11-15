@@ -2,24 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ASK.Model;
 
 namespace ASK.ViewModels
 {
     class DummyNetsListModel
     {
-        private List<string> dummyList;
+        private List<NetInterface> interfaces;
 
         public DummyNetsListModel()
         {
-            dummyList = new List<string>();
-            dummyList.Add("przewodowe");
-            dummyList.Add("bezprzewodowe");
-            dummyList.Add("virtual box");
+            interfaces = new List<NetInterface>();
+            interfaces.Add(new NetInterface("Przewodowe"));
+            interfaces.Add(new NetInterface("Bezprzewodowe"));
+            interfaces.Add(new NetInterface("Virtual Box"));
         }
 
-        public List<string> NetInterfacesCollection
+        public List<NetInterface> NetInterfacesCollection
         {
-            get { return dummyList; }
+            get { return interfaces; }
         }
     }
 }
