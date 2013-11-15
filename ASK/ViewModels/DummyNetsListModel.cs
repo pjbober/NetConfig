@@ -13,9 +13,15 @@ namespace ASK.ViewModels
         public DummyNetsListModel()
         {
             interfaces = new List<NetInterface>();
-            interfaces.Add(new NetInterface("Przewodowe"));
-            interfaces.Add(new NetInterface("Bezprzewodowe"));
-            interfaces.Add(new NetInterface("Virtual Box"));
+            NetInterface int1 = new NetInterface("Przewodowe");
+            int1.AddProfile(new Profile("Dom"));
+            NetInterface int2 = new NetInterface("Bezprzewodowe");
+            int2.AddProfile(new Profile("AGH-WPA"));
+            int2.AddProfile(new Profile("AGH-Guest"));
+            NetInterface int3 = new NetInterface("Virtual Box");
+            interfaces.Add(int1);
+            interfaces.Add(int2);
+            interfaces.Add(int3);
         }
 
         public List<NetInterface> NetInterfacesCollection

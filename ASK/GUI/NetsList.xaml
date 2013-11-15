@@ -9,7 +9,16 @@
         <ItemsControl ItemsSource="{Binding NetInterfacesCollection}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Label Content="{Binding InterfaceName}" FontSize="14" Background="#FFA1A1C9" Margin="0,10,0,0" />
+                    <StackPanel Orientation="Vertical">
+                        <Label Content="{Binding InterfaceName}" FontSize="14" Background="#FFA1A1C9" Margin="0,10,0,0" />
+                        <ListBox ItemsSource="{Binding Profiles}" Background="#FFA1A100" Padding="0">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Label Content="{Binding Name}" />
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
