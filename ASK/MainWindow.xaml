@@ -6,7 +6,7 @@
      Title="Net Config" 
         Height="{DynamicResource {x:Static SystemParameters.PrimaryScreenHeightKey}}" 
         Width="480" ResizeMode="NoResize" Top="0" Topmost="True" Loaded="Window_Loaded" MouseLeave="Window_MouseLeave" MouseEnter="Window_MouseEnter" ShowInTaskbar="False" AllowsTransparency="True" WindowStyle="None" Background="{x:Null}">
-    <Grid Background="{DynamicResource WindowBackgroundColor}">
+    <Grid x:Name="optionsControl" Background="{DynamicResource WindowBackgroundColor}">
         <Grid.RowDefinitions>
             <RowDefinition Height="60*" />
             <RowDefinition Height="7*" />
@@ -20,7 +20,7 @@
                 HorizontalAlignment="Left" Margin="394.2,10,0,0" VerticalAlignment="Top" Content="Zamknij" Click="closingButton_Click" 
                 Background="#cb3838" Grid.ColumnSpan="2"/>
         <Button Grid.Row="1" Grid.Column="0" x:Name="newConfigButton" Content="Dodaj nowy profil" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top" Click="newConfigButton_Click" />
-        <gui:NetsList Grid.Row="0" Grid.Column="0" Margin="10" />
+        <gui:NetsList x:Name="netsList" Grid.Row="0" Grid.Column="0" Margin="10" />
         <gui:OptionsControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="#FFFDFAFA" d:IsLocked="True" />
     </Grid>
 </Window>

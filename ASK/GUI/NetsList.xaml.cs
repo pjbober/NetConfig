@@ -23,7 +23,6 @@ namespace ASK.GUI
         public NetsList()
         {
             InitializeComponent();
-            DataContext = new DummyNetsListModel();
         }
     }
 }
