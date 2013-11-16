@@ -16,6 +16,7 @@ namespace ASK.ViewModels
         {
             NetsList = new DummyNetsListViewModel();
             OptionsControl = new DummyOptionsControlViewModel();
+            NetsList.ChangedProfile += OptionsControl.OnProfileChanged;
         }
     }
 }

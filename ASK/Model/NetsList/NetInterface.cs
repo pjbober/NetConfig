@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ASK.Model.NetsList
 {
-    class NetInterface
+    public class NetInterface
     {
         public string InterfaceName { get; set; }
         public List<Profile> Profiles { get; set; }

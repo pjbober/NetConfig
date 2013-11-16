@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace ASK.ViewModels.NetsList
 {
-    class NetInterfaceViewModel
+    public class NetInterfaceViewModel
     {
         public NetInterfaceViewModel(NetInterface netInterface)
         {
@@ -20,12 +20,14 @@ namespace ASK.ViewModels.NetsList
         }
 
         public ObservableCollection<Profile> Profiles { get; set; }
-
         public NetInterface NetInterfaceModel { get; set; }
+        public event ChangedProfileHandlerEvent ChangedProfile;
+
         public void Clicked(object obj)
         {
             Profile profile = obj as Profile;
-            System.Windows.MessageBox.Show("You've chosen profile " + profile.Name);
+            ChangedProfile(profile);
+
         }
 
         public ICommand BtnClicked

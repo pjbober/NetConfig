@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ASK.Model.NetsList
 {
-    class Profile
+    public class Profile
     {
         public string Name { get; set; }
 
