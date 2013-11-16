@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ASK.ViewModels;
 
 namespace ASK
 {
@@ -23,8 +24,12 @@ namespace ASK
 
         public MainWindow()
         {
+            MainModel model = new MainModel();
             InitializeComponent();
             isExpanded = false;
+            DataContext = model;
+            netsList.DataContext = model.NetsList;
+            optionsControl.DataContext = model.OptionsControl;
         }
 
 
