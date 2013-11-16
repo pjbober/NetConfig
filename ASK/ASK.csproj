@@ -62,7 +62,6 @@
     <Compile Include="Model\NetsList\NetInterface.cs" />
     <Compile Include="Model\NetsList\Profile.cs" />
     <Compile Include="ViewModels\NetsList\NetInterfaceViewModel.cs" />
-    <Compile Include="ViewModels\NetsList\ProfileViewModel.cs" />
     <Compile Include="ViewModels\OptionsControl\DummyOptionsControlViewModel.cs" />
     <Compile Include="ViewModels\NetsList\DummyNetsListViewModel.cs" />
     <Page Include="GUI\NetsList.xaml">
