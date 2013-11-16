@@ -1,11 +1,12 @@
-﻿<Window x:Class="ASK.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:gui="clr-namespace:ASK.GUI"
+     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="ASK.MainWindow"
      Title="Net Config" 
         Height="{DynamicResource {x:Static SystemParameters.PrimaryScreenHeightKey}}" 
-        Width="525" ResizeMode="NoResize" WindowStyle="None" Top="0" Topmost="True" Loaded="Window_Loaded" MouseLeave="Window_MouseLeave" MouseEnter="Window_MouseEnter" ShowInTaskbar="False">
-    <Grid Background="#FF2222B8">
+        Width="480" ResizeMode="NoResize" Top="0" Topmost="True" Loaded="Window_Loaded" MouseLeave="Window_MouseLeave" MouseEnter="Window_MouseEnter" ShowInTaskbar="False" AllowsTransparency="True" WindowStyle="None" Background="{x:Null}">
+    <Grid Background="{DynamicResource WindowBackgroundColor}">
         <Grid.RowDefinitions>
             <RowDefinition Height="60*" />
             <RowDefinition Height="7*" />
@@ -15,9 +16,11 @@
             <ColumnDefinition Width="88*" />
             <ColumnDefinition Width="17*" />
         </Grid.ColumnDefinitions>
-        <Button Grid.Row="0" Grid.Column="1" x:Name="closingButton" Content="Zamknij" HorizontalAlignment="Left" Height="36" Margin="6,10,0,0" VerticalAlignment="Top" Width="69" Click="closingButton_Click" />
-        <Button Grid.Row="1" Grid.Column="0" x:Name="newConfigButton" Content="Dodaj nowy" HorizontalAlignment="Left" Height="36" Margin="10,8,0,0" VerticalAlignment="Top" Width="69" Click="newConfigButton_Click" />
-        <gui:NetsList Grid.Row="0" Grid.Column="0" />
-        <gui:OptionsControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="#FFFDFAFA" />
+        <Button Grid.Row="0" x:Name="closingButton"
+                HorizontalAlignment="Left" Margin="394.2,10,0,0" VerticalAlignment="Top" Content="Zamknij" Click="closingButton_Click" 
+                Background="#cb3838" Grid.ColumnSpan="2"/>
+        <Button Grid.Row="1" Grid.Column="0" x:Name="newConfigButton" Content="Dodaj nowy profil" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top" Click="newConfigButton_Click" />
+        <gui:NetsList Grid.Row="0" Grid.Column="0" Margin="10" />
+        <gui:OptionsControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="#FFFDFAFA" d:IsLocked="True" />
     </Grid>
 </Window>
