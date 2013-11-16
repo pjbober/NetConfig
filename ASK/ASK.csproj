@@ -54,9 +54,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Model\NetInterface.cs" />
-    <Compile Include="Model\Profile.cs" />
-    <Compile Include="ViewModels\DummyNetsListModel.cs" />
+    <Compile Include="ViewModels\MainModel.cs" />
+    <Compile Include="Model\NetsList\NetInterface.cs" />
+    <Compile Include="Model\NetsList\Profile.cs" />
+    <Compile Include="ViewModels\NetsList\DummyInterfaceViewModel.cs" />
+    <Compile Include="ViewModels\OptionsControl\DummyOptionsControlViewModel.cs" />
+    <Compile Include="ViewModels\NetsList\DummyNetsListViewModel.cs" />
     <Page Include="GUI\NetsList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -107,6 +110,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Model\OptionsControl\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
