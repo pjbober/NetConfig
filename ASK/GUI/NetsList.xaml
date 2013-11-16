@@ -15,7 +15,7 @@
                         <ItemsControl ItemsSource="{Binding Profiles}" HorizontalAlignment="Right">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Button Content="{Binding ProfileModel.Name}" Margin="0,2,0,0" Width="240px" TextBlock.TextAlignment="Left" Command="{Binding BtnCliked}" />
+                                    <Button Content="{Binding ProfileModel.Name}" Margin="0,2,0,0" Width="240px" TextBlock.TextAlignment="Left" Command="{Binding BtnCliked}" CommandParameter="{Binding ProfileModel}"/>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>

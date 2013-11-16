@@ -12,7 +12,13 @@ namespace ASK.ViewModels.NetsList
         public ProfileViewModel(Profile profile)
         {
             ProfileModel = profile;
-            BtnCliked = new MyCommand();
+            BtnCliked = new CommandHandler(x => MyCommand(x), true);
+        }
+
+        public void MyCommand(object obj)
+        {
+            Profile profile = obj as Profile;
+            System.Windows.MessageBox.Show("You've chosen '" + profile.Name + "' profile");
         }
 
         public Profile ProfileModel { get; set; }
@@ -25,17 +31,25 @@ namespace ASK.ViewModels.NetsList
     }
 }
 
-class MyCommand : ICommand
+public class CommandHandler : ICommand
 {
-    public bool CanExecute(object param)
+    private Action<object> _action;
+    private bool _canExecute;
+    public CommandHandler(Action<object> action, bool canExecute)
     {
-        return true;
+        _action = action;
+        _canExecute = canExecute;
     }
 
-    public void Execute(object param)
+    public bool CanExecute(object parameter)
     {
-        System.Windows.MessageBox.Show("Not yet implemented");
+        return _canExecute;
     }
 
     public event EventHandler CanExecuteChanged;
+
+    public void Execute(object parameter)
+    {
+        _action(parameter);
+    }
 }
