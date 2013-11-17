@@ -32,7 +32,6 @@ namespace ASK
             optionsControl.DataContext = model.OptionsControl;
         }
 
-
         private void closingButton_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
