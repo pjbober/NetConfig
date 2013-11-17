@@ -9,21 +9,21 @@ namespace ASK.ViewModels.OptionsControl
 {
     class DummyOptionsControlViewModel : INotifyPropertyChanged
     {
-        private string profileName;
+        private Profile profile;
 
-        public string ProfileName
+        public Profile Profile
         {
-            get { return profileName; }
+            get { return profile; }
             set
             {
-                profileName = value;
-                NotifyPropertyChanged("ProfileName");
+                profile = value;
+                NotifyPropertyChanged("Profile");
             }
         }
 
         public void OnProfileChanged(Profile newProfile)
         {
-            ProfileName = newProfile.Name;
+            Profile = newProfile;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
