@@ -6,48 +6,48 @@
     <Application.Resources>
 
 
-        <SolidColorBrush x:Key="WindowBackgroundColor" Color="#E54A8BAA"/>
-        <SolidColorBrush x:Key="StdBackgroundColor" Color="#FF79B1CC" />
-        <SolidColorBrush x:Key="StdBackgroundHoverColor" Color="#FF99C4D8" />
-        <SolidColorBrush x:Key="StdBackgroundPressedColor" Color="#FF477F9A" />
-        <SolidColorBrush x:Key="StdForegroundColor" Color="#FFFFFF" />
+    	<SolidColorBrush x:Key="WindowBackgroundColor" Color="#E54A8BAA"/>
+    	<SolidColorBrush x:Key="StdBackgroundColor" Color="#FF79B1CC" />
+    	<SolidColorBrush x:Key="StdBackgroundHoverColor" Color="#FF99C4D8" />
+    	<SolidColorBrush x:Key="StdBackgroundPressedColor" Color="#FF477F9A" />
+    	<SolidColorBrush x:Key="StdForegroundColor" Color="#FFFFFF" />
 
-        <Style TargetType="Button">
+    	<Style TargetType="{x:Type Button}">
 
-            <Setter Property="Background" Value="{StaticResource StdBackgroundColor}"/>
-            <Setter Property="Foreground" Value="{StaticResource StdForegroundColor}"/>
-            <Setter Property="TextBlock.TextAlignment" Value="Center"/>
+    		<Setter Property="Background" Value="{StaticResource StdBackgroundColor}"/>
+    		<Setter Property="Foreground" Value="{StaticResource StdForegroundColor}"/>
+    		<Setter Property="TextBlock.TextAlignment" Value="Center"/>
             
-            <Setter Property="Template" Value="{DynamicResource ButtonTemplate}" />
+    		<Setter Property="Template" Value="{DynamicResource ButtonTemplate}" />
 
-            <Style.Triggers>
-                <Trigger Property="Button.IsMouseOver" Value="True" >
-                    <Setter Property="Background" Value="{StaticResource StdBackgroundHoverColor}" />
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True" >
-                    <Setter Property="Background" Value="{StaticResource StdBackgroundPressedColor}" />
-                </Trigger>
-            </Style.Triggers>
-
-
-            </Style>
+    		<Style.Triggers>
+    			<Trigger Property="IsMouseOver" Value="True" >
+    				<Setter Property="Background" Value="{StaticResource StdBackgroundHoverColor}" />
+    			</Trigger>
+    			<Trigger Property="IsPressed" Value="True" >
+    				<Setter Property="Background" Value="{StaticResource StdBackgroundPressedColor}" />
+    			</Trigger>
+    		</Style.Triggers>
 
 
-        <ControlTemplate x:Key="ButtonTemplate" TargetType="Button">
-            <Grid x:Name="grid" ClipToBounds="True" Background="{TemplateBinding Background}" RenderTransformOrigin="0.5,0.5">
+    	</Style>
 
-                <ContentPresenter x:Name="contentPresenter"
-        			    Content="{TemplateBinding Content}" 
-        			    TextBlock.Foreground="{TemplateBinding Foreground}"
-                        TextBlock.FontSize="16"
-                        TextBlock.TextAlignment="{TemplateBinding TextBlock.TextAlignment}"
-        			    Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
 
-            </Grid>
-        </ControlTemplate>
+    	<ControlTemplate x:Key="ButtonTemplate" TargetType="{x:Type Button}">
+    		<Grid x:Name="grid" ClipToBounds="True" Background="{TemplateBinding Background}" RenderTransformOrigin="0.5,0.5">
+
+    			<ContentPresenter x:Name="contentPresenter"
+    				Content="{TemplateBinding Content}" 
+    				TextBlock.Foreground="{TemplateBinding Foreground}"
+    				TextBlock.FontSize="16"
+    				TextBlock.TextAlignment="{TemplateBinding TextBlock.TextAlignment}"
+    				Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+
+    		</Grid>
+    	</ControlTemplate>
 
         
-        <!--
+<!--
         <Style x:Key="StdButton" TargetType="{x:Type Button}">
 
             <Setter Property="Template">
@@ -75,5 +75,6 @@
             </Style.Triggers>
         </Style>-->
 
+        
     </Application.Resources>
 </Application>

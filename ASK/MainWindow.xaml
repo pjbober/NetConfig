@@ -6,7 +6,7 @@
      Title="Net Config" 
         Height="{DynamicResource {x:Static SystemParameters.PrimaryScreenHeightKey}}" 
         Width="480" ResizeMode="NoResize" Top="0" Topmost="True" Loaded="Window_Loaded" MouseLeave="Window_MouseLeave" MouseEnter="Window_MouseEnter" ShowInTaskbar="False" AllowsTransparency="True" WindowStyle="None" Background="{DynamicResource WindowBackgroundColor}">
-    <Grid x:Name="mainGrid">
+    <Grid x:Name="mainGrid" d:DataContext="{d:DesignData /SampleData/DummyNetsListViewModelSampleData.xaml}">
         <Grid.RowDefinitions>
             <RowDefinition Height="575*" />
             <RowDefinition Height="Auto" />
@@ -20,7 +20,7 @@
                 HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top" Content="Zamknij" Click="closingButton_Click" 
                 Background="#cb3838" Height="41.28" Width="75.8" Grid.Column="1"/>
         <Button Grid.Column="0" x:Name="newConfigButton" Content="Dodaj nowy profil" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top" Click="newConfigButton_Click" Height="41.28" Grid.Row="1" Width="145.627" />
-        <gui:NetsList x:Name="netsList" Grid.Row="0" Grid.Column="0" Margin="10" />
+        <gui:NetsList x:Name="netsList" Grid.Row="0" Grid.Column="0" Margin="10" DataContext="{Binding}" />
         <gui:OptionsControl x:Name="optionsControl" Grid.Row="2" Grid.Column="0" Margin="10" Grid.RowSpan="2"/>
     </Grid>
 </Window>
