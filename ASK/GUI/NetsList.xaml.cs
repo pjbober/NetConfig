@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ASK.ViewModels;
+using ASK.Model.NetsList;
 
 namespace ASK.GUI
 {
@@ -20,9 +21,38 @@ namespace ASK.GUI
     /// </summary>
     public partial class NetsList : UserControl
     {
+        //public static readonly DependencyProperty OptionsControlProperty = DependencyProperty.Register
+        //    (
+        //         "OptionsControl", 
+        //         typeof(OptionsControl), 
+        //         typeof(NetsList), 
+        //         new PropertyMetadata(string.Empty)
+        //    );
+
+        private OptionsControl _optionsControl;
+
+        //public OptionsControl OptionsControl
+        //{
+        //    get { return (OptionsControl)GetValue(OptionsControlProperty); }
+        //    set { SetValue(OptionsControlProperty, value); }
+        //}
+
+        public OptionsControl OptionsControl
+        {
+            get { return _optionsControl; }
+            set { _optionsControl = value; }
+        }
+
         public NetsList()
         {
             InitializeComponent();
+        }
+
+        private void ClickProfileChoose(object sender, RoutedEventArgs e)
+        {
+            //Profile profile = ((Button)sender);
+            //Console.Out.WriteLine(profile.ProfileName);
+            //this.OptionsControl.DataContext = profile;
         }
     }
 }

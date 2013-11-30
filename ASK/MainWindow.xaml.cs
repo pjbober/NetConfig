@@ -30,6 +30,8 @@ namespace ASK
             DataContext = model;
             netsList.DataContext = model.NetsList;
             optionsControl.DataContext = model.OptionsControl;
+
+            netsList.OptionsControl = optionsControl; // let netsList know about optionsControl
         }
 
         private void closingButton_Click(object sender, RoutedEventArgs e)
@@ -66,6 +68,16 @@ namespace ASK
         private void newConfigButton_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.MessageBox.Show("Not yet implemented");
+        }
+
+        private void closingButton_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ((Button)sender).Background = new SolidColorBrush(System.Windows.Media.Colors.Aquamarine);
+        }
+
+        private void closingButton_MouseLeave(object sender, MouseEventArgs e)
+        {
+            ((Button)sender).Background = new SolidColorBrush(System.Windows.Media.Colors.Green);
         }
     }
 }

@@ -8,19 +8,31 @@
         Width="480" ResizeMode="NoResize" Top="0" Topmost="True" Loaded="Window_Loaded" MouseLeave="Window_MouseLeave" MouseEnter="Window_MouseEnter" ShowInTaskbar="False" AllowsTransparency="True" WindowStyle="None" Background="{DynamicResource WindowBackgroundColor}">
     <Grid x:Name="mainGrid" d:DataContext="{d:DesignData /SampleData/DummyNetsListViewModelSampleData.xaml}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="575*" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="388*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <Button Grid.Row="0" x:Name="closingButton"
-                HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top" Content="Zamknij" Click="closingButton_Click" 
-                Background="#cb3838" Height="41.28" Width="75.8" Grid.Column="1"/>
-        <Button Grid.Column="0" x:Name="newConfigButton" Content="Dodaj nowy profil" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top" Click="newConfigButton_Click" Height="41.28" Grid.Row="1" Width="145.627" />
+        <Button Grid.Row="0" Grid.Column="1" x:Name="closingButton" Style="{StaticResource CloseButton}"
+                HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top" Click="closingButton_Click" Width="20" Height="20">
+            <Button.Content>
+                <Image Source="Images/close.png" Width="16" Height="16"></Image>
+            </Button.Content>
+        </Button>
+
+        <Grid Grid.Row="1" Grid.ColumnSpan="2" Background="{StaticResource BluePressedColor}"/>
+        <Button Grid.Row="1" Grid.Column="0" x:Name="newConfigButton"
+                Content="Dodaj nowy profil" HorizontalAlignment="Left"
+                Click="newConfigButton_Click"
+                Height="Auto" Width="Auto" Style="{StaticResource ToolButton}"/>
+        
         <gui:NetsList x:Name="netsList" Grid.Row="0" Grid.Column="0" Margin="10" DataContext="{Binding}" />
         <gui:OptionsControl x:Name="optionsControl" Grid.Row="2" Grid.Column="0" Margin="10" Grid.RowSpan="2"/>
+
+        <!--<Border Grid.Row="1" Grid.ColumnSpan="2" Background="{StaticResource BlueColor}"/>-->
+
     </Grid>
 </Window>

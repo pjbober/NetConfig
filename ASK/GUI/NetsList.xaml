@@ -13,12 +13,14 @@
                 <DataTemplate>
                     <StackPanel Width="{Binding Path=ActualWidth,ElementName=netsList}" Orientation="Vertical" HorizontalAlignment="Stretch" CanVerticallyScroll="True">
 						<!-- Przycisk nazwy interfejsu, 10px marginesu z góry (odstępy w drzewie) -->
-                        <Button Content="{Binding NetInterfaceModel.InterfaceName}" Margin="0,10,0,0" TextBlock.TextAlignment="Left" />
+                        <Button Content="{Binding NetInterfaceModel.InterfaceName}" Style="{StaticResource DefaultButton}" Margin="0,10,0,0" TextBlock.TextAlignment="Left" />
 
                         <ItemsControl ItemsSource="{Binding Profiles}" HorizontalAlignment="Right" Width="{Binding Path=ActualWidth,ElementName=netsList}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Button Content="{Binding Name}" Margin="50,2,0,0" HorizontalAlignment="Stretch" TextBlock.TextAlignment="Left" Command="{Binding DataContext.BtnClicked, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}"/>
+                                    <Button Content="{Binding Name}" Margin="50,2,0,0" HorizontalAlignment="Stretch" TextBlock.TextAlignment="Left"
+                                            Command="{Binding DataContext.BtnClicked, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}"
+                                            Style="{StaticResource DefaultButton}"/>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>

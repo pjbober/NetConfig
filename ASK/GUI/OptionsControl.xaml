@@ -6,9 +6,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="300">
     <StackPanel>
-        <Button Content="{Binding Profile.Name, Mode=TwoWay}" TextBlock.TextAlignment="Left" />
-        <Button Content="{Binding Profile.SSID}" TextBlock.TextAlignment="Left" />
-        <Button Content="{Binding Profile.Signal}"  TextBlock.TextAlignment="Left" />
-        <Button Content="{Binding Profile.Authentication}"  TextBlock.TextAlignment="Left" />
+        <Button Style="{StaticResource DefaultButton}" Content="{Binding Profile.Name, Mode=TwoWay}" TextBlock.TextAlignment="Left" />
+        <Button Style="{StaticResource DefaultButton}" Content="{Binding Profile.SSID}" TextBlock.TextAlignment="Left" />
+        <Button Style="{StaticResource DefaultButton}" Content="{Binding Profile.Signal}"  TextBlock.TextAlignment="Left" />
+        <Button Style="{StaticResource DefaultButton}" Content="{Binding Profile.Authentication}"  TextBlock.TextAlignment="Left" />
     </StackPanel>
 </UserControl>
