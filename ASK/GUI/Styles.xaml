@@ -1,0 +1,131 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <SolidColorBrush x:Key="WindowBackgroundColor" Color="#E54A8BAA"/>
+    <SolidColorBrush x:Key="StdForegroundColor" Color="#FFFFFF" />
+    
+    <SolidColorBrush x:Key="BlueColor" Color="#FF79B1CC" />
+    <SolidColorBrush x:Key="BlueHoverColor" Color="#FF99C4D8" />
+    <SolidColorBrush x:Key="BluePressedColor" Color="#FF477F9A" />
+
+    <SolidColorBrush x:Key="RedColor" Color="#cb3838" />
+    <SolidColorBrush x:Key="RedHoverColor" Color="#d86868" />
+    <SolidColorBrush x:Key="RedPressedColor" Color="#800c0c" />
+
+    <SolidColorBrush x:Key="YellowColor" Color="#bf9b58" />
+    <SolidColorBrush x:Key="YellowHoverColor" Color="#cdb27d" />
+    <SolidColorBrush x:Key="YellowPressedColor" Color="#9c7a3b" />
+
+
+    <Style x:Key="DefaultButton" TargetType="{x:Type Button}">
+
+        <Setter Property="Background" Value="{StaticResource BlueColor}"/>
+        <Setter Property="Foreground" Value="{StaticResource StdForegroundColor}"/>
+        <Setter Property="TextBlock.TextAlignment" Value="Center"/>
+
+        <Setter Property="Template" Value="{DynamicResource ButtonTextTemplate}" />
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True" >
+                <Setter Property="Background" Value="{StaticResource BlueHoverColor}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True" >
+                <Setter Property="Background" Value="{StaticResource BluePressedColor}" />
+            </Trigger>
+        </Style.Triggers>
+
+    </Style>
+
+    <Style x:Key="InterfaceButton" TargetType="{x:Type ToggleButton}">
+
+        <Setter Property="Background" Value="{StaticResource BlueColor}"/>
+        <Setter Property="Foreground" Value="{StaticResource StdForegroundColor}"/>
+        <Setter Property="TextBlock.TextAlignment" Value="Center"/>
+
+        <Setter Property="Template" Value="{DynamicResource ToggleButtonTextTemplate}" />
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True" >
+                <Setter Property="Background" Value="{StaticResource BlueHoverColor}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True" >
+                <Setter Property="Background" Value="{StaticResource BluePressedColor}" />
+            </Trigger>
+        </Style.Triggers>
+
+    </Style>
+
+    <Style x:Key="ToolButton" BasedOn="{StaticResource DefaultButton}" TargetType="{x:Type Button}">
+        <Setter Property="Margin" Value="10,0"/>
+        <Setter Property="Template" Value="{DynamicResource ButtonToolTemplate}" />
+    </Style>
+
+
+    <Style x:Key="CloseButton" BasedOn="{StaticResource DefaultButton}" TargetType="{x:Type Button}">
+        <Setter Property="Template" Value="{DynamicResource ButtonIconTemplate}"/>
+
+        <Setter Property="Background" Value="{StaticResource RedColor}"/>
+        
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True" >
+                <Setter Property="Background" Value="{StaticResource RedHoverColor}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True" >
+                <Setter Property="Background" Value="{StaticResource RedPressedColor}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+
+    <ControlTemplate x:Key="ButtonTextTemplate" TargetType="{x:Type Button}">
+        <Grid x:Name="grid" ClipToBounds="True" Background="{TemplateBinding Background}" RenderTransformOrigin="0.5,0.5">
+
+            <ContentPresenter x:Name="contentPresenter"
+    				Content="{TemplateBinding Content}" 
+    				TextBlock.Foreground="{TemplateBinding Foreground}"
+    				TextBlock.FontSize="16"
+    				TextBlock.TextAlignment="{TemplateBinding TextBlock.TextAlignment}"
+    				Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+
+        </Grid>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="ToggleButtonTextTemplate" TargetType="{x:Type ToggleButton}">
+        <Grid x:Name="grid" ClipToBounds="True" Background="{TemplateBinding Background}" RenderTransformOrigin="0.5,0.5">
+
+            <ContentPresenter x:Name="contentPresenter"
+    				Content="{TemplateBinding Content}" 
+    				TextBlock.Foreground="{TemplateBinding Foreground}"
+    				TextBlock.FontSize="16"
+    				TextBlock.TextAlignment="{TemplateBinding TextBlock.TextAlignment}"
+    				Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+
+        </Grid>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="ButtonToolTemplate" TargetType="{x:Type Button}">
+        <Grid x:Name="grid" ClipToBounds="True" Background="{TemplateBinding Background}" RenderTransformOrigin="0.5,0.5">
+
+            <ContentPresenter x:Name="contentPresenter"
+    				Content="{TemplateBinding Content}" 
+    				TextBlock.Foreground="{TemplateBinding Foreground}"
+    				TextBlock.FontSize="14"
+    				TextBlock.TextAlignment="{TemplateBinding TextBlock.TextAlignment}"
+    				Margin="10,2" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+
+        </Grid>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="ButtonIconTemplate" TargetType="{x:Type Button}">
+        <Grid x:Name="grid" Margin="0" ClipToBounds="True" Background="{TemplateBinding Background}"  RenderTransformOrigin="0.5,0.5">
+
+            <ContentPresenter x:Name="contentPresenter"
+    				Content="{TemplateBinding Content}" 
+    				TextBlock.Foreground="{TemplateBinding Foreground}"
+    				TextBlock.TextAlignment="{TemplateBinding TextBlock.TextAlignment}"
+    				Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        </Grid>
+    </ControlTemplate>
+
+</ResourceDictionary>
