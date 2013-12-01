@@ -54,5 +54,10 @@ namespace ASK.GUI
             //Console.Out.WriteLine(profile.ProfileName);
             //this.OptionsControl.DataContext = profile;
         }
+
+        private void InterfaceNameClick(object sender, RoutedEventArgs e)
+        {
+            
+        }
     }
 }

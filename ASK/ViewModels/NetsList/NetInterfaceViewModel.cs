@@ -5,6 +5,7 @@ using System.Text;
 using System.Collections.ObjectModel;
 using ASK.Model.NetsList;
 using System.Windows.Input;
+using System.Windows;
 
 namespace ASK.ViewModels.NetsList
 {
@@ -13,7 +14,10 @@ namespace ASK.ViewModels.NetsList
         public NetInterfaceViewModel(NetInterface netInterface)
         {
             NetInterfaceModel = netInterface;
+            
             BtnClicked = new CommandHandler(x => Clicked(x), true);
+            InterfaceBtnClicked = new CommandHandler(x => Clicked(x), true);
+
             Profiles = new ObservableCollection<Profile>();
             foreach (Profile profile in netInterface.Profiles)
                 Profiles.Add(profile);
@@ -34,6 +38,17 @@ namespace ASK.ViewModels.NetsList
         {
             get;
             set;
+        }
+
+        public ICommand InterfaceBtnClicked
+        {
+            get;
+            set;
+        }
+
+        public String Name
+        {
+            get { return NetInterfaceModel.InterfaceName; }
         }
     }
 }
