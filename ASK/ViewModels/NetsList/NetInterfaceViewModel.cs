@@ -11,12 +11,12 @@ namespace ASK.ViewModels.NetsList
 {
     public class NetInterfaceViewModel
     {
+
         public NetInterfaceViewModel(NetInterface netInterface)
         {
             NetInterfaceModel = netInterface;
             
             BtnClicked = new CommandHandler(x => Clicked(x), true);
-            InterfaceBtnClicked = new CommandHandler(x => Clicked(x), true);
 
             Profiles = new ObservableCollection<Profile>();
             foreach (Profile profile in netInterface.Profiles)
@@ -31,7 +31,7 @@ namespace ASK.ViewModels.NetsList
         {
             Profile profile = obj as Profile;
             ChangedProfile(profile);
-
+            profile.ToggleState();
         }
 
         public ICommand BtnClicked

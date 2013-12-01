@@ -62,22 +62,12 @@ namespace ASK
             if (isExpanded)
                 Left = SystemParameters.PrimaryScreenWidth - Width;
             else
-                Left = 0.95 * SystemParameters.PrimaryScreenWidth;
+                Left = SystemParameters.PrimaryScreenWidth - 10;
         }
 
         private void newConfigButton_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.MessageBox.Show("Not yet implemented");
-        }
-
-        private void closingButton_MouseEnter(object sender, MouseEventArgs e)
-        {
-            ((Button)sender).Background = new SolidColorBrush(System.Windows.Media.Colors.Aquamarine);
-        }
-
-        private void closingButton_MouseLeave(object sender, MouseEventArgs e)
-        {
-            ((Button)sender).Background = new SolidColorBrush(System.Windows.Media.Colors.Green);
         }
     }
 }

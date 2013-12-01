@@ -20,5 +20,53 @@ namespace ASK.Model.NetsList
         {
             Profiles.Add(profile);
         }
+
+        public void ProfileChange(Profile profile)
+        {
+            switch (profile.ProfileState)
+            {
+                case Profile.ProfileStateEnum.ON:
+                    // TODO: coś poszło nie tak - profil zazwyczaj domaga się włączenia
+                    throw new Exception();
+                //break;
+                case Profile.ProfileStateEnum.OFF:
+                case Profile.ProfileStateEnum.ACTIVATING:
+                // TODO: powdójny request - niecierpliwy użytkownik?
+                case Profile.ProfileStateEnum.DEACTIVATING:
+                default:
+                    break;
+            }
+
+            // TODO: sytuacja, kiedy jakiś profil się aktywuje bądź deaktywuje
+            Profile currentActiveProfile = null;
+            foreach (Profile p in Profiles)
+            {
+                // sprawdź, który profil jest włączony - powinien być tylko jeden
+                // TODO: wykrywanie sytuacji, gdy kilka profili jest aktywnych? niezgodne stany?
+                if (p.ProfileState == Profile.ProfileStateEnum.ON)
+                {
+                    currentActiveProfile = p;
+                    break;
+                }
+            }
+
+            if (currentActiveProfile != null)
+            {
+                currentActiveProfile.Deactivate(); // blokująca deaktywacja profilu
+                if (currentActiveProfile.ProfileState != Profile.ProfileStateEnum.OFF)
+                {
+                    // TODO: nie udało się deaktywować, ponowić próbę?
+                }
+            }
+
+            // teraz żaden inny profil nie powinien być aktywny
+            profile.Activate(); // blokująca aktywacja profilu z żądania
+            if (profile.ProfileState != Profile.ProfileStateEnum.ON)
+            {
+                // TODO: coś poszło nie tak
+            }
+
+            // sukces
+        }
     }
 }

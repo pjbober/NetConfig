@@ -127,9 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\OptionsControl\" />
-  </ItemGroup>
-  <ItemGroup>
-    <DesignData Include="SampleData\DummyNetsListViewModelSampleData.xaml" />
+    <Folder Include="SampleData\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\close.png" />

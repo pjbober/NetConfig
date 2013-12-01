@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d"
 			 x:Name="netsList"
-             d:DesignHeight="300" d:DesignWidth="400" Width="Auto" Height="Auto" d:DataContext="{d:DesignData /SampleData/DummyNetsListViewModelSampleData.xaml}">
+             d:DesignHeight="300" d:DesignWidth="400" Width="Auto" Height="Auto">
      
     <UserControl.Resources>
 
@@ -19,9 +19,10 @@
                     <ItemsControl ItemsSource="{Binding Profiles}" HorizontalAlignment="Right" Width="{Binding Path=ActualWidth,ElementName=netsList}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Button Content="{Binding Name}" Margin="50,2,0,0" HorizontalAlignment="Stretch" TextBlock.TextAlignment="Left"
-                                                Command="{Binding DataContext.BtnClicked, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}"
-                                                Style="{StaticResource DefaultButton}"/>
+                                <Button Content="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Margin="50,2,0,0" HorizontalAlignment="Stretch" TextBlock.TextAlignment="Left"
+                                        Background="{Binding BackColorTest}"
+                                        Command="{Binding DataContext.BtnClicked, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}"
+                                        Style="{StaticResource DefaultButton}"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>

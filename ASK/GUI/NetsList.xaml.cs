@@ -47,17 +47,15 @@ namespace ASK.GUI
         {
             InitializeComponent();
         }
-
-        private void ClickProfileChoose(object sender, RoutedEventArgs e)
-        {
-            //Profile profile = ((Button)sender);
-            //Console.Out.WriteLine(profile.ProfileName);
-            //this.OptionsControl.DataContext = profile;
-        }
-
+        
         private void InterfaceNameClick(object sender, RoutedEventArgs e)
         {
             
+        }
+
+        private void ClickProfileChoose(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

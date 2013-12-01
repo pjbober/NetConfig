@@ -1,13 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
 namespace ASK.Model.NetsList
 {
     //TODO: zrobic enumy do rzeczy, gdzie sie da
-    public class Profile
+    public class Profile : INotifyPropertyChanged
     {
+        public enum ProfileStateEnum
+	    {
+            OFF, ON, ACTIVATING, DEACTIVATING
+	    }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+#region Informacje profilu
         public string Name { get; set; }
         public string PhysicalAddress { get; set; }
         public string Description { get; set; }
@@ -25,10 +34,143 @@ namespace ASK.Model.NetsList
         public string TransmitRate { get; set; }
         public string Signal { get; set; }
         public string ProfileName { get; set; }
+#endregion
 
+        //public ProfileStateEnum ProfileState { get; private set; }
+
+        private ProfileStateEnum _profileState = ProfileStateEnum.OFF;
+
+        // TEST
+        public ProfileStateEnum ProfileState
+        {
+            get { return _profileState; }
+            private set
+            {
+                Console.Out.WriteLine("Change profile " + ProfileName + " state to " + value);
+                _profileState = value;
+                // TODO: tego nie powinno być - będzie zrobione inaczej
+                switch (value)
+                {
+                    case ProfileStateEnum.OFF:
+                        BackColorTest = "#99c4d8";
+                        break;
+                    case ProfileStateEnum.ON:
+                        BackColorTest = "#bf9b58";
+                        break;
+                    case ProfileStateEnum.ACTIVATING:
+                        BackColorTest = "#bf9b58";
+                        break;
+                    case ProfileStateEnum.DEACTIVATING:
+                        BackColorTest = "#cb3838";
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        public NetInterface MyNetInterface { get; private set; }
+
+        private BackgroundWorker _interfaceRequestWorker = new BackgroundWorker();
+
+        // Tylko dla danych testowych TODO!
         public Profile(String name)
         {
             Name = name;
+        }
+
+        public Profile(String name, NetInterface netInterface)
+        {
+            Name = name;
+
+            if (netInterface == null)
+            {
+                // TODO
+                throw new ArgumentNullException();
+            }
+            MyNetInterface = netInterface;
+
+            _interfaceRequestWorker.DoWork +=
+                new System.ComponentModel.DoWorkEventHandler(this.RequestProfileChange);
+
+            _interfaceRequestWorker.RunWorkerCompleted +=
+                new System.ComponentModel.RunWorkerCompletedEventHandler(this.ProfileChangeSuccess);
+        }
+
+        public void ToggleState()
+        {
+            Console.Out.WriteLine("ToggleState start " + this.Name);
+            switch (ProfileState)
+            {
+                case ProfileStateEnum.ON:
+                case ProfileStateEnum.DEACTIVATING:
+                case ProfileStateEnum.ACTIVATING:
+                    // TODO: ignorować?
+                    break;
+                case ProfileStateEnum.OFF:
+                    _interfaceRequestWorker.RunWorkerAsync();
+                    break;
+                default:
+                    break;
+            }
+            Console.Out.WriteLine("ToggleState end " + this.Name);
+        }
+
+        public void Activate()
+        {
+            ProfileState = ProfileStateEnum.ACTIVATING;
+            // TODO: włączenie... gdzieś trzeba zrobić to współbieżnie z powiadomieniami
+            ProfileState = ProfileStateEnum.ON;
+        }
+
+        public void Deactivate()
+        {
+            ProfileState = ProfileStateEnum.DEACTIVATING;
+            // TODO: włączenie... gdzieś trzeba zrobić to współbieżnie z powiadomieniami
+            ProfileState = ProfileStateEnum.OFF;
+        }
+
+        internal void RequestProfileChange(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            Console.Out.WriteLine("Request profile change");
+            MyNetInterface.ProfileChange(this);
+        }
+
+        internal void ProfileChangeSuccess(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        {
+            switch (ProfileState)
+            {
+                case ProfileStateEnum.OFF:
+                case ProfileStateEnum.DEACTIVATING:
+                case ProfileStateEnum.ACTIVATING:
+                    // TODO: jakiś błąd?
+                    break;
+                case ProfileStateEnum.ON:
+                    // TODO: jeszcze nie wiem co
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        // TODO: tylko TEST reakcji na zmianę
+        private String _backColorTest = "#99c4d8";
+        public String BackColorTest {
+            get { return _backColorTest; }
+            set
+            {
+                _backColorTest = value;
+                OnPropertyChanged("BackColorTest");
+            }
+        }
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
     }
 }
