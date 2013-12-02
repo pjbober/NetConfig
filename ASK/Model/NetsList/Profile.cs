@@ -3,12 +3,20 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Windows;
+using System.Windows.Media;
 
 namespace ASK.Model.NetsList
 {
     //TODO: zrobic enumy do rzeczy, gdzie sie da
     public class Profile : INotifyPropertyChanged
     {
+        public static Style GetStyle(String name)
+        {
+            Style s = Application.Current.Resources[name] as Style;
+            return s;
+        }
+
         public enum ProfileStateEnum
 	    {
             OFF, ON, ACTIVATING, DEACTIVATING
@@ -52,16 +60,16 @@ namespace ASK.Model.NetsList
                 switch (value)
                 {
                     case ProfileStateEnum.OFF:
-                        BackColorTest = "#99c4d8";
+                        StyleTest = GetStyle("DefaultButton");
                         break;
                     case ProfileStateEnum.ON:
-                        BackColorTest = "#bf9b58";
+                        StyleTest = GetStyle("ActiveButton");
                         break;
                     case ProfileStateEnum.ACTIVATING:
-                        BackColorTest = "#bf9b58";
+                        StyleTest = GetStyle("ActivatingButton");
                         break;
                     case ProfileStateEnum.DEACTIVATING:
-                        BackColorTest = "#cb3838";
+                        StyleTest = GetStyle("DeactivatingButton");
                         break;
                     default:
                         break;
@@ -69,11 +77,11 @@ namespace ASK.Model.NetsList
             }
         }
 
-        public NetInterface MyNetInterface { get; private set; }
+        public NetInterface MyNetInterface { get; set; } // TODO private set
 
         private BackgroundWorker _interfaceRequestWorker = new BackgroundWorker();
 
-        // Tylko dla danych testowych TODO!
+        // Konstruktor tylko z name
         public Profile(String name)
         {
             Name = name;
@@ -153,14 +161,15 @@ namespace ASK.Model.NetsList
             }
         }
 
-        // TODO: tylko TEST reakcji na zmianę
-        private String _backColorTest = "#99c4d8";
-        public String BackColorTest {
-            get { return _backColorTest; }
+        private Style _buttonStyle = GetStyle("DefaultButton");
+
+        public Style StyleTest
+        {
+            get { return _buttonStyle; }
             set
             {
-                _backColorTest = value;
-                OnPropertyChanged("BackColorTest");
+                _buttonStyle = value;
+                OnPropertyChanged("StyleTest");
             }
         }
 

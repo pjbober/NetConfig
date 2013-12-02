@@ -20,9 +20,8 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Button Content="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Margin="50,2,0,0" HorizontalAlignment="Stretch" TextBlock.TextAlignment="Left"
-                                        Background="{Binding BackColorTest}"
                                         Command="{Binding DataContext.BtnClicked, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}"
-                                        Style="{StaticResource DefaultButton}"/>
+                                        Style="{Binding StyleTest}"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>

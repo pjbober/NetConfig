@@ -48,14 +48,5 @@ namespace ASK.GUI
             InitializeComponent();
         }
         
-        private void InterfaceNameClick(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
-        private void ClickProfileChoose(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }

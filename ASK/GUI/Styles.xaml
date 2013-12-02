@@ -4,10 +4,12 @@
     <SolidColorBrush x:Key="WindowBackgroundColor" Color="#E54A8BAA"/>
     <SolidColorBrush x:Key="StdForegroundColor" Color="#FFFFFF" />
     
-    <SolidColorBrush x:Key="BlueColor" Color="#FF79B1CC" />
-    <SolidColorBrush x:Key="BlueHoverColor" Color="#FF99C4D8" />
-    <SolidColorBrush x:Key="BluePressedColor" Color="#FF477F9A" />
+    <SolidColorBrush x:Key="BlueColor" Color="#79B1CC" />
+    <SolidColorBrush x:Key="BlueHoverColor" Color="#99C4D8" />
+    <SolidColorBrush x:Key="BluePressedColor" Color="#477F9A" />
 
+    <SolidColorBrush x:Key="BlueActiveColor" Color="#8ebdd4" />
+    
     <SolidColorBrush x:Key="RedColor" Color="#cb3838" />
     <SolidColorBrush x:Key="RedHoverColor" Color="#d86868" />
     <SolidColorBrush x:Key="RedPressedColor" Color="#800c0c" />
@@ -36,6 +38,68 @@
 
     </Style>
 
+    <!-- Profile -->
+
+    <Style x:Key="ActiveButton" TargetType="{x:Type Button}">
+
+        <Setter Property="Background" Value="{StaticResource BlueActiveColor}"/>
+        <Setter Property="Foreground" Value="{StaticResource StdForegroundColor}"/>
+        <Setter Property="TextBlock.TextAlignment" Value="Center"/>
+
+        <Setter Property="Template" Value="{DynamicResource ButtonTextTemplate}" />
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True" >
+                <Setter Property="Background" Value="{StaticResource BlueHoverColor}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True" >
+                <Setter Property="Background" Value="{StaticResource BluePressedColor}" />
+            </Trigger>
+        </Style.Triggers>
+
+    </Style>
+
+    <Style x:Key="ActivatingButton" TargetType="{x:Type Button}">
+
+        <Setter Property="Background" Value="{StaticResource YellowHoverColor}"/>
+        <Setter Property="Foreground" Value="{StaticResource StdForegroundColor}"/>
+        <Setter Property="TextBlock.TextAlignment" Value="Center"/>
+
+        <Setter Property="Template" Value="{DynamicResource ButtonTextTemplate}" />
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True" >
+                <Setter Property="Background" Value="{StaticResource BlueHoverColor}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True" >
+                <Setter Property="Background" Value="{StaticResource BluePressedColor}" />
+            </Trigger>
+        </Style.Triggers>
+
+    </Style>
+
+    <Style x:Key="DeactivatingButton" TargetType="{x:Type Button}">
+
+        <Setter Property="Background" Value="{StaticResource RedHoverColor}"/>
+        <Setter Property="Foreground" Value="{StaticResource StdForegroundColor}"/>
+        <Setter Property="TextBlock.TextAlignment" Value="Center"/>
+
+        <Setter Property="Template" Value="{DynamicResource ButtonTextTemplate}" />
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True" >
+                <Setter Property="Background" Value="{StaticResource BlueHoverColor}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True" >
+                <Setter Property="Background" Value="{StaticResource BluePressedColor}" />
+            </Trigger>
+        </Style.Triggers>
+
+    </Style>
+
+    <!-- ... -->
+    
+    
     <Style x:Key="InterfaceButton" TargetType="{x:Type ToggleButton}">
 
         <Setter Property="Background" Value="{StaticResource BlueColor}"/>

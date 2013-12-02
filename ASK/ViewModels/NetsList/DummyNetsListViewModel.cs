@@ -23,10 +23,12 @@ namespace ASK.ViewModels.NetsList
             NetInterface int1 = new NetInterface("Przewodowe");
             int1.AddProfile(new Profile("Dom", int1));
             NetInterface int2 = new NetInterface("Bezprzewodowe");
-            int2.AddProfile(new Profile("AGH-WPA", int1));
-            int2.AddProfile(new Profile("AGH-Guest", int1));
-            foreach (Profile profile in parser.parse())
+            int2.AddProfile(new Profile("AGH-WPA", int2));
+            int2.AddProfile(new Profile("AGH-Guest", int2));
+            foreach (Profile profile in parser.parse()) {
+                profile.MyNetInterface = int2;
                 int2.AddProfile(profile);
+            }
             NetInterface int3 = new NetInterface("Virtual Box");
             AddInterface(int1);
             AddInterface(int2);

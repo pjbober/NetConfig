@@ -23,6 +23,8 @@ namespace ASK.Model.NetsList
 
         public void ProfileChange(Profile profile)
         {
+            Console.Out.WriteLine("Changing profile to: " + profile.ProfileName);
+
             switch (profile.ProfileState)
             {
                 case Profile.ProfileStateEnum.ON:
