@@ -1,0 +1,26 @@
+﻿<Button x:Class="ASK.GUI.NetInterfaceButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="30" d:DesignWidth="300" Name="netInterfaceButton"
+             Style="{Binding Style}" Click="netInterfaceButton_Click">
+    
+    <DockPanel Height="{Binding ElementName=netInterfaceButton, Path=Height}" VerticalAlignment="Center">
+        <!-- wskaźnik stanu -->
+        <Rectangle DockPanel.Dock="Left" Width="15" Margin="0,0,8,0" Height="{Binding ElementName=mainWrap, Path=Height}" Fill="{Binding ActiveRectColor}" HorizontalAlignment="Left"/>
+        <!-- ikonka dla danego typu interfejsu -->
+        <!--<Image DockPanel.Dock="Right" Source="{Binding NewWifiIcon}" Margin="4" Width="22" Height="22"/>-->
+        <!-- ikona rozwijania -->
+        <!--<Image DockPanel.Dock="Right" Source="{Binding CollapseIcon}" Margin="4" Width="22" Height="22"/>-->
+        <!-- przycisk włączania/wyłączania interfejsu -->
+        <Button DockPanel.Dock="Right" Style="{StaticResource IconButton}">
+            <Button.Content>
+                <Image Source="{Binding TurnOn}"/>
+            </Button.Content>
+        </Button>
+        <!-- nazwa interfejsu -->
+        <TextBlock DockPanel.Dock="Left" Margin="4" Text="{Binding Name}" Foreground="{StaticResource WhiteTextColor}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+    </DockPanel>
+</Button>
