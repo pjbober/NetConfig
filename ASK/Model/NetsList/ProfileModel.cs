@@ -8,23 +8,17 @@ using System.Windows.Media;
 
 namespace ASK.Model.NetsList
 {
-    //TODO: zrobic enumy do rzeczy, gdzie sie da
-    public class Profile : INotifyPropertyChanged
-    {
-        public static Style GetStyle(String name)
-        {
-            Style s = Application.Current.Resources[name] as Style;
-            return s;
-        }
+    public delegate void ProfileStateChanged(ProfileModel.StateEnum newState);
 
-        public enum ProfileStateEnum
+    //TODO: zrobic enumy do rzeczy, gdzie sie da
+    public class ProfileModel : ModelBase
+    {
+        public enum StateEnum
 	    {
             OFF, ON, ACTIVATING, DEACTIVATING
 	    }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-#region Informacje profilu
+#region Profile information
         public string Name { get; set; }
         public string PhysicalAddress { get; set; }
         public string Description { get; set; }
@@ -42,52 +36,41 @@ namespace ASK.Model.NetsList
         public string TransmitRate { get; set; }
         public string Signal { get; set; }
         public string ProfileName { get; set; }
+
+
+        // IPv4
+        public string IpAddress { get; set; }
+        public string SubnetMask { get; set; }
+        public string Gateway { get; set; }
+        public string DNS { get; set; }
+
 #endregion
 
-        //public ProfileStateEnum ProfileState { get; private set; }
+        public event ProfileStateChanged ProfileStateChangedEvent;
 
-        private ProfileStateEnum _profileState = ProfileStateEnum.OFF;
+        private StateEnum _profileState;
 
-        // TEST
-        public ProfileStateEnum ProfileState
+        public StateEnum ProfileState
         {
-            get { return _profileState; }
+            get
+            {
+                return _profileState;
+            }
             private set
             {
-                Console.Out.WriteLine("Change profile " + ProfileName + " state to " + value);
                 _profileState = value;
-                // TODO: tego nie powinno być - będzie zrobione inaczej
-                switch (value)
+                if (ProfileStateChangedEvent != null)
                 {
-                    case ProfileStateEnum.OFF:
-                        StyleTest = GetStyle("DefaultButton");
-                        break;
-                    case ProfileStateEnum.ON:
-                        StyleTest = GetStyle("ActiveButton");
-                        break;
-                    case ProfileStateEnum.ACTIVATING:
-                        StyleTest = GetStyle("ActivatingButton");
-                        break;
-                    case ProfileStateEnum.DEACTIVATING:
-                        StyleTest = GetStyle("DeactivatingButton");
-                        break;
-                    default:
-                        break;
+                    ProfileStateChangedEvent(_profileState);
                 }
             }
         }
 
-        public NetInterface MyNetInterface { get; set; } // TODO private set
+        public NetInterfaceModel NetInterface { get; set; } // TODO private set
 
         private BackgroundWorker _interfaceRequestWorker = new BackgroundWorker();
 
-        // Konstruktor tylko z name
-        public Profile(String name)
-        {
-            Name = name;
-        }
-
-        public Profile(String name, NetInterface netInterface)
+        public ProfileModel(String name, NetInterfaceModel netInterface)
         {
             Name = name;
 
@@ -96,13 +79,23 @@ namespace ASK.Model.NetsList
                 // TODO
                 throw new ArgumentNullException();
             }
-            MyNetInterface = netInterface;
+            NetInterface = netInterface;
+
+            ProfileState = StateEnum.OFF;
 
             _interfaceRequestWorker.DoWork +=
                 new System.ComponentModel.DoWorkEventHandler(this.RequestProfileChange);
 
             _interfaceRequestWorker.RunWorkerCompleted +=
                 new System.ComponentModel.RunWorkerCompletedEventHandler(this.ProfileChangeSuccess);
+
+
+            // IPv4 mock
+            IpAddress = "192.168.0.1";
+            SubnetMask = "255.255.255.0";
+            Gateway = "192.168.1.50";
+            DNS = "192.168.1.51";
+
         }
 
         public void ToggleState()
@@ -110,12 +103,12 @@ namespace ASK.Model.NetsList
             Console.Out.WriteLine("ToggleState start " + this.Name);
             switch (ProfileState)
             {
-                case ProfileStateEnum.ON:
-                case ProfileStateEnum.DEACTIVATING:
-                case ProfileStateEnum.ACTIVATING:
+                case StateEnum.ON:
+                case StateEnum.DEACTIVATING:
+                case StateEnum.ACTIVATING:
                     // TODO: ignorować?
                     break;
-                case ProfileStateEnum.OFF:
+                case StateEnum.OFF:
                     _interfaceRequestWorker.RunWorkerAsync();
                     break;
                 default:
@@ -126,34 +119,33 @@ namespace ASK.Model.NetsList
 
         public void Activate()
         {
-            ProfileState = ProfileStateEnum.ACTIVATING;
+            ProfileState = StateEnum.ACTIVATING;
             // TODO: włączenie... gdzieś trzeba zrobić to współbieżnie z powiadomieniami
-            ProfileState = ProfileStateEnum.ON;
+            ProfileState = StateEnum.ON;
         }
 
         public void Deactivate()
         {
-            ProfileState = ProfileStateEnum.DEACTIVATING;
+            ProfileState = StateEnum.DEACTIVATING;
             // TODO: włączenie... gdzieś trzeba zrobić to współbieżnie z powiadomieniami
-            ProfileState = ProfileStateEnum.OFF;
+            ProfileState = StateEnum.OFF;
         }
 
         internal void RequestProfileChange(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            Console.Out.WriteLine("Request profile change");
-            MyNetInterface.ProfileChange(this);
+            NetInterface.ProfileChange(this);
         }
 
         internal void ProfileChangeSuccess(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
             switch (ProfileState)
             {
-                case ProfileStateEnum.OFF:
-                case ProfileStateEnum.DEACTIVATING:
-                case ProfileStateEnum.ACTIVATING:
+                case StateEnum.OFF:
+                case StateEnum.DEACTIVATING:
+                case StateEnum.ACTIVATING:
                     // TODO: jakiś błąd?
                     break;
-                case ProfileStateEnum.ON:
+                case StateEnum.ON:
                     // TODO: jeszcze nie wiem co
                     break;
                 default:
@@ -161,25 +153,5 @@ namespace ASK.Model.NetsList
             }
         }
 
-        private Style _buttonStyle = GetStyle("DefaultButton");
-
-        public Style StyleTest
-        {
-            get { return _buttonStyle; }
-            set
-            {
-                _buttonStyle = value;
-                OnPropertyChanged("StyleTest");
-            }
-        }
-
-        private void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
     }
 }

@@ -61,19 +61,37 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="GUI\ThemeProperties.cs" />
+    <Compile Include="GUI\Converters.cs" />
+    <Compile Include="GUI\NetInterfaceButtonView.xaml.cs">
+      <DependentUpon>NetInterfaceButtonView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ProfileButtonView.xaml.cs">
+      <DependentUpon>ProfileButtonView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Logic\WifiInterfacesParser.cs" />
-    <Compile Include="ViewModels\MainModel.cs" />
-    <Compile Include="Model\NetsList\NetInterface.cs" />
-    <Compile Include="Model\NetsList\Profile.cs" />
+    <Compile Include="Model\ModelBase.cs" />
+    <Compile Include="Model\NetsList\NetsListModel.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="Model\NetsList\NetInterfaceModel.cs" />
+    <Compile Include="Model\NetsList\ProfileModel.cs" />
     <Compile Include="ViewModels\NetsList\NetInterfaceViewModel.cs" />
-    <Compile Include="ViewModels\OptionsControl\DummyOptionsControlViewModel.cs" />
-    <Compile Include="ViewModels\NetsList\DummyNetsListViewModel.cs" />
-    <Page Include="GUI\NetsList.xaml">
+    <Compile Include="ViewModels\NetsList\ProfileButtonViewModel.cs" />
+    <Compile Include="ViewModels\OptionsControl\OptionsPanelViewModel.cs" />
+    <Compile Include="ViewModels\NetsList\NetsListViewModel.cs" />
+    <Page Include="GUI\NetInterfaceButtonView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="GUI\OptionsControl.xaml">
+    <Page Include="GUI\NetsListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GUI\OptionsPanelView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GUI\ProfileButtonView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -85,11 +103,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="GUI\NetsList.xaml.cs">
-      <DependentUpon>NetsList.xaml</DependentUpon>
+    <Compile Include="GUI\NetsListView.xaml.cs">
+      <DependentUpon>NetsListView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GUI\OptionsControl.xaml.cs">
-      <DependentUpon>OptionsControl.xaml</DependentUpon>
+    <Compile Include="GUI\OptionsPanelView.xaml.cs">
+      <DependentUpon>OptionsPanelView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -98,6 +116,10 @@
     <Page Include="GUI\Styles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -126,7 +148,6 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Model\OptionsControl\" />
     <Folder Include="SampleData\" />
   </ItemGroup>
   <ItemGroup>

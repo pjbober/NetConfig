@@ -1,51 +1,52 @@
-﻿using System;
+﻿using ASK.Logic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace ASK.Model.NetsList
 {
-    public class NetInterface
+    public class NetInterfaceModel
     {
         public string InterfaceName { get; set; }
-        public List<Profile> Profiles { get; set; }
+        public List<ProfileModel> Profiles { get; set; }
 
-        public NetInterface(string name)
+        public NetInterfaceModel(string name)
         {
-            Profiles = new List<Profile>();
+            Profiles = new List<ProfileModel>();
             this.InterfaceName = name;
         }
 
-        public void AddProfile(Profile profile)
+        public void AddProfile(ProfileModel profile)
         {
             Profiles.Add(profile);
         }
 
-        public void ProfileChange(Profile profile)
+        public void ProfileChange(ProfileModel profile)
         {
             Console.Out.WriteLine("Changing profile to: " + profile.ProfileName);
 
             switch (profile.ProfileState)
             {
-                case Profile.ProfileStateEnum.ON:
+                case ProfileModel.StateEnum.ON:
                     // TODO: coś poszło nie tak - profil zazwyczaj domaga się włączenia
                     throw new Exception();
                 //break;
-                case Profile.ProfileStateEnum.OFF:
-                case Profile.ProfileStateEnum.ACTIVATING:
+                case ProfileModel.StateEnum.OFF:
+                case ProfileModel.StateEnum.ACTIVATING:
                 // TODO: powdójny request - niecierpliwy użytkownik?
-                case Profile.ProfileStateEnum.DEACTIVATING:
+                case ProfileModel.StateEnum.DEACTIVATING:
                 default:
                     break;
             }
 
             // TODO: sytuacja, kiedy jakiś profil się aktywuje bądź deaktywuje
-            Profile currentActiveProfile = null;
-            foreach (Profile p in Profiles)
+            ProfileModel currentActiveProfile = null;
+            foreach (ProfileModel p in Profiles)
             {
                 // sprawdź, który profil jest włączony - powinien być tylko jeden
                 // TODO: wykrywanie sytuacji, gdy kilka profili jest aktywnych? niezgodne stany?
-                if (p.ProfileState == Profile.ProfileStateEnum.ON)
+                if (p.ProfileState == ProfileModel.StateEnum.ON)
                 {
                     currentActiveProfile = p;
                     break;
@@ -55,7 +56,7 @@ namespace ASK.Model.NetsList
             if (currentActiveProfile != null)
             {
                 currentActiveProfile.Deactivate(); // blokująca deaktywacja profilu
-                if (currentActiveProfile.ProfileState != Profile.ProfileStateEnum.OFF)
+                if (currentActiveProfile.ProfileState != ProfileModel.StateEnum.OFF)
                 {
                     // TODO: nie udało się deaktywować, ponowić próbę?
                 }
@@ -63,7 +64,7 @@ namespace ASK.Model.NetsList
 
             // teraz żaden inny profil nie powinien być aktywny
             profile.Activate(); // blokująca aktywacja profilu z żądania
-            if (profile.ProfileState != Profile.ProfileStateEnum.ON)
+            if (profile.ProfileState != ProfileModel.StateEnum.ON)
             {
                 // TODO: coś poszło nie tak
             }

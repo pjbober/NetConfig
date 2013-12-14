@@ -1,0 +1,19 @@
+﻿<Button x:Class="ASK.GUI.ProfileButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="30" d:DesignWidth="300" Name="profileButton"
+        Style="{Binding Style, UpdateSourceTrigger=PropertyChanged}" Margin="50,2,0,0">
+
+    <DockPanel Height="{Binding ElementName=profileButton, Path=Height}" VerticalAlignment="Center">
+        <!-- wskaźnik stanu -->
+        <Rectangle DockPanel.Dock="Left" Margin="0,0,8,0" Width="15" Height="{Binding ElementName=mainWrap, Path=Height}" Fill="{Binding ActiveRectColor, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left"/>
+        <!-- nazwa interfejsu -->
+        <Image DockPanel.Dock="Right" Source="{Binding NewWifiIcon}" Margin="4" Width="22" Height="22"/>
+        <!-- przycisk włączania/wyłączania interfejsu -->
+        <TextBlock DockPanel.Dock="Left" Margin="4" Text="{Binding Name}" Foreground="{StaticResource WhiteTextColor}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+    </DockPanel>
+    
+</Button>

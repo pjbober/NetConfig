@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ASK.ViewModels;
 using ASK.Model.NetsList;
+using ASK.ViewModels.NetsList;
 
 namespace ASK.GUI
 {
@@ -46,6 +47,14 @@ namespace ASK.GUI
         public NetsList()
         {
             InitializeComponent();
+        }
+
+        private void ProfileButton_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as ProfileButton;
+            var viewModel = button.DataContext as ProfileButtonViewModel;
+            var profile = viewModel.Profile;
+            (DataContext as NetsListViewModel).EmitChangedProfile(profile);
         }
         
     }

@@ -1,14 +1,24 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:gui="clr-namespace:ASK.GUI">
+
+    <gui:BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
+
+
     <SolidColorBrush x:Key="WindowBackgroundColor" Color="#E54A8BAA"/>
     <SolidColorBrush x:Key="StdForegroundColor" Color="#FFFFFF" />
-    
+
+    <SolidColorBrush x:Key="LighterColor" Color="#AAFFFFFF" />
+    <SolidColorBrush x:Key="LighterHoverColor" Color="#CCFFFFFF" />
+    <SolidColorBrush x:Key="LighterPressedColor" Color="#22000000" />
+
     <SolidColorBrush x:Key="BlueColor" Color="#79B1CC" />
     <SolidColorBrush x:Key="BlueHoverColor" Color="#99C4D8" />
     <SolidColorBrush x:Key="BluePressedColor" Color="#477F9A" />
 
     <SolidColorBrush x:Key="BlueActiveColor" Color="#8ebdd4" />
+    
+    <SolidColorBrush x:Key="WhiteTextColor" Color="White" />
     
     <SolidColorBrush x:Key="RedColor" Color="#cb3838" />
     <SolidColorBrush x:Key="RedHoverColor" Color="#d86868" />
@@ -17,6 +27,159 @@
     <SolidColorBrush x:Key="YellowColor" Color="#bf9b58" />
     <SolidColorBrush x:Key="YellowHoverColor" Color="#cdb27d" />
     <SolidColorBrush x:Key="YellowPressedColor" Color="#9c7a3b" />
+    
+    <!-- Template dla przycisku czyszczący wygląd -->
+    <ControlTemplate x:Key="ModernButtonTemplate" TargetType="{x:Type Button}">
+        <StackPanel Background="{TemplateBinding Background}">
+            <ContentPresenter Content="{TemplateBinding Content}"/>
+        </StackPanel>
+    </ControlTemplate>
+    
+    <!-- Modern CheckBox -->
+    <ControlTemplate x:Key="ModernCheckBoxTemplate" TargetType="{x:Type CheckBox}">
+        <StackPanel Background="{TemplateBinding Background}">
+            <ContentPresenter Content="{TemplateBinding Content}"/>
+        </StackPanel>
+    </ControlTemplate>
+    
+    <Style x:Key="ModernCheckBox" TargetType="{x:Type CheckBox}">
+        <Setter Property="Template" Value="{StaticResource ModernCheckBoxTemplate}"/>
+        <Setter Property="Background" Value="{StaticResource LighterColor}"/>
+        <Setter Property="Foreground" Value="{StaticResource StdForegroundColor}"/>
+    </Style>
+
+    <!-- Czyści wygląd i ustawia marginesy contentu -->
+    <ControlTemplate x:Key="ModernDefaultButtonTemplate" TargetType="{x:Type Button}">
+        <BulletDecorator Background="{TemplateBinding Background}">
+            <BulletDecorator.Bullet>
+                <Label Content="X" Foreground="Black"/>
+            </BulletDecorator.Bullet>
+        </BulletDecorator>
+        
+        <!--<StackPanel Background="{TemplateBinding Background}" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <ContentPresenter Margin="{TemplateBinding Margin}" Content="{TemplateBinding Content}"/>
+        </StackPanel>-->
+    </ControlTemplate>
+
+    <!-- Styl dla customowych buttonów -->
+    <Style x:Key="ModernButton" TargetType="{x:Type Button}">
+        <Setter Property="Template" Value="{StaticResource ModernButtonTemplate}"/>
+        <Setter Property="TextBlock.FontSize" Value="16"/>
+        <Setter Property="Foreground" Value="{StaticResource StdForegroundColor}"/>
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
+
+    <Style BasedOn="{StaticResource ModernButton}" x:Key="ModernDefaultButton" TargetType="{x:Type Button}">
+        <Setter Property="Template" Value="{StaticResource ModernButtonTemplate}"/>
+    </Style>
+    
+    <!-- Profile -->
+    <Style BasedOn="{StaticResource ModernButton}" x:Key="ProfileButtonDefault" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource BlueColor}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True" >
+                <Setter Property="Background" Value="{StaticResource BlueHoverColor}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True" >
+                <Setter Property="Background" Value="{StaticResource BluePressedColor}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style BasedOn="{StaticResource ModernButton}" x:Key="ProfileButtonActive" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource BlueActiveColor}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True" >
+                <Setter Property="Background" Value="{StaticResource BlueHoverColor}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True" >
+                <Setter Property="Background" Value="{StaticResource BluePressedColor}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Interface -->
+    <Style BasedOn="{StaticResource ModernButton}" x:Key="InterfaceButtonOn" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource BlueColor}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True" >
+                <Setter Property="Background" Value="{StaticResource BlueHoverColor}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True" >
+                <Setter Property="Background" Value="{StaticResource BluePressedColor}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style BasedOn="{StaticResource ModernButton}" x:Key="InterfaceButtonOff" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource RedColor}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True" >
+                <Setter Property="Background" Value="{StaticResource RedHoverColor}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True" >
+                <Setter Property="Background" Value="{StaticResource RedPressedColor}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Ikona -->
+    <Style BasedOn="{StaticResource ModernButton}" x:Key="IconButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource LighterColor}"/>
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True" >
+                <Setter Property="Background" Value="{StaticResource LighterHoverColor}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True" >
+                <Setter Property="Background" Value="{StaticResource LighterPressedColor}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="CloseButton" BasedOn="{StaticResource ModernDefaultButton}" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource RedColor}"/>
+        <Setter Property="Margin" Value="10"/>
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True" >
+                <Setter Property="Background" Value="{StaticResource RedHoverColor}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True" >
+                <Setter Property="Background" Value="{StaticResource RedPressedColor}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    
+    <!-- OptionsPanel -->
+    <Style x:Key="OptionsLabel" TargetType="{x:Type Label}">
+        <Setter Property="Foreground" Value="{StaticResource StdForegroundColor}"/>
+        <Setter Property="TextBlock.FontSize" Value="16"/>
+    </Style>
+    
+
+    <!-- Oldies but goldies -->
+
+
+    <Style x:Key="BlankButton" TargetType="{x:Type Button}">
+
+        <Setter Property="Background" Value="{StaticResource BlueColor}"/>
+        <Setter Property="Foreground" Value="{StaticResource StdForegroundColor}"/>
+        <Setter Property="TextBlock.TextAlignment" Value="Center"/>
+
+        <Setter Property="Template" Value="{DynamicResource BlankButtonTemplate}" />
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True" >
+                <Setter Property="Background" Value="{StaticResource BlueHoverColor}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True" >
+                <Setter Property="Background" Value="{StaticResource BluePressedColor}" />
+            </Trigger>
+        </Style.Triggers>
+
+    </Style>
 
 
     <Style x:Key="DefaultButton" TargetType="{x:Type Button}">
@@ -30,6 +193,19 @@
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True" >
                 <Setter Property="Background" Value="{StaticResource BlueHoverColor}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True" >
+                <Setter Property="Background" Value="{StaticResource BluePressedColor}" />
+            </Trigger>
+        </Style.Triggers>
+
+    </Style>
+
+    <Style x:Key="DefaultProfileButton" TargetType="{x:Type gui:ProfileButton}">
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True" >
+                <Setter Property="Background" Value="{StaticResource RedHoverColor}" />
             </Trigger>
             <Trigger Property="IsPressed" Value="True" >
                 <Setter Property="Background" Value="{StaticResource BluePressedColor}" />
@@ -98,8 +274,11 @@
     </Style>
 
     <!-- ... -->
-    
-    
+
+ 
+    <!-- ... -->
+
+
     <Style x:Key="InterfaceButton" TargetType="{x:Type ToggleButton}">
 
         <Setter Property="Background" Value="{StaticResource BlueColor}"/>
@@ -123,22 +302,6 @@
         <Setter Property="Margin" Value="10,0"/>
         <Setter Property="Template" Value="{DynamicResource ButtonToolTemplate}" />
     </Style>
-
-
-    <Style x:Key="CloseButton" BasedOn="{StaticResource DefaultButton}" TargetType="{x:Type Button}">
-        <Setter Property="Template" Value="{DynamicResource ButtonIconTemplate}"/>
-
-        <Setter Property="Background" Value="{StaticResource RedColor}"/>
-        
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True" >
-                <Setter Property="Background" Value="{StaticResource RedHoverColor}" />
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True" >
-                <Setter Property="Background" Value="{StaticResource RedPressedColor}" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
     
 
     <ControlTemplate x:Key="ButtonTextTemplate" TargetType="{x:Type Button}">
@@ -150,6 +313,19 @@
     				TextBlock.FontSize="16"
     				TextBlock.TextAlignment="{TemplateBinding TextBlock.TextAlignment}"
     				Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+
+        </Grid>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="BlankButtonTemplate" TargetType="{x:Type Button}">
+        <Grid x:Name="grid" ClipToBounds="True" Background="{TemplateBinding Background}" RenderTransformOrigin="0.5,0.5">
+
+            <ContentPresenter x:Name="contentPresenter"
+    				Content="{TemplateBinding Content}" 
+    				TextBlock.Foreground="{TemplateBinding Foreground}"
+    				TextBlock.FontSize="16"
+    				TextBlock.TextAlignment="{TemplateBinding TextBlock.TextAlignment}"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
 
         </Grid>
     </ControlTemplate>

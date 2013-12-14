@@ -6,7 +6,7 @@
      Title="Net Config" 
         Height="{DynamicResource {x:Static SystemParameters.PrimaryScreenHeightKey}}" 
         Width="480" ResizeMode="NoResize" Top="0" Topmost="True" Loaded="Window_Loaded" MouseLeave="Window_MouseLeave" MouseEnter="Window_MouseEnter" ShowInTaskbar="False" AllowsTransparency="True" WindowStyle="None" Background="{DynamicResource WindowBackgroundColor}">
-    <Grid x:Name="mainGrid" d:DataContext="{d:DesignData /SampleData/DummyNetsListViewModelSampleData.xaml}">
+    <Grid x:Name="mainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
@@ -19,16 +19,20 @@
         <Button Grid.Row="0" Grid.Column="1" x:Name="closingButton" Style="{StaticResource CloseButton}"
                 HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top" Click="closingButton_Click" Width="22" Height="22">
             <Button.Content>
-                <Image Source="Images/close.png" Width="12" Height="12"></Image>
+                <Image Source="Images/close.png" Width="12" Height="12" Margin="4"/>
             </Button.Content>
         </Button>
 
-        <Grid Grid.Row="1" Grid.ColumnSpan="2" Background="{StaticResource BluePressedColor}"/>
-        <Button Grid.Row="1" Grid.Column="0" x:Name="newConfigButton"
-                Content="Dodaj nowy profil" HorizontalAlignment="Left"
-                Click="newConfigButton_Click"
-                Height="Auto" Width="Auto" Style="{StaticResource ToolButton}"/>
-        
+        <gui:NetInterfaceButton x:Name="helloButton" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"/>
+
+        <!--<StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" 
+                    Background="{StaticResource BluePressedColor}">
+            <Button x:Name="newConfigButton"
+                    Content="Dodaj nowy profil" HorizontalAlignment="Left"
+                    Click="newConfigButton_Click"
+                    Height="Auto" Width="Auto" Style="{StaticResource ToolButton}"/>
+        </StackPanel>-->
+
         <gui:NetsList x:Name="netsList" Grid.Row="0" Grid.Column="0" Margin="10" DataContext="{Binding}" />
         <gui:OptionsControl x:Name="optionsControl" Grid.Row="2" Grid.Column="0" Margin="10" Grid.RowSpan="2"/>
 

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:gui="clr-namespace:ASK.GUI"
              mc:Ignorable="d"
 			 x:Name="netsList"
              d:DesignHeight="300" d:DesignWidth="400" Width="Auto" Height="Auto">
@@ -11,17 +12,20 @@
 
         <ControlTemplate x:Key="interfaceControl" TargetType="ContentControl">
 
-            <StackPanel Width="{Binding Path=ActualWidth,ElementName=netsList}" Orientation="Vertical" HorizontalAlignment="Stretch" Margin="0,10,0,0">
+            <StackPanel Width="{Binding ElementName=netsList, Path=ActualWidth}" Orientation="Vertical" HorizontalAlignment="Stretch" Margin="0,10,0,0">
                 <!-- Przycisk nazwy interfejsu, 10px marginesu z góry (odstępy w drzewie) -->
-                <ToggleButton x:Name="interfaceButton" Content="{Binding NetInterfaceModel.InterfaceName}" Style="{StaticResource InterfaceButton}" TextBlock.TextAlignment="Left" />
+                <gui:NetInterfaceButton x:Name="interfaceButton" DataContext="{Binding}"/>
 
-                <StackPanel x:Name="profilesPanel"> <!-- Lista profili - do chowania -->
+                <StackPanel x:Name="profilesPanel" Visibility="{Binding Path=IsExpanded, Converter={StaticResource VisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"> <!-- Lista profili - do chowania -->
                     <ItemsControl ItemsSource="{Binding Profiles}" HorizontalAlignment="Right" Width="{Binding Path=ActualWidth,ElementName=netsList}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Button Content="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Margin="50,2,0,0" HorizontalAlignment="Stretch" TextBlock.TextAlignment="Left"
-                                        Command="{Binding DataContext.BtnClicked, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}"
-                                        Style="{Binding StyleTest}"/>
+                                <gui:ProfileButton DataContext="{Binding}"
+                                                   Click="ProfileButton_Click"/>
+                                   <!--Command="{Binding DataContext.BtnClicked, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding Profile}"/>-->
+                                <!--<Button Content="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Margin="50,2,0,0" HorizontalAlignment="Stretch" TextBlock.TextAlignment="Left"
+                                        Command="{Binding DataContext.BtnClicked, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding Profile}"
+                                        Style="{Binding Style}"/>-->
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
@@ -29,7 +33,7 @@
                 
             </StackPanel>
 
-            <ControlTemplate.Triggers>
+            <!--<ControlTemplate.Triggers>
                 <Trigger SourceName="interfaceButton" Property="IsChecked" Value="False">
                     <Setter TargetName="profilesPanel" Property="Visibility" Value="Collapsed"/>
                 </Trigger>
@@ -37,7 +41,7 @@
                 <Trigger SourceName="interfaceButton" Property="IsChecked" Value="True">
                     <Setter TargetName="profilesPanel" Property="Visibility" Value="Visible"/>
                 </Trigger>
-            </ControlTemplate.Triggers>
+            </ControlTemplate.Triggers>-->
         </ControlTemplate>
 
     </UserControl.Resources>
@@ -47,20 +51,10 @@
         <ItemsControl ItemsSource="{Binding NetInterfacesCollection}" Margin="0,0,0,0">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-
-                    <ContentControl Template="{StaticResource interfaceControl}" Content="Hello"
-                        Grid.Row="2" Grid.Column="1"/>
-
-                        <!--<ListBox ItemsSource="{Binding Profiles}" Padding="0" Margin="30,0,0,10" Background="Transparent">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Label Content="{Binding Name}"  Background="#33FFFFFF" Margin="30,2,0,2"/>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>-->
+                    <ContentControl Template="{StaticResource interfaceControl}"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        
     </StackPanel>
+    
 </UserControl>

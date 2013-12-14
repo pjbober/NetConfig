@@ -1,0 +1,73 @@
+﻿<UserControl x:Class="ASK.GUI.OptionsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="300">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="Profil:"/>
+        <Label Grid.Row="0" Grid.Column="2"  Style="{StaticResource OptionsLabel}" Content="{Binding ProfileName, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <Label Grid.Row="1" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="Interfejs:"/>
+        <Label Grid.Row="1" Grid.Column="2"  Style="{StaticResource OptionsLabel}" Content="{Binding InterfaceName, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <Label Grid.Row="2" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="DHCP:"/>
+        <!--<CheckBox Grid.Row="2" Grid.Column="2" Style="{StaticRessource ModernCheckBox}" IsChecked="{Binding IsDHCP}"/>-->
+        <CheckBox Grid.Row="2" Grid.Column="2" IsChecked="{Binding IsDHCP}" VerticalAlignment="Center"/>
+
+        <!-- TODO: chowanie w zależności od stanu DHCP -->
+        <Grid Grid.Row="3" Grid.ColumnSpan="3" Visibility="Visible" Background="#11FFFFFF">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="Adres IP:"/>
+            <Label Grid.Row="0" Grid.Column="2"  Style="{StaticResource OptionsLabel}" Content="{Binding IpAddress, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Label Grid.Row="1" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="Maska podsieci:"/>
+            <Label Grid.Row="1" Grid.Column="2"  Style="{StaticResource OptionsLabel}" Content="{Binding SubnetMask, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Label Grid.Row="2" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="Brama domyślna:"/>
+            <Label Grid.Row="2" Grid.Column="2"  Style="{StaticResource OptionsLabel}" Content="{Binding Gateway, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Label Grid.Row="3" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="Serwer DNS:"/>
+            <Label Grid.Row="3" Grid.Column="2"  Style="{StaticResource OptionsLabel}" Content="{Binding DNS, UpdateSourceTrigger=PropertyChanged}"/>
+        </Grid>
+
+        <Label Grid.Row="4" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="Adres MAC:"/>
+        <Label Grid.Row="4" Grid.Column="2"  Style="{StaticResource OptionsLabel}" Content="{Binding MAC, UpdateSourceTrigger=PropertyChanged}"/>
+
+    </Grid>
+
+
+    <!--<Button Style="{StaticResource DefaultButton}" Content="{Binding Profile.Name, Mode=TwoWay}" TextBlock.TextAlignment="Left" />
+        <Button Style="{StaticResource DefaultButton}" Content="{Binding Profile.SSID}" TextBlock.TextAlignment="Left" />
+        <Button Style="{StaticResource DefaultButton}" Content="{Binding Profile.Signal}"  TextBlock.TextAlignment="Left" />
+        <Button Style="{StaticResource DefaultButton}" Content="{Binding Profile.Authentication}"  TextBlock.TextAlignment="Left" />-->
+</UserControl>
