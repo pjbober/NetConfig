@@ -6,31 +6,75 @@ using System.Collections.ObjectModel;
 using ASK.Model.NetsList;
 using System.Windows.Input;
 using System.Windows;
+using System.Windows.Media;
+using System.Windows.Data;
 
 namespace ASK.ViewModels.NetsList
 {
-    public class NetInterfaceViewModel
-    {
+    public delegate void ProfileChangedHandlerEvent(ProfileModel newProfile);
 
-        public NetInterfaceViewModel(NetInterface netInterface)
+    public class NetInterfaceViewModel : ViewModelBase
+    {
+        // TODO: model powinien zawierać stan: włączony/wyłączony
+
+        public Style Style
+        {
+            get
+            {
+                return GetStyle("InterfaceButtonOn");
+            }
+        }
+
+        public SolidColorBrush ActiveRectColor
+        {
+            get
+            {
+                return GetBrush("LighterColor");
+            }
+        }
+
+        Boolean _isExpanded = true;
+
+        public Boolean IsExpanded
+        {
+            get
+            {
+                return _isExpanded;
+            }
+            set
+            {
+                _isExpanded = value;
+                EmitPropertyChanged("IsExpanded");
+            }
+        }
+
+        public NetInterfaceViewModel(NetInterfaceModel netInterface)
         {
             NetInterfaceModel = netInterface;
             
             BtnClicked = new CommandHandler(x => Clicked(x), true);
 
-            Profiles = new ObservableCollection<Profile>();
-            foreach (Profile profile in netInterface.Profiles)
-                Profiles.Add(profile);
+            Profiles = new ObservableCollection<ProfileButtonViewModel>();
+            foreach (ProfileModel profile in netInterface.Profiles)
+            {
+                Profiles.Add(new ProfileButtonViewModel(profile));
+            }
+
+            IsExpanded = true;
         }
 
-        public ObservableCollection<Profile> Profiles { get; set; }
-        public NetInterface NetInterfaceModel { get; set; }
-        public event ChangedProfileHandlerEvent ChangedProfile;
+        public ObservableCollection<ProfileButtonViewModel> Profiles { get; set; }
+        public NetInterfaceModel NetInterfaceModel { get; set; }
+
+        public event ProfileChangedHandlerEvent ProfileChangedEvent;
 
         public void Clicked(object obj)
         {
-            Profile profile = obj as Profile;
-            ChangedProfile(profile);
+            ProfileModel profile = obj as ProfileModel;
+            if (ProfileChangedEvent != null)
+            {
+                ProfileChangedEvent(profile);
+            }
             profile.ToggleState();
         }
 
@@ -46,33 +90,15 @@ namespace ASK.ViewModels.NetsList
             set;
         }
 
+        // własności użyte w widoku
+
         public String Name
         {
             get { return NetInterfaceModel.InterfaceName; }
         }
+
+
     }
 }
 
-public class CommandHandler : ICommand
-{
-    private Action<object> _action;
-    private bool _canExecute;
-    public CommandHandler(Action<object> action, bool canExecute)
-    {
-        _action = action;
-        _canExecute = canExecute;
-    }
-
-    public bool CanExecute(object parameter)
-    {
-        return _canExecute;
-    }
-
-    public event EventHandler CanExecuteChanged;
-
-    public void Execute(object parameter)
-    {
-        _action(parameter);
-    }
-}
 

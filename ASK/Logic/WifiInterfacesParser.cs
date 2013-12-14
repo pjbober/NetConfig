@@ -12,11 +12,11 @@ namespace ASK.Logic
         // TODO: To na razie nie działa, trzeba wymyślić jakiś inny sposób
         private static readonly Encoding ibm852enc = Encoding.GetEncoding("ibm852");
 
-        public List<Profile> parse()
+        public List<ProfileModel> parse(NetInterfaceModel netInterface)
         {
             string netshOutput = invokeNetsh();
 
-            List<Profile> profiles = new List<Profile>();
+            List<ProfileModel> profiles = new List<ProfileModel>();
             List<string> outputLines = netshOutput.Split(new string[] { Environment.NewLine }, StringSplitOptions.None).Where(p => p.Contains(":") && !p.StartsWith("There") && !p.StartsWith("Hosted")).ToList();
             List<Tuple<string, string>> oneProfile = new List<Tuple<string, string>>();
             
@@ -26,7 +26,7 @@ namespace ASK.Logic
                 oneProfile.Add(new Tuple<string, string>(newLine[0], newLine[1]));
                 if (newLine[0].StartsWith("Stan sieci"))
                 {
-                    profiles.Add(makeProfile(oneProfile.ToDictionary(x => x.Item1, x => x.Item2)    ));
+                    profiles.Add(makeProfile(oneProfile.ToDictionary(x => x.Item1, x => x.Item2), netInterface));
                     oneProfile.Clear();
                 }
             }
@@ -34,12 +34,12 @@ namespace ASK.Logic
             return profiles;
         }
 
-        private Profile makeProfile(Dictionary<string, string> profileOptions)
+        private ProfileModel makeProfile(Dictionary<string, string> profileOptions, NetInterfaceModel netInterface)
         {
             String profileName =
                 Encoding.UTF8.GetString(ibm852enc.GetBytes(profileOptions["Nazwa"]));
             
-            Profile profile = new Profile(profileName);
+            ProfileModel profile = new ProfileModel(profileName, netInterface);
             profile.PhysicalAddress = profileOptions["Adres fizyczny"];
             profile.GUID = profileOptions["Identyfikator GUID"];
 

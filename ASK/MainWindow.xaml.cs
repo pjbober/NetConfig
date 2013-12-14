@@ -12,6 +12,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ASK.ViewModels;
+using ASK.ViewModels.NetsList;
+using ASK.Model.NetsList;
 
 namespace ASK
 {
@@ -24,12 +26,16 @@ namespace ASK
 
         public MainWindow()
         {
-            MainModel model = new MainModel();
+            NetsListModel netsListModel = new NetsListModel();
+
+            MainViewModel mainViewModel = new MainViewModel(netsListModel);
             InitializeComponent();
             isExpanded = false;
-            DataContext = model;
-            netsList.DataContext = model.NetsList;
-            optionsControl.DataContext = model.OptionsControl;
+            DataContext = mainViewModel;
+            netsList.DataContext = mainViewModel.NetsListViewModel;
+            optionsControl.DataContext = mainViewModel.OptionsPanelViewModel;
+
+            helloButton.DataContext = new NetInterfaceViewModel(new NetInterfaceModel("hello"));
 
             netsList.OptionsControl = optionsControl; // let netsList know about optionsControl
         }
@@ -60,9 +66,13 @@ namespace ASK
         private void updateWindowPosition()
         {
             if (isExpanded)
+            {
                 Left = SystemParameters.PrimaryScreenWidth - Width;
+            }
             else
+            {
                 Left = SystemParameters.PrimaryScreenWidth - 10;
+            }
         }
 
         private void newConfigButton_Click(object sender, RoutedEventArgs e)
