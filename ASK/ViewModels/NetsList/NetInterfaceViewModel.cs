@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Data;
+using System.Windows.Media.Imaging;
 
 namespace ASK.ViewModels.NetsList
 {
@@ -90,6 +91,47 @@ namespace ASK.ViewModels.NetsList
             get { return NetInterfaceModel.InterfaceName; }
         }
 
+        public static readonly ImageSource WIRELESS_ICON = LoadPng("network-wireless");
+        public static readonly ImageSource WIRED_ICON = LoadPng("network-wired");
+        public static readonly ImageSource LOOPBACK_ICON = LoadPng("network-loopback");
+        public static readonly ImageSource OTHER_ICON = LoadPng("network-other");
+
+        public static readonly ImageSource SHUTDOWN_ICON = LoadPng("interface-shutdown");
+        public static readonly ImageSource START_ICON = LoadPng("interface-start");
+
+        public ImageSource TypeIcon
+        {
+            get
+            {
+                switch (NetInterfaceModel.Type)
+                {
+                    case NetInterfaceType.Loopback:
+                        return LOOPBACK_ICON;
+                    case NetInterfaceType.Wired:
+                        return WIRED_ICON;
+                    case NetInterfaceType.Wireless:
+                        return WIRELESS_ICON;
+                    case NetInterfaceType.Other:
+                    default:
+                        return OTHER_ICON;
+                }
+            }
+        }
+
+        public ImageSource TurnOnIcon
+        {
+            get
+            {
+                switch (NetInterfaceModel.State)
+                {
+                    case NetInterfaceState.Connected:
+                        return SHUTDOWN_ICON;
+                    default:
+                    case NetInterfaceState.Disconnected:
+                        return START_ICON;
+                }
+            }
+        }
 
     }
 }

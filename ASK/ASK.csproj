@@ -153,6 +153,18 @@
   <ItemGroup>
     <Resource Include="Images\close.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\network-wired.png" />
+    <Resource Include="Images\network-wireless.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\network-loopback.png" />
+    <Resource Include="Images\network-other.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\interface-shutdown.png" />
+    <Resource Include="Images\interface-start.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

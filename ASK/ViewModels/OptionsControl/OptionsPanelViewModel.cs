@@ -12,7 +12,7 @@ namespace ASK.ViewModels.OptionsControl
         public OptionsPanelViewModel()
         {
             // pusty profil na początek
-            Profile = new ProfileModel("<nie wybrano>", new NetInterfaceModel("<nie wybrano>"));
+            Profile = new ProfileModel("<nie wybrano>", new NetInterfaceModel("<nie wybrano>", NetInterfaceType.Other));
         }
 
         private ProfileModel profile;

@@ -17,10 +17,10 @@ namespace ASK.Model.NetsList
 
             // dummy
 
-            NetInterfaceModel ethernetInt = new NetInterfaceModel("Przewodowe");
+            NetInterfaceModel ethernetInt = new NetInterfaceModel("Przewodowe", NetInterfaceType.Wired);
             ethernetInt.AddProfile(new ProfileModel("Dom", ethernetInt));
 
-            NetInterfaceModel wirelessInt = new NetInterfaceModel("Bezprzewodowe");
+            NetInterfaceModel wirelessInt = new NetInterfaceModel("Bezprzewodowe", NetInterfaceType.Wireless);
             wirelessInt.AddProfile(new ProfileModel("WiFi 1", wirelessInt));
             wirelessInt.AddProfile(new ProfileModel("WiFi 2", wirelessInt));
 
@@ -32,8 +32,16 @@ namespace ASK.Model.NetsList
                 wirelessInt.AddProfile(profile);
             }
 
+            NetInterfaceModel loopbackInt = new NetInterfaceModel("Loopback", NetInterfaceType.Loopback);
+            loopbackInt.AddProfile(new ProfileModel("Domyślne", loopbackInt));
+
+            NetInterfaceModel otherInt = new NetInterfaceModel("Hamachi", NetInterfaceType.Other);
+            otherInt.AddProfile(new ProfileModel("Domyślne", otherInt));
+
             NetInterfacesCollection.Add(ethernetInt);
             NetInterfacesCollection.Add(wirelessInt);
+            NetInterfacesCollection.Add(loopbackInt);
+            NetInterfacesCollection.Add(otherInt);
         }
 
     }

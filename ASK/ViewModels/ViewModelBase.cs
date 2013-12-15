@@ -6,6 +6,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace ASK.ViewModels
 {
@@ -35,7 +36,12 @@ namespace ASK.ViewModels
             return s;
         }
 
-
+        public static ImageSource LoadPng(string name)
+        {
+            string path = "pack://application:,,,/ASK;component/Images/" + name + ".png";
+            var uri = new Uri(path);
+            return new BitmapImage(uri);
+        }
     }
 
 }

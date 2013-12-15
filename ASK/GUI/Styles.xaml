@@ -123,16 +123,18 @@
         </Style.Triggers>
     </Style>
 
+    
+    <!-- TODO: wyjąć kolory -->
     <!-- Ikona -->
     <Style BasedOn="{StaticResource ModernButton}" x:Key="IconButton" TargetType="{x:Type Button}">
-        <Setter Property="Background" Value="{StaticResource LighterColor}"/>
+        <Setter Property="Background" Value="#33FFFFFF"/>
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True" >
-                <Setter Property="Background" Value="{StaticResource LighterHoverColor}" />
+                <Setter Property="Background" Value="#66FFFFFF" />
             </Trigger>
             <Trigger Property="IsPressed" Value="True" >
-                <Setter Property="Background" Value="{StaticResource LighterPressedColor}" />
+                <Setter Property="Background" Value="#19000000" />
             </Trigger>
         </Style.Triggers>
     </Style>

@@ -8,15 +8,35 @@ namespace ASK.Model.NetsList
 {
     public delegate void ProfileAdded(ProfileModel newProfile);
 
+    public enum NetInterfaceType
+    {
+        Loopback,
+        Wired,
+        Wireless,
+        Other
+    }
+
+    public enum NetInterfaceState
+    {
+        Connected,
+        Disconnected
+    }
+
     public class NetInterfaceModel
     {
         public string InterfaceName { get; set; }
         public List<ProfileModel> Profiles { get; set; }
 
-        public NetInterfaceModel(string name)
+        public NetInterfaceType Type { get; private set; }
+
+        public NetInterfaceState State { get; private set; }
+
+        public NetInterfaceModel(string name, NetInterfaceType type)
         {
             Profiles = new List<ProfileModel>();
             this.InterfaceName = name;
+            this.Type = type;
+            this.State = NetInterfaceState.Connected; // TODO
         }
 
         public event ProfileAdded ProfileAddedEvent;
