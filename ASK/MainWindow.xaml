@@ -23,18 +23,46 @@
             </Button.Content>
         </Button>
 
-        <gui:NetInterfaceButton x:Name="helloButton" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"/>
-
-        <!--<StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" 
-                    Background="{StaticResource BluePressedColor}">
-            <Button x:Name="newConfigButton"
-                    Content="Dodaj nowy profil" HorizontalAlignment="Left"
-                    Click="newConfigButton_Click"
-                    Height="Auto" Width="Auto" Style="{StaticResource ToolButton}"/>
-        </StackPanel>-->
-
+        <!-- Lista interfejsów i profili -->
         <gui:NetsList x:Name="netsList" Grid.Row="0" Grid.Column="0" Margin="10" DataContext="{Binding}" />
-        <gui:OptionsControl x:Name="optionsControl" Grid.Row="2" Grid.Column="0" Margin="10" Grid.RowSpan="2"/>
+
+        <!-- Przyciski narzędziowe -->
+        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
+                    Orientation="Horizontal">
+            <Button Name="editButton" Content="Edytuj profil" Style="{StaticResource ToolButton}"/>
+            <Button Content="Dodaj profil" Style="{StaticResource ToolButton}" Click="NewProfileClick"/>
+        </StackPanel>
+
+        <TabControl x:Name="lowerPanel" Grid.Row="1" Grid.Column="0"
+                    Background="Transparent" Margin="0,20,0,3" Padding="0" BorderBrush="Transparent" Grid.RowSpan="2">
+            <TabControl.ItemContainerStyle>
+                <Style TargetType="{x:Type TabItem}">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </Style>
+            </TabControl.ItemContainerStyle>
+
+            <TabItem>
+                <gui:OptionsControl x:Name="optionsControl" Grid.Row="2" Grid.Column="0" Margin="10" Grid.RowSpan="2"/>
+            </TabItem>
+            
+            <TabItem>
+                <StackPanel Margin="10,10,10,0">
+                    <Label Style="{StaticResource OptionsLabel}" Content="Interfejs nowego profilu:"/>
+                    <ItemsControl Name="newProfileChoose" ItemsSource="{Binding NetInterfacesCollection}" Margin="30,10,30,10">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <ContentControl>
+                                    <Button Content="{Binding Name}" Style="{StaticResource DefaultButton}" Margin="0,0,0,10"
+                                            Click="InterfaceChooseClick"/>
+                                </ContentControl>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+        <!-- Panel opcji profilu -->
+        <!--<gui:OptionsControl x:Name="optionsControl" Grid.Row="2" Grid.Column="0" Margin="10" Grid.RowSpan="2"/>-->
 
         <!--<Border Grid.Row="1" Grid.ColumnSpan="2" Background="{StaticResource BlueColor}"/>-->
 

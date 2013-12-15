@@ -22,26 +22,12 @@
                             <DataTemplate>
                                 <gui:ProfileButton DataContext="{Binding}"
                                                    Click="ProfileButton_Click"/>
-                                   <!--Command="{Binding DataContext.BtnClicked, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding Profile}"/>-->
-                                <!--<Button Content="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Margin="50,2,0,0" HorizontalAlignment="Stretch" TextBlock.TextAlignment="Left"
-                                        Command="{Binding DataContext.BtnClicked, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding Profile}"
-                                        Style="{Binding Style}"/>-->
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </StackPanel>
                 
             </StackPanel>
-
-            <!--<ControlTemplate.Triggers>
-                <Trigger SourceName="interfaceButton" Property="IsChecked" Value="False">
-                    <Setter TargetName="profilesPanel" Property="Visibility" Value="Collapsed"/>
-                </Trigger>
-
-                <Trigger SourceName="interfaceButton" Property="IsChecked" Value="True">
-                    <Setter TargetName="profilesPanel" Property="Visibility" Value="Visible"/>
-                </Trigger>
-            </ControlTemplate.Triggers>-->
         </ControlTemplate>
 
     </UserControl.Resources>

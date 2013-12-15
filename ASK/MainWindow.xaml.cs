@@ -34,8 +34,7 @@ namespace ASK
             DataContext = mainViewModel;
             netsList.DataContext = mainViewModel.NetsListViewModel;
             optionsControl.DataContext = mainViewModel.OptionsPanelViewModel;
-
-            helloButton.DataContext = new NetInterfaceViewModel(new NetInterfaceModel("hello"));
+            newProfileChoose.DataContext = mainViewModel.NetsListViewModel;
 
             netsList.OptionsControl = optionsControl; // let netsList know about optionsControl
         }
@@ -74,10 +73,24 @@ namespace ASK
                 Left = SystemParameters.PrimaryScreenWidth - 10;
             }
         }
+        
+        // dla tabów dolnej częsci
+        const int PROFILE_OPTIONS_INDEX = 0;
+        const int ADD_PROFILE_INDEX = 1;
 
-        private void newConfigButton_Click(object sender, RoutedEventArgs e)
+        private void NewProfileClick(object sender, RoutedEventArgs e)
         {
-            System.Windows.MessageBox.Show("Not yet implemented");
+            lowerPanel.SelectedIndex = ADD_PROFILE_INDEX;
+        }
+
+        private void InterfaceChooseClick(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            var viewModel = button.DataContext as NetInterfaceViewModel;
+            var netInterface = viewModel.NetInterfaceModel;
+            netInterface.AddProfile(new ProfileModel("Nowy profil", netInterface));
+
+            lowerPanel.SelectedIndex = PROFILE_OPTIONS_INDEX;
         }
     }
 }

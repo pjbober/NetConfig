@@ -51,8 +51,7 @@ namespace ASK.ViewModels.NetsList
         public NetInterfaceViewModel(NetInterfaceModel netInterface)
         {
             NetInterfaceModel = netInterface;
-            
-            BtnClicked = new CommandHandler(x => Clicked(x), true);
+            NetInterfaceModel.ProfileAddedEvent += HandleProfileAddedEvent;
 
             Profiles = new ObservableCollection<ProfileButtonViewModel>();
             foreach (ProfileModel profile in netInterface.Profiles)
@@ -61,6 +60,11 @@ namespace ASK.ViewModels.NetsList
             }
 
             IsExpanded = true;
+        }
+
+        void HandleProfileAddedEvent(ProfileModel newProfile)
+        {
+            Profiles.Add(new ProfileButtonViewModel(newProfile));
         }
 
         public ObservableCollection<ProfileButtonViewModel> Profiles { get; set; }
@@ -78,17 +82,6 @@ namespace ASK.ViewModels.NetsList
             profile.ToggleState();
         }
 
-        public ICommand BtnClicked
-        {
-            get;
-            set;
-        }
-
-        public ICommand InterfaceBtnClicked
-        {
-            get;
-            set;
-        }
 
         // własności użyte w widoku
 

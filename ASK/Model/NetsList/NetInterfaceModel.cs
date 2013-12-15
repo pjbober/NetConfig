@@ -6,6 +6,8 @@ using System.Text;
 
 namespace ASK.Model.NetsList
 {
+    public delegate void ProfileAdded(ProfileModel newProfile);
+
     public class NetInterfaceModel
     {
         public string InterfaceName { get; set; }
@@ -17,9 +19,15 @@ namespace ASK.Model.NetsList
             this.InterfaceName = name;
         }
 
+        public event ProfileAdded ProfileAddedEvent;
+
         public void AddProfile(ProfileModel profile)
         {
             Profiles.Add(profile);
+            if (ProfileAddedEvent != null)
+            {
+                ProfileAddedEvent(profile);
+            }
         }
 
         public void ProfileChange(ProfileModel profile)

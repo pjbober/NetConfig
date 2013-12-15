@@ -5,7 +5,7 @@
     <gui:BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
 
 
-    <SolidColorBrush x:Key="WindowBackgroundColor" Color="#E54A8BAA"/>
+    <SolidColorBrush x:Key="WindowBackgroundColor" Color="#F24A8BAA"/>
     <SolidColorBrush x:Key="StdForegroundColor" Color="#FFFFFF" />
 
     <SolidColorBrush x:Key="LighterColor" Color="#AAFFFFFF" />
@@ -168,7 +168,7 @@
         <Setter Property="Foreground" Value="{StaticResource StdForegroundColor}"/>
         <Setter Property="TextBlock.TextAlignment" Value="Center"/>
 
-        <Setter Property="Template" Value="{DynamicResource BlankButtonTemplate}" />
+        <Setter Property="Template" Value="{StaticResource BlankButtonTemplate}" />
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True" >
@@ -299,7 +299,7 @@
     </Style>
 
     <Style x:Key="ToolButton" BasedOn="{StaticResource DefaultButton}" TargetType="{x:Type Button}">
-        <Setter Property="Margin" Value="10,0"/>
+        <Setter Property="Margin" Value="10,0,0,0"/>
         <Setter Property="Template" Value="{DynamicResource ButtonToolTemplate}" />
     </Style>
     
@@ -325,6 +325,7 @@
     				TextBlock.Foreground="{TemplateBinding Foreground}"
     				TextBlock.FontSize="16"
     				TextBlock.TextAlignment="{TemplateBinding TextBlock.TextAlignment}"
+                    Margin="4"
                     HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
 
         </Grid>
