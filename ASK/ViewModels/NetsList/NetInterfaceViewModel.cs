@@ -99,6 +99,8 @@ namespace ASK.ViewModels.NetsList
         public static readonly ImageSource SHUTDOWN_ICON = LoadPng("interface-shutdown");
         public static readonly ImageSource START_ICON = LoadPng("interface-start");
 
+        public static readonly ImageSource ADD_ICON = LoadPng("add");
+
         public ImageSource TypeIcon
         {
             get

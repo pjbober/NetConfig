@@ -32,5 +32,10 @@ namespace ASK.GUI
             (DataContext as NetInterfaceViewModel).IsExpanded =
                 !(DataContext as NetInterfaceViewModel).IsExpanded;
         }
+
+        private void TurnOnInterface_Click(object sender, RoutedEventArgs e)
+        {
+            //(DataContext as NetInterfaceViewModel).
+        }
     }
 }

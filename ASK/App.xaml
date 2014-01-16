@@ -9,7 +9,9 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="GUI/Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            <BooleanToVisibilityConverter x:Key="BoolToVis" />
         </ResourceDictionary>
-        
+
     </Application.Resources>
 </Application>
