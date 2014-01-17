@@ -10,7 +10,7 @@
     <DockPanel Height="{Binding ElementName=netInterfaceButton, Path=Height}" VerticalAlignment="Center">
 
         <!-- przycisk dodawania profilu dla interfejsu -->
-        <Button DockPanel.Dock="Right" Style="{StaticResource IconButton}" Margin="15,0,0,0">
+        <Button DockPanel.Dock="Right" Style="{StaticResource IconButton}" Margin="15,0,0,0" Click="AddProfile_Click">
             <Button.Content>
                 <Image Source="../Images/add.png"  Margin="2" Width="24" Height="24"/>
             </Button.Content>

@@ -18,9 +18,9 @@ namespace ASK.GUI
     /// <summary>
     /// Interaction logic for OptionsControl.xaml
     /// </summary>
-    public partial class OptionsControl : UserControl
+    public partial class OptionsPanel : UserControl
     {
-        public OptionsControl()
+        public OptionsPanel()
         {
             InitializeComponent();
         }

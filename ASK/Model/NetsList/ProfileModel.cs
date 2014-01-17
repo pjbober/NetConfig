@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ASK.ViewModels.OptionsControl;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -8,9 +9,8 @@ using System.Windows.Media;
 
 namespace ASK.Model.NetsList
 {
-    public delegate void ProfileStateChanged(ProfileModel.StateEnum newState);
+    public delegate void ProfileStateChangedEvent(ProfileModel.StateEnum newState);
 
-    //TODO: zrobic enumy do rzeczy, gdzie sie da
     public class ProfileModel : ModelBase
     {
         public enum StateEnum
@@ -46,7 +46,9 @@ namespace ASK.Model.NetsList
 
 #endregion
 
-        public event ProfileStateChanged ProfileStateChangedEvent;
+        public event ProfileStateChangedEvent ProfileStateChangedEvent;
+        // TODO deprecated
+        //public event ProfileChangedEvent ProfileChangedEvent;
 
         private StateEnum _profileState;
 
@@ -100,6 +102,8 @@ namespace ASK.Model.NetsList
 
         public void ToggleState()
         {
+            //ProfileChangedEvent(this); // TODO
+
             Console.Out.WriteLine("ToggleState start " + this.Name);
             switch (ProfileState)
             {

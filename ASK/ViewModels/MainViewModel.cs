@@ -17,7 +17,7 @@ namespace ASK.ViewModels
         {
             NetsListViewModel = new NetsListViewModel(netsListModel);
             OptionsPanelViewModel = new OptionsPanelViewModel();
-            NetsListViewModel.ProfileChangedEvent += OptionsPanelViewModel.OnProfileChanged;
+            // NetsListViewModel.ProfileChangedEvent += OptionsPanelViewModel.SetProfile;
         }
     }
 }

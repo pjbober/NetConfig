@@ -39,17 +39,19 @@ namespace ASK.ViewModels.NetsList
         public void AddInterface(NetInterfaceModel netInterface)
         {
             var netInterfaceViewModel = new NetInterfaceViewModel(netInterface);
-            netInterfaceViewModel.ProfileChangedEvent += EmitChangedProfile;
+            // TODO deprecated
+            //netInterfaceViewModel.ProfileChangedEvent += ProfileChangedEvent;
             NetInterfacesCollection.Add(netInterfaceViewModel);
         }
 
-        public event ProfileChangedHandlerEvent ProfileChangedEvent;
+        // TODO deprecated
+        //public event ProfileChangedEvent ProfileChangedEvent;
 
-        public void EmitChangedProfile(ProfileModel newProfile)
-        {
-            ProfileChangedEvent(newProfile); // TODO: to powinno iść do jakiegoś select profile
-            newProfile.ToggleState(); // TODO: to powinno iść do podwójnego kliku
-        }
+        // TODO deprecated
+        //public void EmitChangedProfile(ProfileModel newProfile)
+        //{
+        //    ProfileChangedEvent(newProfile); // TODO: to powinno iść do jakiegoś select profile
+        //}
 
     }
 }

@@ -74,5 +74,15 @@ namespace ASK.ViewModels.NetsList
             EmitPropertyChanged("ActiveRectColor");
             EmitPropertyChanged("Style");
         }
+
+        internal void ToggleState()
+        {
+            Profile.ToggleState();
+        }
+
+        internal void EditProfile()
+        {
+            MainWindow.OptionsPanelViewModel.SetProfile(Profile);
+        }
     }
 }

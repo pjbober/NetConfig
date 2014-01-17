@@ -12,8 +12,7 @@ using System.Windows.Media.Imaging;
 
 namespace ASK.ViewModels.NetsList
 {
-    public delegate void ProfileChangedHandlerEvent(ProfileModel newProfile);
-
+    //public delegate void ProfileChangedEvent(ProfileModel profile);
     public class NetInterfaceViewModel : ViewModelBase
     {
         // TODO: model powinien zawierać stan: włączony/wyłączony
@@ -71,17 +70,17 @@ namespace ASK.ViewModels.NetsList
         public ObservableCollection<ProfileButtonViewModel> Profiles { get; set; }
         public NetInterfaceModel NetInterfaceModel { get; set; }
 
-        public event ProfileChangedHandlerEvent ProfileChangedEvent;
+        //public event ProfileChangedEvent ProfileChangedEvent;
 
-        public void Clicked(object obj)
-        {
-            ProfileModel profile = obj as ProfileModel;
-            if (ProfileChangedEvent != null)
-            {
-                ProfileChangedEvent(profile);
-            }
-            profile.ToggleState();
-        }
+        //public void Clicked(object obj)
+        //{
+        //    ProfileModel profile = obj as ProfileModel;
+        //    if (ProfileChangedEvent != null)
+        //    {
+        //        ProfileChangedEvent(profile);
+        //    }
+        //    profile.ToggleState();
+        //}
 
 
         // własności użyte w widoku
@@ -135,6 +134,11 @@ namespace ASK.ViewModels.NetsList
             }
         }
 
+
+        internal void AddNewProfile()
+        {
+            this.NetInterfaceModel.AddNewProfile();
+        }
     }
 }
 

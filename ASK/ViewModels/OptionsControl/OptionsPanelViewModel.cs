@@ -11,7 +11,7 @@ namespace ASK.ViewModels.OptionsControl
     {
         public OptionsPanelViewModel()
         {
-            // pusty profil na początek
+            // pusty profil na początek TODO
             Profile = new ProfileModel("<nie wybrano>", new NetInterfaceModel("<nie wybrano>", NetInterfaceType.Other));
         }
 
@@ -36,7 +36,7 @@ namespace ASK.ViewModels.OptionsControl
             }
         }
 
-        public void OnProfileChanged(ProfileModel newProfile)
+        public void SetProfile(ProfileModel newProfile)
         {
             // TODO: ostrzeżenie, jeśli są niezapisane zmiany
             Profile = newProfile;

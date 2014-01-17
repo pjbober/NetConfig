@@ -71,6 +71,16 @@
 
     <Style BasedOn="{StaticResource ModernButton}" x:Key="ModernDefaultButton" TargetType="{x:Type Button}">
         <Setter Property="Template" Value="{StaticResource ModernButtonTemplate}"/>
+
+        <Setter Property="Background" Value="{StaticResource BlueColor}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True" >
+                <Setter Property="Background" Value="{StaticResource BlueHoverColor}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True" >
+                <Setter Property="Background" Value="{StaticResource BluePressedColor}" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
     
     <!-- Profile -->

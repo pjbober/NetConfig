@@ -31,6 +31,23 @@ namespace ASK.Model.NetsList
 
         public NetInterfaceState State { get; private set; }
 
+        public ProfileModel CurrentActiveProfile
+        {
+            get
+            {
+                foreach (ProfileModel p in Profiles)
+                {
+                    // sprawdź, który profil jest włączony - powinien być tylko jeden
+                    // TODO: wykrywanie sytuacji, gdy kilka profili jest aktywnych? niezgodne stany?
+                    if (p.ProfileState == ProfileModel.StateEnum.ON)
+                    {
+                        return p;
+                    }
+                }
+                return null;
+            }
+        }
+
         public NetInterfaceModel(string name, NetInterfaceType type)
         {
             Profiles = new List<ProfileModel>();
@@ -69,17 +86,7 @@ namespace ASK.Model.NetsList
             }
 
             // TODO: sytuacja, kiedy jakiś profil się aktywuje bądź deaktywuje
-            ProfileModel currentActiveProfile = null;
-            foreach (ProfileModel p in Profiles)
-            {
-                // sprawdź, który profil jest włączony - powinien być tylko jeden
-                // TODO: wykrywanie sytuacji, gdy kilka profili jest aktywnych? niezgodne stany?
-                if (p.ProfileState == ProfileModel.StateEnum.ON)
-                {
-                    currentActiveProfile = p;
-                    break;
-                }
-            }
+            ProfileModel currentActiveProfile = CurrentActiveProfile;
 
             if (currentActiveProfile != null)
             {
@@ -98,6 +105,12 @@ namespace ASK.Model.NetsList
             }
 
             // sukces
+        }
+
+        internal void AddNewProfile()
+        {
+            // TODO przemyśleć zachowanie
+            AddProfile(new ProfileModel("Nowy profil", this));
         }
     }
 }

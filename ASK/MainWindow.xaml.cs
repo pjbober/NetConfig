@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using ASK.ViewModels;
 using ASK.ViewModels.NetsList;
 using ASK.Model.NetsList;
+using ASK.ViewModels.OptionsControl;
 
 namespace ASK
 {
@@ -24,19 +25,41 @@ namespace ASK
     {
         private bool isExpanded;
 
+        public static OptionsPanelViewModel OptionsPanelViewModel {
+            get { return (((Application.Current.MainWindow as MainWindow).OptionsPanel.DataContext) as OptionsPanelViewModel); }
+        }
+
         public MainWindow()
         {
             NetsListModel netsListModel = new NetsListModel();
 
             MainViewModel mainViewModel = new MainViewModel(netsListModel);
+
             InitializeComponent();
             isExpanded = false;
             DataContext = mainViewModel;
-            netsList.DataContext = mainViewModel.NetsListViewModel;
-            optionsControl.DataContext = mainViewModel.OptionsPanelViewModel;
-            newProfileChoose.DataContext = mainViewModel.NetsListViewModel;
+            NetsList.DataContext = mainViewModel.NetsListViewModel;
+            OptionsPanel.DataContext = mainViewModel.OptionsPanelViewModel;
 
-            netsList.OptionsControl = optionsControl; // let netsList know about optionsControl
+            NetsList.OptionsControl = OptionsPanel; // let netsList know about optionsControl
+
+            //// tray TODO
+
+            //System.Windows.Forms.NotifyIcon ni = new System.Windows.Forms.NotifyIcon();
+            //ni.Icon = new System.Drawing.Icon("Main.ico");
+            //ni.Visible = true;
+            //ni.DoubleClick +=
+            //    delegate(object sender, EventArgs args)
+            //    {
+            //        this.Show();
+            //        this.WindowState = WindowState.Normal;
+            //    };
+        }
+
+        private void SetPanelVisible(bool visible)
+        {
+            isExpanded = visible;
+            updateWindowPosition();
         }
 
         private void closingButton_Click(object sender, RoutedEventArgs e)
@@ -51,14 +74,12 @@ namespace ASK
 
         private void Window_MouseLeave(object sender, MouseEventArgs e)
         {
-            isExpanded = false;
-            updateWindowPosition();
+            SetPanelVisible(false);
         }
 
         private void Window_MouseEnter(object sender, MouseEventArgs e)
         {
-            isExpanded = true;
-            updateWindowPosition();
+            SetPanelVisible(true);
         }
 
 
@@ -73,24 +94,10 @@ namespace ASK
                 Left = SystemParameters.PrimaryScreenWidth - 10;
             }
         }
-        
-        // dla tabów dolnej częsci
-        const int PROFILE_OPTIONS_INDEX = 0;
-        const int ADD_PROFILE_INDEX = 1;
 
-        private void NewProfileClick(object sender, RoutedEventArgs e)
+        private void hideButton_Click(object sender, RoutedEventArgs e)
         {
-            lowerPanel.SelectedIndex = ADD_PROFILE_INDEX;
-        }
-
-        private void InterfaceChooseClick(object sender, RoutedEventArgs e)
-        {
-            var button = sender as Button;
-            var viewModel = button.DataContext as NetInterfaceViewModel;
-            var netInterface = viewModel.NetInterfaceModel;
-            netInterface.AddProfile(new ProfileModel("Nowy profil", netInterface));
-
-            lowerPanel.SelectedIndex = PROFILE_OPTIONS_INDEX;
+            SetPanelVisible(false);
         }
     }
 }

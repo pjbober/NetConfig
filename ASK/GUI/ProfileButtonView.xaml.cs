@@ -26,10 +26,17 @@ namespace ASK.GUI
             InitializeComponent();
         }
 
-        private void Button_SourceUpdated(object sender, DataTransferEventArgs e)
+        private void ProfileNameClick(object sender, RoutedEventArgs e)
         {
-
+            (DataContext as ProfileButtonViewModel).ToggleState();
         }
+
+        private void EditButtonClick(object sender, RoutedEventArgs e)
+        {
+            (DataContext as ProfileButtonViewModel).EditProfile();
+        }
+
+
 
     }
 }

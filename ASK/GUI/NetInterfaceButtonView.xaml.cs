@@ -37,5 +37,10 @@ namespace ASK.GUI
         {
             //(DataContext as NetInterfaceViewModel).
         }
+
+        private void AddProfile_Click(object sender, RoutedEventArgs e)
+        {
+            (DataContext as NetInterfaceViewModel).AddNewProfile();
+        }
     }
 }

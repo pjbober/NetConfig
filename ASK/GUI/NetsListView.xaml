@@ -20,8 +20,7 @@
                     <ItemsControl ItemsSource="{Binding Profiles}" HorizontalAlignment="Right" Width="{Binding Path=ActualWidth,ElementName=netsList}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <gui:ProfileButton DataContext="{Binding}"
-                                                   Click="ProfileButton_Click"/>
+                                <gui:ProfileButton DataContext="{Binding}"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>

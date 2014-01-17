@@ -30,7 +30,7 @@ namespace ASK.GUI
         //         new PropertyMetadata(string.Empty)
         //    );
 
-        private OptionsControl _optionsControl;
+        private OptionsPanel _optionsControl;
 
         //public OptionsControl OptionsControl
         //{
@@ -38,7 +38,7 @@ namespace ASK.GUI
         //    set { SetValue(OptionsControlProperty, value); }
         //}
 
-        public OptionsControl OptionsControl
+        public OptionsPanel OptionsControl
         {
             get { return _optionsControl; }
             set { _optionsControl = value; }
@@ -49,13 +49,13 @@ namespace ASK.GUI
             InitializeComponent();
         }
 
-        private void ProfileButton_Click(object sender, RoutedEventArgs e)
-        {
-            var button = sender as ProfileButton;
-            var viewModel = button.DataContext as ProfileButtonViewModel;
-            var profile = viewModel.Profile;
-            (DataContext as NetsListViewModel).EmitChangedProfile(profile);
-        }
+        //private void ProfileButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    var button = sender as ProfileButton;
+        //    var viewModel = button.DataContext as ProfileButtonViewModel;
+        //    var profile = viewModel.Profile;
+        //    (DataContext as NetsListViewModel).EmitChangedProfile(profile);
+        //}
         
     }
 }
