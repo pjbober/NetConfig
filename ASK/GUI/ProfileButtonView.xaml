@@ -25,7 +25,7 @@
                 <Image DockPanel.Dock="Right" Source="{Binding NewWifiIcon}" Margin="4" Width="22" Height="22"/>
 
                 <!-- nazwa interfejsu -->
-                <TextBlock DockPanel.Dock="Left" Margin="4" Text="{Binding Name}" Foreground="{StaticResource WhiteTextColor}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                <TextBlock DockPanel.Dock="Left" Margin="4" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Foreground="{StaticResource WhiteTextColor}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
             </DockPanel>
         </Button>
 

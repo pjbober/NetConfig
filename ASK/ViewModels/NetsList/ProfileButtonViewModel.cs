@@ -15,14 +15,15 @@ namespace ASK.ViewModels.NetsList
         {
             this.Profile = profile;
             this.Profile.ProfileStateChangedEvent += HandleProfileStateChange;
+            this.Profile.ProfileDataChangedEvent += delegate(ProfileModel p)
+            {
+                EmitPropertyChanged("Name");
+            };
         }
 
         public String Name
         {
-            get
-            {
-                return Profile.Name;
-            }
+            get { return Profile.Name; }
         }
 
         public ProfileModel Profile { get; private set; }

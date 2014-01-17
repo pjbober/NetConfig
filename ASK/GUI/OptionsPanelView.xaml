@@ -23,7 +23,12 @@
         </Grid.RowDefinitions>
 
         <Label Grid.Row="0" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="Profil:"/>
-        <Label Grid.Row="0" Grid.Column="2"  Style="{StaticResource OptionsLabel}" Content="{Binding ProfileName, UpdateSourceTrigger=PropertyChanged}"/>
+        <!--< Grid.Row="0" Grid.Column="0" />-->
+        <DockPanel Grid.Row="0" Grid.Column="2">
+            <Button DockPanel.Dock="Right" Content="Zapisz" Style="{StaticResource ProfileButtonDefault}" Click="Save_Click"/>
+            <TextBox DockPanel.Dock="Left" TextWrapping="NoWrap" Text="{Binding ProfileName, UpdateSourceTrigger=PropertyChanged}"/>
+        </DockPanel>
+        <!--<Label Grid.Row="0" Grid.Column="2" Style="{StaticResource OptionsLabel}" Content="{Binding ProfileName, UpdateSourceTrigger=PropertyChanged}"/>-->
 
         <Label Grid.Row="1" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="Interfejs:"/>
         <Label Grid.Row="1" Grid.Column="2"  Style="{StaticResource OptionsLabel}" Content="{Binding InterfaceName, UpdateSourceTrigger=PropertyChanged}"/>
@@ -49,20 +54,20 @@
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="Adres IP:"/>
-            <Label Grid.Row="0" Grid.Column="2"  Style="{StaticResource OptionsLabel}" Content="{Binding IpAddress, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding IpAddress, UpdateSourceTrigger=PropertyChanged}"/>
 
             <Label Grid.Row="1" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="Maska podsieci:"/>
-            <Label Grid.Row="1" Grid.Column="2"  Style="{StaticResource OptionsLabel}" Content="{Binding SubnetMask, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding SubnetMask, UpdateSourceTrigger=PropertyChanged}"/>
 
             <Label Grid.Row="2" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="Brama domyślna:"/>
-            <Label Grid.Row="2" Grid.Column="2"  Style="{StaticResource OptionsLabel}" Content="{Binding Gateway, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding Gateway, UpdateSourceTrigger=PropertyChanged}"/>
 
             <Label Grid.Row="3" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="Serwer DNS:"/>
-            <Label Grid.Row="3" Grid.Column="2"  Style="{StaticResource OptionsLabel}" Content="{Binding DNS, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Grid.Row="3" Grid.Column="2" Text="{Binding DNS, UpdateSourceTrigger=PropertyChanged}"/>
         </Grid>
 
         <Label Grid.Row="4" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="Adres MAC:"/>
-        <Label Grid.Row="4" Grid.Column="2"  Style="{StaticResource OptionsLabel}" Content="{Binding MAC, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Grid.Row="4" Grid.Column="2" Text="{Binding MAC, UpdateSourceTrigger=PropertyChanged}"/>
 
     </Grid>
 

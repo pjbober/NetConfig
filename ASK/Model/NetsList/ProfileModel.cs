@@ -10,6 +10,7 @@ using System.Windows.Media;
 namespace ASK.Model.NetsList
 {
     public delegate void ProfileStateChangedEvent(ProfileModel.StateEnum newState);
+    public delegate void ProfileDataChangedEvent(ProfileModel profile);
 
     public class ProfileModel : ModelBase
     {
@@ -48,8 +49,7 @@ namespace ASK.Model.NetsList
 #endregion
 
         public event ProfileStateChangedEvent ProfileStateChangedEvent;
-        // TODO deprecated
-        //public event ProfileChangedEvent ProfileChangedEvent;
+        public event ProfileDataChangedEvent ProfileDataChangedEvent;
 
         private StateEnum _profileState;
 
@@ -155,6 +155,14 @@ namespace ASK.Model.NetsList
                     break;
                 default:
                     break;
+            }
+        }
+
+        public void EmitProfileDataChanged()
+        {
+            if (ProfileDataChangedEvent != null)
+            {
+                ProfileDataChangedEvent(this);
             }
         }
 

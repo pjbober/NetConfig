@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ASK.ViewModels;
+using ASK.ViewModels.OptionsControl;
 
 namespace ASK.GUI
 {
@@ -23,6 +24,11 @@ namespace ASK.GUI
         public OptionsPanel()
         {
             InitializeComponent();
+        }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+            (DataContext as OptionsPanelViewModel).SaveProfile();
         }
     }
 }
