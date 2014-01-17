@@ -35,7 +35,7 @@
 
         <Label Grid.Row="2" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="DHCP:"/>
         <!--<CheckBox Grid.Row="2" Grid.Column="2" Style="{StaticRessource ModernCheckBox}" IsChecked="{Binding IsDHCP}"/>-->
-        <CheckBox Grid.Row="2" Grid.Column="2" IsChecked="{Binding IsDHCP, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+        <CheckBox Grid.Row="2" Grid.Column="2" IsChecked="{Binding IsDHCP, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
 
         <!-- TODO: chowanie w zależności od stanu DHCP -->
 
