@@ -34,7 +34,7 @@
 
         <!-- TODO: chowanie w zależności od stanu DHCP -->
 
-        <Grid Grid.Row="3" Grid.ColumnSpan="3" Visibility="{Binding IsDHCP, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}" Background="#11FFFFFF">
+        <Grid Grid.Row="3" Grid.ColumnSpan="3" Visibility="{Binding IsDHCP, Converter={StaticResource InvBoolToVis}, UpdateSourceTrigger=PropertyChanged}" Background="#11FFFFFF">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="8"/>

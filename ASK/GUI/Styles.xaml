@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:gui="clr-namespace:ASK.GUI">
 
-    <gui:BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
+    <gui:InvertBooleanToVisibilityConverter x:Key="VisibilityConverter"/>
 
 
     <SolidColorBrush x:Key="WindowBackgroundColor" Color="#F24A8BAA"/>

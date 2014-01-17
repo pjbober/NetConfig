@@ -52,8 +52,12 @@ namespace ASK.ViewModels.OptionsControl
         public String DNS { get { return Profile.DNS; } }
         public String MAC { get { return Profile.PhysicalAddress; } }
 
-        public Boolean IsDHCP { get; set; }
-
+        public Boolean IsDHCP
+        {
+            get { return Profile.IsDHCP; }
+            set { Profile.IsDHCP = value; EmitPropertyChanged("IsDHCP"); }
+        }
+        
         public String InterfaceName { get { return Profile.NetInterface.InterfaceName; } }
     }
 }

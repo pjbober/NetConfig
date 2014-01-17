@@ -1,7 +1,9 @@
 ﻿<Application
 			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-			 xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" xmlns:ee="http://schemas.microsoft.com/expression/2010/effects" x:Class="ASK.App"
+			 xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" xmlns:ee="http://schemas.microsoft.com/expression/2010/effects"
+             xmlns:gui="clr-namespace:ASK.GUI"
+             x:Class="ASK.App"
 			 StartupUri="MainWindow.xaml">
     <Application.Resources>
 
@@ -11,6 +13,7 @@
             </ResourceDictionary.MergedDictionaries>
 
             <BooleanToVisibilityConverter x:Key="BoolToVis" />
+            <gui:InvertBooleanToVisibilityConverter x:Key="InvBoolToVis" />
         </ResourceDictionary>
 
     </Application.Resources>

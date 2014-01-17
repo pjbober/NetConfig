@@ -16,7 +16,7 @@
                 <!-- Przycisk nazwy interfejsu, 10px marginesu z góry (odstępy w drzewie) -->
                 <gui:NetInterfaceButton x:Name="interfaceButton" DataContext="{Binding}"/>
 
-                <StackPanel x:Name="profilesPanel" Visibility="{Binding Path=IsExpanded, Converter={StaticResource VisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"> <!-- Lista profili - do chowania -->
+                <StackPanel x:Name="profilesPanel" Visibility="{Binding Path=IsExpanded, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}"> <!-- Lista profili - do chowania -->
                     <ItemsControl ItemsSource="{Binding Profiles}" HorizontalAlignment="Right" Width="{Binding Path=ActualWidth,ElementName=netsList}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>

@@ -39,6 +39,7 @@ namespace ASK.Model.NetsList
 
 
         // IPv4
+        public bool IsDHCP { get; set; }
         public string IpAddress { get; set; }
         public string SubnetMask { get; set; }
         public string Gateway { get; set; }
