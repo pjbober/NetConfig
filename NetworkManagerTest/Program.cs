@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NetworkManager;
 
+
 namespace NetworkManagerTest
 {
     class Program
@@ -17,6 +18,8 @@ namespace NetworkManagerTest
             foreach(var i in ifaces) {
                 var x = i.ListWifiNetworks();
             }
+
+            var certs = CertificateCollection.Certificates;
 
             while (Console.Read() != 'q')
             {
