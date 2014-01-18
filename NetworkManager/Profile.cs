@@ -139,8 +139,7 @@ namespace NetworkManager
 
         internal void RequestProfileChange(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            // TODO
-            //NetInterface.ProfileChange(this);
+            NetInterface.ActivateProfile(this);
         }
 
         internal void ProfileChangeSuccess(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
