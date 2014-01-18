@@ -81,7 +81,17 @@ namespace ASK.ViewModels.NetsList
                 _netInterfaceModel.ProfileAddedEvent += HandleProfileAddedEvent;
                 _netInterfaceModel.InterfaceUp += HandleInterfaceUp;
                 _netInterfaceModel.InterfaceDown += HandleInterfaceDown;
+                _netInterfaceModel.ActiveProfileChanged += HandleProfileActivation;
             }
+        }
+
+        private void HandleProfileActivation(ProfileModel profile)
+        {
+            foreach (var p in Profiles)
+            {
+                // TODO
+            }
+
         }
 
         //public event ProfileChangedEvent ProfileChangedEvent;

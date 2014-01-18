@@ -24,7 +24,8 @@ namespace NetworkManager
     public delegate void WifiSettingsChanged();
 
     public delegate void NameChanged();
-    public delegate void ActiveProfileChanged();
+    public delegate void ActiveProfileChanged(ProfileModel profile);
+    public delegate void ProfileActivationFailed(ProfileModel profile);
 
     public enum NetInterfaceType
     {
@@ -218,7 +219,18 @@ namespace NetworkManager
             ActiveProfile = p;
 
             if (this.type == NetInterfaceType.Wireless)
-                return ActivateWifiSettings(p);
+            {
+                ActivateWifiSettings(p); // TODO: teraz niezależnie od wyniku...
+            }
+
+            foreach (var pro in Profiles)
+            {
+                pro.ProfileState = ProfileModel.StateEnum.OFF;
+            }
+            
+            ActiveProfile.ProfileState = ProfileModel.StateEnum.ON;
+
+            if (ActiveProfileChanged != null) ActiveProfileChanged(ActiveProfile);
 
             return true;
         }
@@ -243,7 +255,7 @@ namespace NetworkManager
             foreach (var w in wlanInterface.GetAvailableNetworkList(Wlan.WlanGetAvailableNetworkFlags.IncludeAllAdhocProfiles)) {
                 byte[] ssid = w.dot11Ssid.SSID;
                 string ssid_string = System.Text.Encoding.Default.GetString(ssid, 0, (int) w.dot11Ssid.SSIDLength);
-                ssid_string.Replace(Convert.ToChar('\0').ToString(), "");
+                networks.Add(ssid_string);
                 networks.Add(ssid_string.Trim());
             }
 
@@ -426,7 +438,6 @@ namespace NetworkManager
 
         public void AddNewProfile()
         {
-            // TODO przemyśleć zachowanie
             AddProfile(new ProfileModel("Nowy profil", this));
         }
 

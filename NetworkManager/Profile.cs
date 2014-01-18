@@ -60,7 +60,7 @@ namespace NetworkManager
             {
                 return _profileState;
             }
-            private set
+            set
             {
                 _profileState = value;
                 if (ProfileStateChangedEvent != null)
@@ -110,31 +110,22 @@ namespace NetworkManager
             switch (ProfileState)
             {
                 case StateEnum.ON:
+                    _interfaceRequestWorker.RunWorkerAsync();
+                    ProfileState = StateEnum.DEACTIVATING;
+                    break;
                 case StateEnum.DEACTIVATING:
+                    // ignorowanie TODO
                 case StateEnum.ACTIVATING:
-                    // TODO: ignorować?
+                    // ignorowanie TODO
                     break;
                 case StateEnum.OFF:
                     _interfaceRequestWorker.RunWorkerAsync();
+                    ProfileState = StateEnum.ACTIVATING;
                     break;
                 default:
                     break;
             }
             Console.Out.WriteLine("ToggleState end " + this.Name);
-        }
-
-        public void Activate()
-        {
-            ProfileState = StateEnum.ACTIVATING;
-            // TODO: włączenie... gdzieś trzeba zrobić to współbieżnie z powiadomieniami
-            ProfileState = StateEnum.ON;
-        }
-
-        public void Deactivate()
-        {
-            ProfileState = StateEnum.DEACTIVATING;
-            // TODO: włączenie... gdzieś trzeba zrobić to współbieżnie z powiadomieniami
-            ProfileState = StateEnum.OFF;
         }
 
         internal void RequestProfileChange(object sender, System.ComponentModel.DoWorkEventArgs e)
@@ -144,10 +135,16 @@ namespace NetworkManager
 
         internal void ProfileChangeSuccess(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
+            if (Object.ReferenceEquals(NetInterface, this))
+
             switch (ProfileState)
             {
                 case StateEnum.OFF:
+                    // TODO: jeszcze nie wiem co
+                    break;
                 case StateEnum.DEACTIVATING:
+                    // TODO: jakiś błąd?
+                    break;
                 case StateEnum.ACTIVATING:
                     // TODO: jakiś błąd?
                     break;
