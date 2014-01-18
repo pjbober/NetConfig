@@ -12,7 +12,7 @@ namespace ASK.ViewModels.OptionsControl
         public OptionsPanelViewModel()
         {
             // pusty profil na początek TODO
-            Profile = new ProfileModel("<nie wybrano>", new NetInterfaceModel("<nie wybrano>", NetInterfaceType.Other));
+            //Profile = new ProfileModel("<nie wybrano>", new NetInterfaceModel("<nie wybrano>", NetInterfaceType.Other));
         }
 
         private ProfileModel profile;
@@ -47,6 +47,8 @@ namespace ASK.ViewModels.OptionsControl
                 EmitPropertyChanged("MAC");
 
                 EmitPropertyChanged("IsDHCP");
+
+                EmitPropertyChanged("IsVisible");
             }
         }
 
@@ -78,8 +80,10 @@ namespace ASK.ViewModels.OptionsControl
         // TODO przy modyfikacji któregokolowiek pola ustawiwać na true
         public Boolean IsModified { get; set; }
 
+        public Boolean IsVisible { get { return Profile != null; } }
+
         public String ProfileName { get; set; }
-        public String InterfaceName { get { return profile.NetInterface.InterfaceName; } }
+        public String InterfaceName { get { return profile != null ? profile.NetInterface.InterfaceName : ""; } }
 
         public String IpAddress { get; set; }
         public String SubnetMask { get; set; }

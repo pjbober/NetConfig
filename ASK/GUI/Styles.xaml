@@ -53,7 +53,13 @@
             <ContentPresenter Content="{TemplateBinding Content}"/>
         </StackPanel>
     </ControlTemplate>
-    
+
+    <ControlTemplate x:Key="ModernButtonWithContentTemplate" TargetType="{x:Type Button}">
+        <StackPanel Background="{TemplateBinding Background}" Margin="4,0">
+            <ContentPresenter Content="{TemplateBinding Content}" Margin="8,2"/>
+        </StackPanel>
+    </ControlTemplate>
+
     <!-- Styl dla customowych buttonów -->
     <Style x:Key="ModernButton" TargetType="{x:Type Button}">
         <Setter Property="Template" Value="{StaticResource ModernButtonTemplate}"/>
@@ -73,7 +79,20 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-        
+
+    <Style BasedOn="{StaticResource ModernButton}" x:Key="ModernContentButton" TargetType="{x:Type Button}">
+        <Setter Property="Template" Value="{StaticResource ModernButtonWithContentTemplate}"/>
+        <Setter Property="Background" Value="{StaticResource BlueColor}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True" >
+                <Setter Property="Background" Value="{StaticResource BlueHoverColor}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True" >
+                <Setter Property="Background" Value="{StaticResource BluePressedColor}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <!-- Profile -->
     
     <Style BasedOn="{StaticResource ModernButton}" x:Key="ProfileButtonDefault" TargetType="{x:Type Button}">

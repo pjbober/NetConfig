@@ -4,42 +4,24 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="300">
+             d:DesignHeight="600" d:DesignWidth="300" Visibility="{Binding IsVisible, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}">
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="8"/>
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-
-        <Label Grid.Row="0" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="Profil:"/>
-        <!--< Grid.Row="0" Grid.Column="0" />-->
-        <DockPanel Grid.Row="0" Grid.Column="2">
-            <Button DockPanel.Dock="Right" Content="Zapisz" Style="{StaticResource ProfileButtonDefault}" Click="Save_Click"/>
-            <TextBox DockPanel.Dock="Left" TextWrapping="NoWrap" Text="{Binding ProfileName, UpdateSourceTrigger=PropertyChanged}"/>
+    <StackPanel Orientation="Vertical">
+        <DockPanel Margin="0,0,0,20">
+            <Button DockPanel.Dock="Right" Style="{StaticResource ModernContentButton}" Click="Save_Click"
+                    VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="../Images/save.png" Margin="0,0,4,0" Height="16" Width="16"/>
+                    <Label Content="Zapisz" Foreground="White"/>
+                </StackPanel>
+            </Button>
+            
+            <Label DockPanel.Dock="Left" FontSize="24" Foreground="White" Content="Edycja profilu"/>
         </DockPanel>
-        <!--<Label Grid.Row="0" Grid.Column="2" Style="{StaticResource OptionsLabel}" Content="{Binding ProfileName, UpdateSourceTrigger=PropertyChanged}"/>-->
 
-        <Label Grid.Row="1" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="Interfejs:"/>
-        <Label Grid.Row="1" Grid.Column="2"  Style="{StaticResource OptionsLabel}" Content="{Binding InterfaceName, UpdateSourceTrigger=PropertyChanged}"/>
+        
 
-        <Label Grid.Row="2" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="DHCP:"/>
-        <!--<CheckBox Grid.Row="2" Grid.Column="2" Style="{StaticRessource ModernCheckBox}" IsChecked="{Binding IsDHCP}"/>-->
-        <CheckBox Grid.Row="2" Grid.Column="2" IsChecked="{Binding IsDHCP, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-
-        <!-- TODO: chowanie w zależności od stanu DHCP -->
-
-        <Grid Grid.Row="3" Grid.ColumnSpan="3" Visibility="{Binding IsDHCP, Converter={StaticResource InvBoolToVis}, UpdateSourceTrigger=PropertyChanged}" Background="#11FFFFFF">
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="8"/>
@@ -51,25 +33,56 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <Label Grid.Row="0" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="Adres IP:"/>
-            <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding IpAddress, UpdateSourceTrigger=PropertyChanged}"/>
+            <Label Grid.Row="0" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="Nazwa:"/>
+            <!--< Grid.Row="0" Grid.Column="0" />-->
+            <TextBox Grid.Row="0" Grid.Column="2" TextWrapping="NoWrap" Text="{Binding ProfileName, UpdateSourceTrigger=PropertyChanged}"/>
+            <!--<Label Grid.Row="0" Grid.Column="2" Style="{StaticResource OptionsLabel}" Content="{Binding ProfileName, UpdateSourceTrigger=PropertyChanged}"/>-->
 
-            <Label Grid.Row="1" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="Maska podsieci:"/>
-            <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding SubnetMask, UpdateSourceTrigger=PropertyChanged}"/>
+            <Label Grid.Row="1" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="Interfejs:"/>
+            <Label Grid.Row="1" Grid.Column="2"  Style="{StaticResource OptionsLabel}" Content="{Binding InterfaceName, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <Label Grid.Row="2" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="Brama domyślna:"/>
-            <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding Gateway, UpdateSourceTrigger=PropertyChanged}"/>
+            <Label Grid.Row="2" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="DHCP:"/>
+            <!--<CheckBox Grid.Row="2" Grid.Column="2" Style="{StaticRessource ModernCheckBox}" IsChecked="{Binding IsDHCP}"/>-->
+            <CheckBox Grid.Row="2" Grid.Column="2" IsChecked="{Binding IsDHCP, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
 
-            <Label Grid.Row="3" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="Serwer DNS:"/>
-            <TextBox Grid.Row="3" Grid.Column="2" Text="{Binding DNS, UpdateSourceTrigger=PropertyChanged}"/>
+            <!-- TODO: chowanie w zależności od stanu DHCP -->
+
+            <Grid Grid.Row="3" Grid.ColumnSpan="3" Visibility="{Binding IsDHCP, Converter={StaticResource InvBoolToVis}, UpdateSourceTrigger=PropertyChanged}" Background="#11FFFFFF">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="Adres IP:"/>
+                <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding IpAddress, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label Grid.Row="1" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="Maska podsieci:"/>
+                <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding SubnetMask, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label Grid.Row="2" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="Brama domyślna:"/>
+                <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding Gateway, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label Grid.Row="3" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="Serwer DNS:"/>
+                <TextBox Grid.Row="3" Grid.Column="2" Text="{Binding DNS, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+
+            <Label Grid.Row="4" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="Adres MAC:"/>
+            <TextBox Grid.Row="4" Grid.Column="2" Text="{Binding MAC, UpdateSourceTrigger=PropertyChanged}"/>
+
         </Grid>
-
-        <Label Grid.Row="4" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="Adres MAC:"/>
-        <TextBox Grid.Row="4" Grid.Column="2" Text="{Binding MAC, UpdateSourceTrigger=PropertyChanged}"/>
-
-    </Grid>
+    </StackPanel>
 
 
     <!--<Button Style="{StaticResource DefaultButton}" Content="{Binding Profile.Name, Mode=TwoWay}" TextBlock.TextAlignment="Left" />
