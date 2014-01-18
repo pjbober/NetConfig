@@ -12,8 +12,7 @@ namespace ASK.ViewModels.OptionsControl
     {
         public OptionsPanelViewModel()
         {
-            // pusty profil na początek TODO
-            //Profile = new ProfileModel("<nie wybrano>", new NetInterfaceModel("<nie wybrano>", NetInterfaceType.Other));
+            SetProfile(null);
         }
 
         private ProfileModel profile;
@@ -24,30 +23,33 @@ namespace ASK.ViewModels.OptionsControl
             set
             {
                 profile = value;
-
                 IsModified = false;
 
-                // wartości tymczasowe - nie są od razu zapisywane do modelu
-                ProfileName = profile.Name;
-                IpAddress = profile.IpAddress;
-                SubnetMask = profile.SubnetMask;
-                Gateway = profile.Gateway;
-                DNS = profile.DNS;
-                MAC = profile.PhysicalAddress;
-                _isDHCP = profile.IsDHCP;
+                if (profile != null)
+                {
+
+                    // wartości tymczasowe - nie są od razu zapisywane do modelu
+                    ProfileName = profile.Name;
+                    IpAddress = profile.IpAddress;
+                    SubnetMask = profile.SubnetMask;
+                    Gateway = profile.Gateway;
+                    DNS = profile.DNS;
+                    MAC = profile.PhysicalAddress;
+                    _isDHCP = profile.IsDHCP;
 
 
-                EmitPropertyChanged("Profile");
-                EmitPropertyChanged("ProfileName");
-                EmitPropertyChanged("InterfaceName");
+                    EmitPropertyChanged("Profile");
+                    EmitPropertyChanged("ProfileName");
+                    EmitPropertyChanged("InterfaceName");
 
-                EmitPropertyChanged("IpAddress");
-                EmitPropertyChanged("SubnetMask");
-                EmitPropertyChanged("Gateway");
-                EmitPropertyChanged("DNS");
-                EmitPropertyChanged("MAC");
+                    EmitPropertyChanged("IpAddress");
+                    EmitPropertyChanged("SubnetMask");
+                    EmitPropertyChanged("Gateway");
+                    EmitPropertyChanged("DNS");
+                    EmitPropertyChanged("MAC");
 
-                EmitPropertyChanged("IsDHCP");
+                    EmitPropertyChanged("IsDHCP");
+                }
 
                 EmitPropertyChanged("IsVisible");
             }
@@ -66,6 +68,7 @@ namespace ASK.ViewModels.OptionsControl
             IsModified = true;
 
             profile.EmitProfileDataChanged();
+            SetProfile(null);
         }
 
         public void SetProfile(ProfileModel newProfile)
