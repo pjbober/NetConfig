@@ -4,14 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Windows;
 
 
 namespace NetworkManager
 {
-    class Profile
+    public class Profile
     {
         //public delegate void ProfileStateChangedEvent(ProfileModel.StateEnum newState);
         //public delegate void ProfileDataChangedEvent(ProfileModel profile);

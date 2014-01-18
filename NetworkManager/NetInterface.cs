@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.NetworkInformation;
 using System.Management;
-using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Net;
 using NativeWifi;
@@ -183,7 +182,7 @@ namespace NetworkManager
                     IPAddress gateway = IPAddress.Parse(p.Gateway);
                     IPAddress dns = IPAddress.Parse(p.DNS);
 
-                    IPAddressCollection dnss = new IPAddressCollection();
+                    IList<IPAddress> dnss = new List<IPAddress>();
                     dnss.Add(dns);
 
                     SetAddress(ip, netmask, gateway);
@@ -290,7 +289,7 @@ namespace NetworkManager
         }
 
         // http://superuser.com/questions/204046/how-can-i-set-my-dns-settings-using-the-command-promp
-        public void SetStaticDNSes(IPAddressCollection dnses)
+        public void SetStaticDNSes(IList<IPAddress> dnses)
         {
             string cmd = "netsh interface ip set dns " + netshId;
             foreach (IPAddress dns in dnses)
