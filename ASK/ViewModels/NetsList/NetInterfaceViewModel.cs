@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
+using NetworkManager;
 
 namespace ASK.ViewModels.NetsList
 {
@@ -99,7 +100,7 @@ namespace ASK.ViewModels.NetsList
 
         public String Name
         {
-            get { return NetInterfaceModel.InterfaceName; }
+            get { return NetInterfaceModel.Name; }
         }
 
         public static readonly ImageSource WIRELESS_ICON = LoadPng("network-wireless");
@@ -118,8 +119,8 @@ namespace ASK.ViewModels.NetsList
             {
                 switch (NetInterfaceModel.Type)
                 {
-                    case NetInterfaceType.Loopback:
-                        return LOOPBACK_ICON;
+                    //case NetInterfaceType.Loopback:
+                    //    return LOOPBACK_ICON;
                     case NetInterfaceType.Wired:
                         return WIRED_ICON;
                     case NetInterfaceType.Wireless:
@@ -131,20 +132,6 @@ namespace ASK.ViewModels.NetsList
             }
         }
 
-        public ImageSource TurnOnIcon
-        {
-            get
-            {
-                switch (NetInterfaceModel.State)
-                {
-                    case NetInterfaceState.Connected:
-                        return SHUTDOWN_ICON;
-                    default:
-                    case NetInterfaceState.Disconnected:
-                        return START_ICON;
-                }
-            }
-        }
 
         // obsługa zdarzeń
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using ASK.Model.NetsList;
 using System.ComponentModel;
+using NetworkManager;
 
 namespace ASK.ViewModels.OptionsControl
 {
@@ -83,7 +84,7 @@ namespace ASK.ViewModels.OptionsControl
         public Boolean IsVisible { get { return Profile != null; } }
 
         public String ProfileName { get; set; }
-        public String InterfaceName { get { return profile != null ? profile.NetInterface.InterfaceName : ""; } }
+        public String InterfaceName { get { return profile != null ? profile.NetInterface.Name : ""; } }
 
         public String IpAddress { get; set; }
         public String SubnetMask { get; set; }

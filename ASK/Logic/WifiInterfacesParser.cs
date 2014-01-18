@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using ASK.Model.NetsList;
 using System.Diagnostics;
+using NetworkManager;
 
 namespace ASK.Logic
 {
+    // TODO: Deprecated
     class WifiInterfacesParser
     {
         // TODO: To na razie nie działa, trzeba wymyślić jakiś inny sposób

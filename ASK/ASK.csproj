@@ -180,6 +180,12 @@
   <ItemGroup>
     <Resource Include="Images\save.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NetworkManager\NetworkManager.csproj">
+      <Project>{89dee52a-fa1a-4ea6-ac97-fe41a8ad46ca}</Project>
+      <Name>NetworkManager</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -20,7 +20,7 @@ namespace NetworkManagerTest
                 //System.Threading.Thread.Sleep(1000);
             }
 
-            foreach (NetInterface ni in ifaces)
+            foreach (NetInterfaceModel ni in ifaces)
                 ni.Dispose();
         }
     }

@@ -12,6 +12,20 @@ using NativeWifi;
 namespace NetworkManager
 {
 
+    public delegate void ProfileAdded(ProfileModel newProfile);
+
+    public delegate void InterfaceUp();
+    public delegate void InterfaceDown();
+
+    public delegate void Connected();
+    public delegate void Disconnected();
+
+    public delegate void IPSettingsChanged();
+    public delegate void WifiSettingsChanged();
+
+    public delegate void NameChanged();
+    public delegate void ActiveProfileChanged();
+
     public enum NetInterfaceType
     {
         Wired,
@@ -20,7 +34,7 @@ namespace NetworkManager
         Other
     }
 
-    public class NetInterface : IDisposable
+    public class NetInterfaceModel : IDisposable
     {
 
         public string Name { get { return networkAdapter.NetConnectionID; } }
@@ -29,25 +43,26 @@ namespace NetworkManager
 
         public NetInterfaceType Type { get { return type; } }
 
-        public IList<Profile> Profiles = new List<Profile>();
+        public IList<ProfileModel> Profiles = new List<ProfileModel>();
 
-        public Profile ActiveProfile = null;
+        public ProfileModel ActiveProfile = null;
 
         public string MACAddress { get { return networkAdapter.MACAddress; } }
 
-        public event EventHandler NameChanged;
+        public event NameChanged NameChanged;
 
-        public event EventHandler InterfaceUp;
-        public event EventHandler InterfaceDown;
+        public event InterfaceUp InterfaceUp;
+        public event InterfaceDown InterfaceDown;
 
-        public event EventHandler Connected;
-        public event EventHandler Disconnected;
+        public event Connected Connected;
+        public event Disconnected Disconnected;
 
-        public event EventHandler IPSettingsChanged;
-        public event EventHandler WifiSettingsChanged;
+        public event IPSettingsChanged IPSettingsChanged;
+        public event WifiSettingsChanged WifiSettingsChanged;
         //public event EventHandler MACAddressSettingsChanged;
 
-        public event EventHandler ActiveProfileChanged;
+        public event ProfileAdded ProfileAddedEvent;
+        public event ActiveProfileChanged ActiveProfileChanged;
 
         NetInterfaceType type;
 
@@ -63,14 +78,14 @@ namespace NetworkManager
         private ManagementEventWatcher AdapterWatcher;
 
 
-        public NetInterface(NetworkAdapter netAdptr, bool startWatchers = true)
+        public NetInterfaceModel(NetworkAdapter netAdptr, bool startWatchers = true)
         {
             CreateFromNetworkAdapter(netAdptr);
             if (startWatchers)
                 StartEventWatchers();
         }
 
-        public NetInterface(NetworkAdapter netAdptr, NetworkInterface netIface = null, bool startWatchers = true)
+        public NetInterfaceModel(NetworkAdapter netAdptr, NetworkInterface netIface = null, bool startWatchers = true)
         {
             CreateFromNetworkAdapter(netAdptr, netIface);
             if (startWatchers)
@@ -153,7 +168,7 @@ namespace NetworkManager
                 }
             }
 
-            this.netshId = (int) networkAdapter.InterfaceIndex;
+            this.netshId = (int)networkAdapter.InterfaceIndex;
             ReloadAdapterConfiguration();
         }
 
@@ -170,9 +185,10 @@ namespace NetworkManager
         }
 
 
-        public bool ActivateProfile(Profile p)
+        public bool ActivateProfile(ProfileModel p)
         {
-            try {
+            try
+            {
                 if (p.IsDHCP)
                     EnableDhcp();
                 else
@@ -334,20 +350,20 @@ namespace NetworkManager
             NetworkAdapter targetAdapter = new NetworkAdapter(targetInstance);
             NetworkAdapter previousAdapter = new NetworkAdapter(previousInstance);
 
-            NetInterface oldInterface = new NetInterface(previousAdapter, null, false);
+            NetInterfaceModel oldInterface = new NetInterfaceModel(previousAdapter, null, false);
             CreateFromNetworkAdapter(targetAdapter);
 
             if (oldInterface.IsConnected != this.IsConnected)
                 if (this.IsConnected)
-                    OnConnected(EventArgs.Empty);
+                    Connected();
                 else
-                    OnDisconnected(EventArgs.Empty);
+                    Disconnected();
 
             if (oldInterface.IsEnabled != this.IsEnabled)
                 if (this.IsEnabled)
-                    OnInterfaceUp(EventArgs.Empty);
+                    InterfaceUp();
                 else
-                    OnInterfaceDown(EventArgs.Empty);
+                    InterfaceDown();
 
             Console.WriteLine("WmiAdapterEventHandler");
         }
@@ -355,69 +371,71 @@ namespace NetworkManager
 
         // Events
 
-        protected virtual void OnNameChanged(EventArgs e)
-        {
-            EventHandler handler = NameChanged;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
-        }
+        //public event NameChanged NameChanged;
 
-        protected virtual void OnInterfaceUp(EventArgs e)
-        {
-            EventHandler handler = InterfaceUp;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
-        }
+        //protected virtual void OnNameChanged(EventArgs e)
+        //{
+        //    EventHandler handler = NameChanged;
+        //    if (handler != null)
+        //    {
+        //        handler(this, e);
+        //    }
+        //}
 
-        protected virtual void OnInterfaceDown(EventArgs e)
-        {
-            EventHandler handler = InterfaceDown;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
-        }
+        //protected virtual void OnInterfaceUp(EventArgs e)
+        //{
+        //    EventHandler handler = InterfaceUp;
+        //    if (handler != null)
+        //    {
+        //        handler(this, e);
+        //    }
+        //}
+
+        //protected virtual void OnInterfaceDown(EventArgs e)
+        //{
+        //    EventHandler handler = InterfaceDown;
+        //    if (handler != null)
+        //    {
+        //        handler(this, e);
+        //    }
+        //}
 
 
-        protected virtual void OnConnected(EventArgs e)
-        {
-            EventHandler handler = Connected;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
-        }
+        //protected virtual void OnConnected(EventArgs e)
+        //{
+        //    EventHandler handler = Connected;
+        //    if (handler != null)
+        //    {
+        //        handler(this, e);
+        //    }
+        //}
 
-        protected virtual void OnDisconnected(EventArgs e)
-        {
-            EventHandler handler = Disconnected;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
-        }
+        //protected virtual void OnDisconnected(EventArgs e)
+        //{
+        //    EventHandler handler = Disconnected;
+        //    if (handler != null)
+        //    {
+        //        handler(this, e);
+        //    }
+        //}
 
-        protected virtual void OnIPSettingsChanged(EventArgs e)
-        {
-            EventHandler handler = IPSettingsChanged;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
-        }
+        //protected virtual void OnIPSettingsChanged(EventArgs e)
+        //{
+        //    EventHandler handler = IPSettingsChanged;
+        //    if (handler != null)
+        //    {
+        //        handler(this, e);
+        //    }
+        //}
 
-        protected virtual void OnWifiSettingsChanged(EventArgs e)
-        {
-            EventHandler handler = WifiSettingsChanged;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
-        }
+        //protected virtual void OnWifiSettingsChanged(EventArgs e)
+        //{
+        //    EventHandler handler = WifiSettingsChanged;
+        //    if (handler != null)
+        //    {
+        //        handler(this, e);
+        //    }
+        //}
 
 
         public void Dispose()
@@ -430,5 +448,19 @@ namespace NetworkManager
             Console.WriteLine("Dispose end " + netshId);
         }
 
+        public void AddNewProfile()
+        {
+            // TODO przemyśleć zachowanie
+            AddProfile(new ProfileModel("Nowy profil", this));
+        }
+
+        public void AddProfile(ProfileModel profile)
+        {
+            Profiles.Add(profile);
+            if (ProfileAddedEvent != null)
+            {
+                ProfileAddedEvent(profile);
+            }
+        }
     }
 }

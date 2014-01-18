@@ -12,9 +12,9 @@ namespace NetworkManager
     {
 
 
-        public IList<NetInterface> Interfaces { get { return networkInterfaces; } }
+        public IList<NetInterfaceModel> Interfaces { get { return networkInterfaces; } }
 
-        private IList<NetInterface> networkInterfaces;
+        private IList<NetInterfaceModel> networkInterfaces;
 
         private WlanClient client = new WlanClient();
 
@@ -46,7 +46,7 @@ namespace NetworkManager
         {
             IDictionary<string, NetworkInterface> ifaceDict = NetworkInterface.GetAllNetworkInterfaces().ToDictionary(i => i.Name);
 
-            foreach (NetInterface netIface in this.networkInterfaces)
+            foreach (NetInterfaceModel netIface in this.networkInterfaces)
             {
                 NetworkInterface value;
                 if (ifaceDict.TryGetValue(netIface.Name, out value))
@@ -54,9 +54,9 @@ namespace NetworkManager
             }
         }
 
-        private IList<NetInterface> GetAllNetInterfaces()
+        private IList<NetInterfaceModel> GetAllNetInterfaces()
         {
-            IList<NetInterface> interfaces = new List<NetInterface>();
+            IList<NetInterfaceModel> interfaces = new List<NetInterfaceModel>();
             IList<NetworkAdapter> adapters = new List<NetworkAdapter>();
 
             foreach(NetworkAdapter adapter in NetworkAdapterEnumerator.GetAllNetworkAdapters())
@@ -71,9 +71,9 @@ namespace NetworkManager
             {
                 NetworkInterface value;
                 if (ifaceDict.TryGetValue(adapter.NetConnectionID, out value))
-                    interfaces.Add(new NetInterface(adapter, value));
+                    interfaces.Add(new NetInterfaceModel(adapter, value));
                 else
-                    interfaces.Add(new NetInterface(adapter, null));
+                    interfaces.Add(new NetInterfaceModel(adapter, null));
             }
 
             return interfaces;
@@ -84,7 +84,7 @@ namespace NetworkManager
         {
             foreach (WlanClient.WlanInterface wlanIface in client.Interfaces)
             {
-                NetInterface niface = networkInterfaces.FirstOrDefault(it => it.Description == wlanIface.InterfaceDescription);
+                NetInterfaceModel niface = networkInterfaces.FirstOrDefault(it => it.Description == wlanIface.InterfaceDescription);
 
                 if (niface != null && niface.Type == NetInterfaceType.Wireless)
                     niface.SetWlanInterface(wlanIface);

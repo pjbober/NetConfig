@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASK", "ASK\ASK.csproj", "{D505BB97-18CE-4454-BB67-A286FBA34180}"
+	ProjectSection(ProjectDependencies) = postProject
+		{89DEE52A-FA1A-4EA6-AC97-FE41A8AD46CA} = {89DEE52A-FA1A-4EA6-AC97-FE41A8AD46CA}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkManager", "NetworkManager\NetworkManager.csproj", "{89DEE52A-FA1A-4EA6-AC97-FE41A8AD46CA}"
 EndProject

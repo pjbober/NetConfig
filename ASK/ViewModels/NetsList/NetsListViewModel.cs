@@ -7,6 +7,7 @@ using ASK.Model.NetsList;
 using System.Windows.Input;
 using ASK.Logic;
 using System.ComponentModel;
+using NetworkManager;
 
 namespace ASK.ViewModels.NetsList
 {
