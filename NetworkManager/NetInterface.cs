@@ -71,6 +71,7 @@ namespace NetworkManager
         WlanClient.WlanInterface wlanInterface;
 
         private NetworkAdapter networkAdapter;
+        private NetworkAdapter originalNetworkAdapter;
         private NetworkAdapterConfiguration adapterConfiguration;
 
         private int netshId = -1;
@@ -80,6 +81,8 @@ namespace NetworkManager
 
         public NetInterfaceModel(NetworkAdapter netAdptr, bool startWatchers = true)
         {
+            this.originalNetworkAdapter = netAdptr;
+
             CreateFromNetworkAdapter(netAdptr);
             if (startWatchers)
                 StartEventWatchers();
@@ -87,6 +90,8 @@ namespace NetworkManager
 
         public NetInterfaceModel(NetworkAdapter netAdptr, NetworkInterface netIface = null, bool startWatchers = true)
         {
+            this.originalNetworkAdapter = netAdptr;
+
             CreateFromNetworkAdapter(netAdptr, netIface);
             if (startWatchers)
                 StartEventWatchers();
@@ -212,10 +217,38 @@ namespace NetworkManager
 
             ActiveProfile = p;
 
+            if (this.type == NetInterfaceType.Wireless)
+                return ActivateWifiSettings(p);
+
             return true;
         }
 
 
+        public bool ActivateWifiSettings(ProfileModel p)
+        {
+
+
+
+            return true;
+        }
+
+
+        public IList<string> ListWifiNetworks()
+        {
+            IList<string> networks = new List<string>();
+
+            if (this.type != NetInterfaceType.Wireless || this.wlanInterface == null)
+                return networks;
+
+            foreach (var w in wlanInterface.GetAvailableNetworkList(Wlan.WlanGetAvailableNetworkFlags.IncludeAllAdhocProfiles)) {
+                byte[] ssid = w.dot11Ssid.SSID;
+                string ssid_string = System.Text.Encoding.Default.GetString(ssid, 0, (int) w.dot11Ssid.SSIDLength);
+                ssid_string.Replace(Convert.ToChar('\0').ToString(), "");
+                networks.Add(ssid_string.Trim());
+            }
+
+            return networks;
+        }
 
 
         public bool IsConnected
@@ -243,12 +276,12 @@ namespace NetworkManager
 
         public bool Enable()
         {
-            return networkAdapter.Enable() == 0;
+            return originalNetworkAdapter.Enable() == 0;
         }
 
         public bool Disable()
         {
-            return networkAdapter.Disable() == 0;
+            return originalNetworkAdapter.Disable() == 0;
         }
 
 
@@ -260,26 +293,26 @@ namespace NetworkManager
 
         public void EnableDhcp()
         {
-            Netsh.invoke("netsh interface ip set address " + netshId + " dhcp");
+            Netsh.invoke("interface ip set address " + netshId + " dhcp");
         }
 
         public void SetAddress(IPAddress address)
         {
-            string cmd = "netsh interface ip set address " + netshId + " static ";
+            string cmd = "interface ip set address " + netshId + " static ";
             cmd += address.ToString();
             Netsh.invoke(cmd);
         }
 
         public void SetAddress(IPAddress address, IPAddress netmask)
         {
-            string cmd = "netsh interface ip set address " + netshId + " static ";
+            string cmd = "interface ip set address " + netshId + " static ";
             cmd += address.ToString() + " " + netmask.ToString();
             Netsh.invoke(cmd);
         }
 
         public void SetAddress(IPAddress address, IPAddress netmask, IPAddress gateway)
         {
-            string cmd = "netsh interface ip set address " + netshId + " static ";
+            string cmd = "interface ip set address " + netshId + " static ";
             cmd += address.ToString() + " " + netmask.ToString() + " " + gateway.ToString();
             Netsh.invoke(cmd);
         }
@@ -289,7 +322,7 @@ namespace NetworkManager
             if (GetIP() == null)
                 return;
 
-            string cmd = "netsh interface ip set address " + netshId + " static ";
+            string cmd = "interface ip set address " + netshId + " static ";
             cmd += GetIP().ToString() + " " + netmask.ToString();
             Netsh.invoke(cmd);
         }
@@ -299,7 +332,7 @@ namespace NetworkManager
             if (GetIP() == null || GetNetmask() == null)
                 return;
 
-            string cmd = "netsh interface ip set address " + netshId + " static ";
+            string cmd = "interface ip set address " + netshId + " static ";
             cmd += GetIP().ToString() + " " + netmask.ToString();
             Netsh.invoke(cmd);
         }
@@ -307,7 +340,7 @@ namespace NetworkManager
         // http://superuser.com/questions/204046/how-can-i-set-my-dns-settings-using-the-command-promp
         public void SetStaticDNSes(IList<IPAddress> dnses)
         {
-            string cmd = "netsh interface ip set dns " + netshId;
+            string cmd = "interface ip set dns " + netshId;
             foreach (IPAddress dns in dnses)
                 cmd += " " + dns.ToString();
 
@@ -316,7 +349,7 @@ namespace NetworkManager
 
         public void SetDynamicDNSes()
         {
-            string cmd = "netsh interface ip set dns " + netshId + " dhcp";
+            string cmd = "interface ip set dns " + netshId + " dhcp";
             Netsh.invoke(cmd);
         }
 
@@ -351,92 +384,35 @@ namespace NetworkManager
             NetworkAdapter previousAdapter = new NetworkAdapter(previousInstance);
 
             NetInterfaceModel oldInterface = new NetInterfaceModel(previousAdapter, null, false);
-            CreateFromNetworkAdapter(targetAdapter);
+            //CreateFromNetworkAdapter(targetAdapter);
+            this.networkAdapter = targetAdapter;
 
             if (oldInterface.IsConnected != this.IsConnected)
+            {
                 if (this.IsConnected)
-                    Connected();
+                {
+                    if (Connected != null) Connected();
+                }
                 else
-                    Disconnected();
+                {
+                    if (Disconnected != null) Disconnected();
+                }
+            }
 
             if (oldInterface.IsEnabled != this.IsEnabled)
+            {
                 if (this.IsEnabled)
-                    InterfaceUp();
+                {
+                    if (InterfaceUp != null) InterfaceUp();
+                }
                 else
-                    InterfaceDown();
+                {
+                    if (InterfaceDown != null) InterfaceDown();
+                }
+            }
 
             Console.WriteLine("WmiAdapterEventHandler");
         }
-
-
-        // Events
-
-        //public event NameChanged NameChanged;
-
-        //protected virtual void OnNameChanged(EventArgs e)
-        //{
-        //    EventHandler handler = NameChanged;
-        //    if (handler != null)
-        //    {
-        //        handler(this, e);
-        //    }
-        //}
-
-        //protected virtual void OnInterfaceUp(EventArgs e)
-        //{
-        //    EventHandler handler = InterfaceUp;
-        //    if (handler != null)
-        //    {
-        //        handler(this, e);
-        //    }
-        //}
-
-        //protected virtual void OnInterfaceDown(EventArgs e)
-        //{
-        //    EventHandler handler = InterfaceDown;
-        //    if (handler != null)
-        //    {
-        //        handler(this, e);
-        //    }
-        //}
-
-
-        //protected virtual void OnConnected(EventArgs e)
-        //{
-        //    EventHandler handler = Connected;
-        //    if (handler != null)
-        //    {
-        //        handler(this, e);
-        //    }
-        //}
-
-        //protected virtual void OnDisconnected(EventArgs e)
-        //{
-        //    EventHandler handler = Disconnected;
-        //    if (handler != null)
-        //    {
-        //        handler(this, e);
-        //    }
-        //}
-
-        //protected virtual void OnIPSettingsChanged(EventArgs e)
-        //{
-        //    EventHandler handler = IPSettingsChanged;
-        //    if (handler != null)
-        //    {
-        //        handler(this, e);
-        //    }
-        //}
-
-        //protected virtual void OnWifiSettingsChanged(EventArgs e)
-        //{
-        //    EventHandler handler = WifiSettingsChanged;
-        //    if (handler != null)
-        //    {
-        //        handler(this, e);
-        //    }
-        //}
-
 
         public void Dispose()
         {

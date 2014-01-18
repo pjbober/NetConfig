@@ -14,6 +14,10 @@ namespace NetworkManagerTest
             var netman = new NetInterfaceManager();
             var ifaces = netman.Interfaces;
 
+            foreach(var i in ifaces) {
+                var x = i.ListWifiNetworks();
+            }
+
             while (Console.Read() != 'q')
             {
                 Console.WriteLine(ifaces[0].Name + "\t" + ifaces[0].IsEnabled);
