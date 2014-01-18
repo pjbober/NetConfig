@@ -15,10 +15,8 @@ namespace ASK.ViewModels.NetsList
         {
             this.Profile = profile;
             this.Profile.ProfileStateChangedEvent += HandleProfileStateChange;
-            this.Profile.ProfileDataChangedEvent += delegate(ProfileModel p)
-            {
-                EmitPropertyChanged("Name");
-            };
+            this.Profile.ProfileDataChangedEvent += HandleProfileDataChange;
+            this.Profile.ProfileEditEndEvent += HandleProfileEditEnd;
         }
 
         public String Name
@@ -49,6 +47,21 @@ namespace ASK.ViewModels.NetsList
             }
         }
 
+        public Style EditButtonStyle
+        {
+            get
+            {
+                // TODO: czy teraz jest w edycji?
+                if (InEditor())
+                {
+                    return GetStyle("ProfileEditButtonEdited");
+                } else {
+                    return Style;
+                }
+                
+            }
+        }
+
         public SolidColorBrush ActiveRectColor
         {
             get
@@ -60,12 +73,16 @@ namespace ASK.ViewModels.NetsList
                         return new SolidColorBrush(System.Windows.Media.Colors.Transparent);
                     case ProfileModel.StateEnum.ON:
                         return GetBrush("LighterColor");
-                    case ProfileModel.StateEnum.ACTIVATING:
-                        return GetBrush("YellowColor");
-                    case ProfileModel.StateEnum.DEACTIVATING:
-                        return GetBrush("RedColor");
                 }
             }
+        }
+
+        public Boolean InEditor()
+        {
+            var op = MainWindow.OptionsPanelViewModel.Profile;
+            var t = this.Profile;
+            bool eq = Object.ReferenceEquals(t, op);
+            return eq;
         }
 
         // -- Handlery --
@@ -74,6 +91,18 @@ namespace ASK.ViewModels.NetsList
         {
             EmitPropertyChanged("ActiveRectColor");
             EmitPropertyChanged("Style");
+            EmitPropertyChanged("EditButtonStyle");
+        }
+
+        public void HandleProfileDataChange(ProfileModel p)
+        {
+            EmitPropertyChanged("Name");
+            EmitPropertyChanged("EditButtonStyle");
+        }
+
+        public void HandleProfileEditEnd(ProfileModel p)
+        {
+            EmitPropertyChanged("EditButtonStyle");
         }
 
         internal void ToggleState()
@@ -84,6 +113,7 @@ namespace ASK.ViewModels.NetsList
         internal void EditProfile()
         {
             MainWindow.OptionsPanelViewModel.SetProfile(Profile);
+            EmitPropertyChanged("EditButtonStyle");
         }
     }
 }

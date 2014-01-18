@@ -35,7 +35,7 @@ namespace ASK.GUI
 
         private void TurnOnInterface_Click(object sender, RoutedEventArgs e)
         {
-            //(DataContext as NetInterfaceViewModel).
+            (DataContext as NetInterfaceViewModel).ToggleInterface();
         }
 
         private void AddProfile_Click(object sender, RoutedEventArgs e)

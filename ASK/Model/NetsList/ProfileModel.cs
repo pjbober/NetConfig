@@ -11,6 +11,7 @@ namespace ASK.Model.NetsList
 {
     public delegate void ProfileStateChangedEvent(ProfileModel.StateEnum newState);
     public delegate void ProfileDataChangedEvent(ProfileModel profile);
+    public delegate void ProfileEditEndEvent(ProfileModel profile);
 
     public class ProfileModel : ModelBase
     {
@@ -50,6 +51,7 @@ namespace ASK.Model.NetsList
 
         public event ProfileStateChangedEvent ProfileStateChangedEvent;
         public event ProfileDataChangedEvent ProfileDataChangedEvent;
+        public event ProfileEditEndEvent ProfileEditEndEvent;
 
         private StateEnum _profileState;
 
@@ -163,6 +165,14 @@ namespace ASK.Model.NetsList
             if (ProfileDataChangedEvent != null)
             {
                 ProfileDataChangedEvent(this);
+            }
+        }
+
+        public void EmitProfileEditEnd()
+        {
+            if (ProfileEditEndEvent != null)
+            {
+                ProfileEditEndEvent(this);
             }
         }
 

@@ -17,16 +17,16 @@
         </Button>
 
         <!-- przycisk włączania/wyłączania interfejsu -->
-        <Button DockPanel.Dock="Right" Style="{StaticResource IconButton}" Click="TurnOnInterface_Click">
+        <Button DockPanel.Dock="Right" Style="{Binding Style, UpdateSourceTrigger=PropertyChanged}" Click="TurnOnInterface_Click">
             <Button.Content>
                 <Image Source="{Binding TurnOnIcon}"  Margin="2" Width="24" Height="24"/>
             </Button.Content>
         </Button>
 
-        <Button Style="{Binding Style}" Click="netInterfaceButton_Click">
+        <Button Style="{Binding Style, UpdateSourceTrigger=PropertyChanged}" Click="netInterfaceButton_Click">
             <DockPanel VerticalAlignment="Center">
                 <!-- wskaźnik stanu -->
-                <Rectangle DockPanel.Dock="Left" Width="15" Margin="0,0,8,0" Height="{Binding ElementName=mainWrap, Path=Height}" Fill="{Binding ActiveRectColor}" HorizontalAlignment="Left"/>
+                <Rectangle DockPanel.Dock="Left" Width="15" Margin="0,0,8,0" Height="{Binding ElementName=mainWrap, Path=Height}" Fill="{Binding ActiveRectColor, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left"/>
                 <!-- ikonka dla danego typu interfejsu -->
                 <Image DockPanel.Dock="Left" Source="{Binding TypeIcon}" Margin="2" Width="24" Height="24"/>
                 <!--<Image DockPanel.Dock="Left" Source="/Images/network-wired.png" Margin="2" Width="24" Height="24"/>-->

@@ -67,8 +67,12 @@ namespace ASK.ViewModels.OptionsControl
 
         public void SetProfile(ProfileModel newProfile)
         {
+            ProfileModel oldProfile = Profile;
+
             // TODO: ostrzeżenie, jeśli są niezapisane zmiany
             Profile = newProfile;
+
+            if (oldProfile != null) oldProfile.EmitProfileEditEnd();
         }
 
         // TODO przy modyfikacji któregokolowiek pola ustawiwać na true

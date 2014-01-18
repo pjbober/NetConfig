@@ -6,6 +6,7 @@
 
     <gui:InvertBooleanToVisibilityConverter x:Key="VisibilityConverter"/>
 
+    <!-- Kolory -->
 
     <SolidColorBrush x:Key="WindowBackgroundColor" Color="#F24A8BAA"/>
     <SolidColorBrush x:Key="StdForegroundColor" Color="#FFFFFF" />
@@ -14,6 +15,8 @@
     <SolidColorBrush x:Key="LighterHoverColor" Color="#CCFFFFFF" />
     <SolidColorBrush x:Key="LighterPressedColor" Color="#22000000" />
 
+    <SolidColorBrush x:Key="DarkerColor" Color="#22000000" />
+    
     <SolidColorBrush x:Key="BlueColor" Color="#79B1CC" />
     <SolidColorBrush x:Key="BlueHoverColor" Color="#99C4D8" />
     <SolidColorBrush x:Key="BluePressedColor" Color="#477F9A" />
@@ -26,9 +29,23 @@
     <SolidColorBrush x:Key="RedHoverColor" Color="#d86868" />
     <SolidColorBrush x:Key="RedPressedColor" Color="#800c0c" />
 
-    <SolidColorBrush x:Key="YellowColor" Color="#bf9b58" />
-    <SolidColorBrush x:Key="YellowHoverColor" Color="#cdb27d" />
-    <SolidColorBrush x:Key="YellowPressedColor" Color="#9c7a3b" />
+    <SolidColorBrush x:Key="GreenColor" Color="#82cc78" />
+    <SolidColorBrush x:Key="GreenHoverColor" Color="#9dd896" />
+    <SolidColorBrush x:Key="GreenPressedColor" Color="#49a33e" />
+
+    <SolidColorBrush x:Key="GreyColor" Color="#90a9b5" />
+    <SolidColorBrush x:Key="GreyHoverColor" Color="#aabdc6" />
+    <SolidColorBrush x:Key="GreyPressedColor" Color="#628495" />
+
+    <SolidColorBrush x:Key="YellowColor" Color="#cacc78" />
+    <SolidColorBrush x:Key="YellowHoverColor" Color="#dbdda4" />
+    <SolidColorBrush x:Key="YellowPressedColor" Color="#a2a43f" />
+
+    <SolidColorBrush x:Key="OrangeColor" Color="#cca878" />
+    <SolidColorBrush x:Key="OrangeHoverColor" Color="#d2b28a" />
+    <SolidColorBrush x:Key="OrangePressedColor" Color="#c2965c" />
+
+    <!-- koniec kolorów -->
     
     <!-- Template dla przycisku czyszczący wygląd -->
     <ControlTemplate x:Key="ModernButtonTemplate" TargetType="{x:Type Button}">
@@ -72,13 +89,13 @@
     </Style>
 
     <Style BasedOn="{StaticResource ModernButton}" x:Key="ProfileButtonActive" TargetType="{x:Type Button}">
-        <Setter Property="Background" Value="{StaticResource BlueActiveColor}"/>
+        <Setter Property="Background" Value="{StaticResource GreenColor}"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True" >
-                <Setter Property="Background" Value="{StaticResource BlueHoverColor}" />
+                <Setter Property="Background" Value="{StaticResource GreenHoverColor}" />
             </Trigger>
             <Trigger Property="IsPressed" Value="True" >
-                <Setter Property="Background" Value="{StaticResource BluePressedColor}" />
+                <Setter Property="Background" Value="{StaticResource GreenPressedColor}" />
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -107,7 +124,20 @@
         </Style.Triggers>
     </Style>
 
-    
+    <!-- koniec Profili -->
+
+    <!-- Dla ikonki edycji profilu -->
+    <Style BasedOn="{StaticResource ModernButton}" x:Key="ProfileEditButtonEdited" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource RedColor}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True" >
+                <Setter Property="Background" Value="{StaticResource RedHoverColor}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True" >
+                <Setter Property="Background" Value="{StaticResource RedPressedColor}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 
     <!-- Interface -->
     <Style BasedOn="{StaticResource ModernButton}" x:Key="InterfaceButtonOn" TargetType="{x:Type Button}">
@@ -123,13 +153,13 @@
     </Style>
 
     <Style BasedOn="{StaticResource ModernButton}" x:Key="InterfaceButtonOff" TargetType="{x:Type Button}">
-        <Setter Property="Background" Value="{StaticResource RedColor}"/>
+        <Setter Property="Background" Value="{StaticResource GreyColor}"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True" >
-                <Setter Property="Background" Value="{StaticResource RedHoverColor}" />
+                <Setter Property="Background" Value="{StaticResource GreyHoverColor}" />
             </Trigger>
             <Trigger Property="IsPressed" Value="True" >
-                <Setter Property="Background" Value="{StaticResource RedPressedColor}" />
+                <Setter Property="Background" Value="{StaticResource GreyPressedColor}" />
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -138,14 +168,14 @@
     <!-- TODO: wyjąć kolory -->
     <!-- Ikona -->
     <Style BasedOn="{StaticResource ModernButton}" x:Key="IconButton" TargetType="{x:Type Button}">
-        <Setter Property="Background" Value="#33FFFFFF"/>
+        <Setter Property="Background" Value="{StaticResource BlueColor}"/>
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True" >
-                <Setter Property="Background" Value="#66FFFFFF" />
+                <Setter Property="Background" Value="{StaticResource BlueHoverColor}" />
             </Trigger>
             <Trigger Property="IsPressed" Value="True" >
-                <Setter Property="Background" Value="#19000000" />
+                <Setter Property="Background" Value="{StaticResource BluePressedColor}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -175,7 +205,7 @@
     <!-- Oldies but goldies -->
 
 
-    <Style x:Key="BlankButton" TargetType="{x:Type Button}">
+    <!--<Style x:Key="BlankButton" TargetType="{x:Type Button}">
 
         <Setter Property="Background" Value="{StaticResource BlueColor}"/>
         <Setter Property="Foreground" Value="{StaticResource StdForegroundColor}"/>
@@ -192,7 +222,7 @@
             </Trigger>
         </Style.Triggers>
 
-    </Style>
+    </Style>-->
 
 
     <Style x:Key="DefaultButton" TargetType="{x:Type Button}">
@@ -214,7 +244,7 @@
 
     </Style>
 
-    <Style x:Key="DefaultProfileButton" TargetType="{x:Type gui:ProfileButton}">
+    <!--<Style x:Key="DefaultProfileButton" TargetType="{x:Type gui:ProfileButton}">
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True" >
@@ -225,13 +255,13 @@
             </Trigger>
         </Style.Triggers>
 
-    </Style>
+    </Style>-->
 
     <!-- Profile -->
 
-    <Style x:Key="ActiveButton" TargetType="{x:Type Button}">
+    <!--<Style x:Key="ActiveButton" TargetType="{x:Type Button}">
 
-        <Setter Property="Background" Value="{StaticResource BlueActiveColor}"/>
+        <Setter Property="Background" Value="{StaticResource GreenColor}"/>
         <Setter Property="Foreground" Value="{StaticResource StdForegroundColor}"/>
         <Setter Property="TextBlock.TextAlignment" Value="Center"/>
 
@@ -239,10 +269,10 @@
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True" >
-                <Setter Property="Background" Value="{StaticResource BlueHoverColor}" />
+                <Setter Property="Background" Value="{StaticResource GreenHoverColor}" />
             </Trigger>
             <Trigger Property="IsPressed" Value="True" >
-                <Setter Property="Background" Value="{StaticResource BluePressedColor}" />
+                <Setter Property="Background" Value="{StaticResource GreenPressedColor}" />
             </Trigger>
         </Style.Triggers>
 
@@ -269,7 +299,7 @@
 
     <Style x:Key="DeactivatingButton" TargetType="{x:Type Button}">
 
-        <Setter Property="Background" Value="{StaticResource RedHoverColor}"/>
+        <Setter Property="Background" Value="{StaticResource RedColor}"/>
         <Setter Property="Foreground" Value="{StaticResource StdForegroundColor}"/>
         <Setter Property="TextBlock.TextAlignment" Value="Center"/>
 
@@ -277,22 +307,18 @@
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True" >
-                <Setter Property="Background" Value="{StaticResource BlueHoverColor}" />
+                <Setter Property="Background" Value="{StaticResource RedHoverColor}" />
             </Trigger>
             <Trigger Property="IsPressed" Value="True" >
-                <Setter Property="Background" Value="{StaticResource BluePressedColor}" />
+                <Setter Property="Background" Value="{StaticResource RedPressedColor}" />
             </Trigger>
         </Style.Triggers>
 
-    </Style>
-
-    <!-- ... -->
-
- 
-    <!-- ... -->
+    </Style>-->
 
 
-    <Style x:Key="InterfaceButton" TargetType="{x:Type ToggleButton}">
+
+    <!--<Style x:Key="InterfaceButton" TargetType="{x:Type ToggleButton}">
 
         <Setter Property="Background" Value="{StaticResource BlueColor}"/>
         <Setter Property="Foreground" Value="{StaticResource StdForegroundColor}"/>
@@ -309,7 +335,7 @@
             </Trigger>
         </Style.Triggers>
 
-    </Style>
+    </Style>-->
     
 
     <ControlTemplate x:Key="ButtonTextTemplate" TargetType="{x:Type Button}">

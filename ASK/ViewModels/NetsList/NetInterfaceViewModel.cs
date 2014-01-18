@@ -21,7 +21,8 @@ namespace ASK.ViewModels.NetsList
         {
             get
             {
-                return GetStyle("InterfaceButtonOn");
+                // TODO dorobić ew. working state
+                return GetStyle(NetInterfaceModel.IsEnabled ? "InterfaceButtonOn" : "InterfaceButtonOff");
             }
         }
 
@@ -29,7 +30,7 @@ namespace ASK.ViewModels.NetsList
         {
             get
             {
-                return GetBrush("LighterColor");
+                return NetInterfaceModel.IsEnabled ? GetBrush("LighterColor") : GetBrush("DarkerColor");
             }
         }
 
@@ -51,7 +52,6 @@ namespace ASK.ViewModels.NetsList
         public NetInterfaceViewModel(NetInterfaceModel netInterface)
         {
             NetInterfaceModel = netInterface;
-            NetInterfaceModel.ProfileAddedEvent += HandleProfileAddedEvent;
 
             Profiles = new ObservableCollection<ProfileButtonViewModel>();
             foreach (ProfileModel profile in netInterface.Profiles)
@@ -68,7 +68,19 @@ namespace ASK.ViewModels.NetsList
         }
 
         public ObservableCollection<ProfileButtonViewModel> Profiles { get; set; }
-        public NetInterfaceModel NetInterfaceModel { get; set; }
+
+        private NetInterfaceModel _netInterfaceModel;
+        public NetInterfaceModel NetInterfaceModel { 
+            get { return _netInterfaceModel; }
+            set
+            {
+                _netInterfaceModel = value;
+
+                _netInterfaceModel.ProfileAddedEvent += HandleProfileAddedEvent;
+                _netInterfaceModel.InterfaceUp += HandleInterfaceUp;
+                _netInterfaceModel.InterfaceDown += HandleInterfaceDown;
+            }
+        }
 
         //public event ProfileChangedEvent ProfileChangedEvent;
 
@@ -134,10 +146,31 @@ namespace ASK.ViewModels.NetsList
             }
         }
 
+        // obsługa zdarzeń
 
+        private void HandleInterfaceUp()
+        {
+            EmitPropertyChanged("Style");
+            EmitPropertyChanged("ActiveRectColor");
+        }
+
+        private void HandleInterfaceDown()
+        {
+            EmitPropertyChanged("Style");
+            EmitPropertyChanged("ActiveRectColor");
+        }
         internal void AddNewProfile()
         {
             this.NetInterfaceModel.AddNewProfile();
+        }
+
+        internal void ToggleInterface()
+        {
+            if (NetInterfaceModel.IsEnabled) {
+                NetInterfaceModel.Disable();
+            } else {
+                NetInterfaceModel.Enable();
+            }
         }
     }
 }

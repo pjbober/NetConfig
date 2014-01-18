@@ -10,7 +10,7 @@
     <DockPanel Height="{Binding ElementName=profileButton, Path=Height}" VerticalAlignment="Center">
     
         <!-- przycisk edycji profilu -->
-        <Button DockPanel.Dock="Right" Style="{StaticResource IconButton}" Margin="0,0,0,0" Click="EditButtonClick">
+        <Button DockPanel.Dock="Right" Style="{Binding EditButtonStyle, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,0" Click="EditButtonClick">
             <Button.Content>
                 <Image Source="../Images/edit.png"  Margin="2" Width="24" Height="24"/>
             </Button.Content>
@@ -20,9 +20,6 @@
             <DockPanel>
                 <!-- wskaźnik stanu -->
                 <Rectangle DockPanel.Dock="Left" Margin="0,0,8,0" Width="15" Height="{Binding ElementName=mainWrap, Path=Height}" Fill="{Binding ActiveRectColor, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left"/>
-                
-                <!-- przycisk włączania/wyłączania interfejsu -->
-                <Image DockPanel.Dock="Right" Source="{Binding NewWifiIcon}" Margin="4" Width="22" Height="22"/>
 
                 <!-- nazwa interfejsu -->
                 <TextBlock DockPanel.Dock="Left" Margin="4" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Foreground="{StaticResource WhiteTextColor}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>

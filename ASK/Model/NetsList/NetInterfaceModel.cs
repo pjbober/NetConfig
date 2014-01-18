@@ -8,6 +8,15 @@ namespace ASK.Model.NetsList
 {
     public delegate void ProfileAdded(ProfileModel newProfile);
 
+    public delegate void InterfaceUp();
+    public delegate void InterfaceDown();
+
+    public delegate void Connected();
+    public delegate void  Disconnected();
+
+    public delegate void  IPSettingsChanged();
+    public delegate void  WifiSettingsChanged();
+
     public enum NetInterfaceType
     {
         Loopback,
@@ -54,6 +63,7 @@ namespace ASK.Model.NetsList
             this.InterfaceName = name;
             this.Type = type;
             this.State = NetInterfaceState.Connected; // TODO
+            this.IsEnabled = true;
         }
 
         public event ProfileAdded ProfileAddedEvent;
@@ -112,5 +122,33 @@ namespace ASK.Model.NetsList
             // TODO przemyśleć zachowanie
             AddProfile(new ProfileModel("Nowy profil", this));
         }
+
+        // TODO mock
+        public bool IsEnabled { get; set; }
+
+        public bool Enable()
+        {
+            IsEnabled = true;
+            if (InterfaceUp != null) InterfaceUp();
+            return true;
+        }
+
+        public bool Disable()
+        {
+            IsEnabled = false;
+            if (InterfaceDown != null) InterfaceDown();
+            return true;
+        }
+
+        // zdarzenia
+
+        public event InterfaceUp InterfaceUp;
+        public event InterfaceDown InterfaceDown;
+
+        public event Connected Connect;
+        public event Disconnected Disconnect;
+
+        public event IPSettingsChanged IPSettingsChanged;
+        public event WifiSettingsChanged WifiSettingsChanged;
     }
 }
