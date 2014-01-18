@@ -30,6 +30,10 @@ namespace NetworkManager
 
         public NetInterfaceType Type { get { return type; } }
 
+        public IList<Profile> Profiles = new List<Profile>();
+
+        public Profile ActiveProfile = null;
+
         public string MACAddress { get { return networkAdapter.MACAddress; } }
 
         public event EventHandler NameChanged;
@@ -44,6 +48,8 @@ namespace NetworkManager
         public event EventHandler WifiSettingsChanged;
         //public event EventHandler MACAddressSettingsChanged;
 
+        public event EventHandler ActiveProfileChanged;
+
         NetInterfaceType type;
 
         private NetworkInterface networkInterface;
@@ -57,6 +63,13 @@ namespace NetworkManager
 
         private ManagementEventWatcher AdapterWatcher;
 
+
+        public NetInterface(NetworkAdapter netAdptr, bool startWatchers = true)
+        {
+            CreateFromNetworkAdapter(netAdptr);
+            if (startWatchers)
+                StartEventWatchers();
+        }
 
         public NetInterface(NetworkAdapter netAdptr, NetworkInterface netIface = null, bool startWatchers = true)
         {
@@ -76,6 +89,12 @@ namespace NetworkManager
                 return false;
         }
 
+        public bool SetWlanInterface(WlanClient.WlanInterface wlanIface)
+        {
+            this.wlanInterface = wlanIface;
+            return true;
+        }
+
         private void StartEventWatchers()
         {
             StartAdapterEventWatcher();
@@ -93,6 +112,12 @@ namespace NetworkManager
             AdapterWatcher.Start();
         }
 
+
+        private void CreateFromNetworkAdapter(NetworkAdapter netAdapter)
+        {
+            this.networkAdapter = netAdapter;
+            this.networkInterface = null;
+        }
 
         private void CreateFromNetworkAdapter(NetworkAdapter netAdapter, NetworkInterface netIface = null)
         {
@@ -144,6 +169,39 @@ namespace NetworkManager
             this.adapterConfiguration = config;
             return this.adapterConfiguration != null;
         }
+
+
+        public bool ActivateProfile(Profile p)
+        {
+            try {
+                if (p.IsDHCP)
+                    EnableDhcp();
+                else
+                {
+                    IPAddress ip = IPAddress.Parse(p.IpAddress);
+                    IPAddress netmask = IPAddress.Parse(p.SubnetMask);
+                    IPAddress gateway = IPAddress.Parse(p.Gateway);
+                    IPAddress dns = IPAddress.Parse(p.DNS);
+
+                    IPAddressCollection dnss = new IPAddressCollection();
+                    dnss.Add(dns);
+
+                    SetAddress(ip, netmask, gateway);
+                    SetStaticDNSes(dnss);
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+
+            ActiveProfile = p;
+
+            return true;
+        }
+
+
+
 
         public bool IsConnected
         {

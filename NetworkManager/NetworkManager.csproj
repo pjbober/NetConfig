@@ -55,6 +55,7 @@
     </Compile>
     <Compile Include="Netsh.cs" />
     <Compile Include="NetworkInterfaceComparer.cs" />
+    <Compile Include="Profile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
