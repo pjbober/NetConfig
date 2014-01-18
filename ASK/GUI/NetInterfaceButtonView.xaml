@@ -32,8 +32,8 @@
                 <!--<Image DockPanel.Dock="Left" Source="/Images/network-wired.png" Margin="2" Width="24" Height="24"/>-->
 
                 <!-- ikona rozwijania -->
-                <!--<Image DockPanel.Dock="Right" Source="{Binding CollapseIcon}" Margin="4" Width="22" Height="22"/>-->
-                
+                <Image DockPanel.Dock="Right" Source="{Binding CollapseIcon}" Margin="4" Width="22" Height="22"/>
+
                 <!-- nazwa interfejsu -->
                 <TextBlock DockPanel.Dock="Left" Margin="8,4,4,4" Text="{Binding Name}" Foreground="{StaticResource WhiteTextColor}" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
             </DockPanel>

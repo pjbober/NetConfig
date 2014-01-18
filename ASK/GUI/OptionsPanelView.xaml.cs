@@ -30,5 +30,10 @@ namespace ASK.GUI
         {
             (DataContext as OptionsPanelViewModel).SaveProfile();
         }
+
+        private void Undo_Click(object sender, RoutedEventArgs e)
+        {
+            (DataContext as OptionsPanelViewModel).SetProfile(null);
+        }
     }
 }

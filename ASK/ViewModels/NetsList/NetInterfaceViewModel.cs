@@ -47,6 +47,7 @@ namespace ASK.ViewModels.NetsList
             {
                 _isExpanded = value;
                 EmitPropertyChanged("IsExpanded");
+                EmitPropertyChanged("CollapseIcon");
             }
         }
 
@@ -113,6 +114,10 @@ namespace ASK.ViewModels.NetsList
 
         public static readonly ImageSource ADD_ICON = LoadPng("add");
 
+        public static readonly ImageSource COLLAPSE_DOWN_ICON = LoadPng("collapse-down");
+        public static readonly ImageSource COLLAPSE_UP_ICON = LoadPng("collapse-up");
+
+
         public ImageSource TypeIcon
         {
             get
@@ -129,6 +134,14 @@ namespace ASK.ViewModels.NetsList
                     default:
                         return OTHER_ICON;
                 }
+            }
+        }
+
+        public ImageSource CollapseIcon
+        {
+            get
+            {
+                return IsExpanded ? COLLAPSE_UP_ICON : COLLAPSE_DOWN_ICON;
             }
         }
 
