@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net.NetworkInformation;
-
+using NativeWifi;
 
 namespace NetworkManager
 {
@@ -16,10 +16,12 @@ namespace NetworkManager
 
         private IList<NetInterface> networkInterfaces;
 
+        private WlanClient client = new WlanClient();
 
         public NetInterfaceManager()
         {
             networkInterfaces = GetAllNetInterfaces();
+            RefreshWlanInterfaces();
 
             NetworkChange.NetworkAddressChanged += new NetworkAddressChangedEventHandler(AddressChangedCallback);
 
@@ -75,6 +77,18 @@ namespace NetworkManager
             }
 
             return interfaces;
+        }
+
+
+        private void RefreshWlanInterfaces()
+        {
+            foreach (WlanClient.WlanInterface wlanIface in client.Interfaces)
+            {
+                NetInterface niface = networkInterfaces.FirstOrDefault(it => it.Description == wlanIface.InterfaceDescription);
+
+                if (niface != null && niface.Type == NetInterfaceType.Wireless)
+                    niface.SetWlanInterface(wlanIface);
+            }
         }
 
 
