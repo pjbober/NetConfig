@@ -222,13 +222,21 @@ namespace NetworkManager
             if (File.Exists(profilesXML))
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(List<ProfileModel>));
+                bool profileActivated = false;
 
                 StreamReader file = new StreamReader(profilesXML);
                 this.Profiles = serializer.Deserialize(file) as List<ProfileModel>;
                 file.Close();
 
                 foreach (ProfileModel profile in this.Profiles)
+                {
                     profile.NetInterface = this;
+                    if (!profileActivated && profile.ProfileState == ProfileModel.StateEnum.ON)
+                    {
+                        profile.ToggleState();
+                        profileActivated = true;
+                    }
+                }
             }
         }
 

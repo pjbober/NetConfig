@@ -48,5 +48,10 @@ namespace NetworkManager.Profiles
             
         }
 
+        public WifiProfileModel()
+            : base()
+        {
+
+        }
     }
 }

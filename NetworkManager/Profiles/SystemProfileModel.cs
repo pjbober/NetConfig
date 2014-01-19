@@ -7,10 +7,16 @@ namespace NetworkManager.Profiles
 {
     public class SystemProfileModel : AbstractProfileModel
     {
-        public SystemProfileModel(String name, NetInterfaceModel netInterface)
-            : base(name, netInterface)
+        public SystemProfileModel(NetInterfaceModel netInterface)
+            : base("Konfiguracja systemowa", netInterface)
         {
             
+        }
+
+        public SystemProfileModel()
+            : base()
+        {
+
         }
     }
 }

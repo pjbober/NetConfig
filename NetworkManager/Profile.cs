@@ -112,23 +112,16 @@ namespace NetworkManager
 
         public void ToggleState()
         {
-            //ProfileChangedEvent(this); // TODO
-
             Console.Out.WriteLine("ToggleState start " + this.Name);
             switch (ProfileState)
             {
-                case StateEnum.ON:
-                    _interfaceRequestWorker.RunWorkerAsync();
-                    //ProfileState = StateEnum.DEACTIVATING; // przeniesione do NetInterfaceModel
-                    break;
                 case StateEnum.DEACTIVATING:
-                    // ignorowanie TODO
                 case StateEnum.ACTIVATING:
-                    // ignorowanie TODO
+                    // ignorowanie
                     break;
+                case StateEnum.ON:
                 case StateEnum.OFF:
-                    _interfaceRequestWorker.RunWorkerAsync();
-                    // ProfileState = StateEnum.ACTIVATING; // przeniesione do NetInterfaceModel
+                    ActivateAsync();
                     break;
                 default:
                     break;

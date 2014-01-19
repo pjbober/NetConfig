@@ -19,5 +19,11 @@ namespace NetworkManager.Profiles
         {
             
         }
+
+        public WiredProfileModel()
+            : base()
+        {
+
+        }
     }
 }

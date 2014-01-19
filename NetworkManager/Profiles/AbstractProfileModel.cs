@@ -23,12 +23,6 @@ namespace NetworkManager.Profiles
 
         public string Name { get; set; }
 
-        public AbstractProfileModel()
-        {
-
-        }
-
-        
         public string PhysicalAddress { get; set; }
         public string Description { get; set; }
 
@@ -58,6 +52,10 @@ namespace NetworkManager.Profiles
             ProfileState = StateEnum.OFF;
         }
 
+        public AbstractProfileModel()
+        {
+
+        }
 
         public StateEnum ProfileState
         {
