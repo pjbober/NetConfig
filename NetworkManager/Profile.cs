@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Threading;
-
+using System.Xml.Serialization;
 
 namespace NetworkManager
 {
@@ -52,7 +52,7 @@ namespace NetworkManager
         public event ProfileStateChangedEvent ProfileStateChangedEvent;
         public event ProfileDataChangedEvent ProfileDataChangedEvent;
         public event ProfileEditEndEvent ProfileEditEndEvent;
-
+        
         private StateEnum _profileState;
 
         public StateEnum ProfileState
@@ -71,9 +71,15 @@ namespace NetworkManager
             }
         }
 
+        [XmlIgnoreAttribute]
         public NetInterfaceModel NetInterface { get; set; } // TODO private set
 
         private BackgroundWorker _interfaceRequestWorker = new BackgroundWorker();
+
+        public ProfileModel()
+        {
+
+        }
 
         public ProfileModel(String name, NetInterfaceModel netInterface)
         {
@@ -90,10 +96,6 @@ namespace NetworkManager
 
             _interfaceRequestWorker.DoWork +=
                 new System.ComponentModel.DoWorkEventHandler(this.RequestProfileChange);
-
-            _interfaceRequestWorker.RunWorkerCompleted +=
-                new System.ComponentModel.RunWorkerCompletedEventHandler(this.ProfileChangeSuccess);
-
 
             // IPv4 mock
             IpAddress = "192.168.0.1";
@@ -145,29 +147,6 @@ namespace NetworkManager
             NetInterface.ActivateProfile(this);
         }
 
-        internal void ProfileChangeSuccess(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
-        {
-            // TODO trzeba by pamiętać, na jaki stan chcieliśmy zmienić profil
-            //if (Object.ReferenceEquals(NetInterface, this))
-
-            switch (ProfileState)
-            {
-                case StateEnum.OFF:
-                    // TODO: jeszcze nie wiem co
-                    break;
-                case StateEnum.DEACTIVATING:
-                    // TODO: jakiś błąd?
-                    break;
-                case StateEnum.ACTIVATING:
-                    // TODO: jakiś błąd?
-                    break;
-                case StateEnum.ON:
-                    // TODO: jeszcze nie wiem co
-                    break;
-                default:
-                    break;
-            }
-        }
 
         public void EmitProfileDataChanged()
         {
