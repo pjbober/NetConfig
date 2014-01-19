@@ -9,13 +9,25 @@
     <Grid x:Name="mainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
+
+         <!-- lewa strona (główna) z listą profili i edycją -->
+        <DockPanel Grid.Row="0" Grid.Column="0">
+            <!-- Lista interfejsów i profili (przewijalna) -->
+            <ScrollViewer DockPanel.Dock="Top" VerticalScrollBarVisibility="Hidden">
+                <ScrollViewer.Content>    
+                    <gui:NetsList x:Name="NetsList"  Margin="10" DataContext="{Binding}" />
+                </ScrollViewer.Content>
+            </ScrollViewer>
+            <!-- Edytor -->
+            <gui:OptionsPanel x:Name="OptionsPanel" DockPanel.Dock="Bottom" Margin="10" Grid.RowSpan="2"/>
+        </DockPanel>
+
+
         <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="1">
             <Button x:Name="closingButton" Style="{StaticResource CloseButton}"
                     HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top" Click="closingButton_Click" Width="22" Height="22">
@@ -24,7 +36,6 @@
                 </Button.Content>
             </Button>
 
-            <!-- TODO eksperymentalnie -->
             <Button x:Name="hideButton" Style="{StaticResource ModernDefaultButton}"
                     HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top" Click="hideButton_Click" Width="22">
                 <Button.Content>
@@ -34,14 +45,5 @@
 
         </StackPanel>
 
-        <!-- Lista interfejsów i profili -->
-        <gui:NetsList x:Name="NetsList" Grid.Row="0" Grid.Column="0" Margin="10" DataContext="{Binding}" />
-
-        <!-- Przyciski narzędziowe TODO DEPRECATED -->
-        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
-                    Orientation="Horizontal"/>
-
-        <gui:OptionsPanel x:Name="OptionsPanel" Grid.Row="2" Grid.Column="0" Margin="10" Grid.RowSpan="2"/>
-        
     </Grid>
 </Window>
