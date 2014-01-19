@@ -213,7 +213,11 @@ namespace NetworkManager
 
         private void DeserializeProfiles()
         {
-            string profilesXML = @"profiles/" + this.Name + ".xml";
+            string profilesDir = @"profiles";
+            string profilesXML = profilesDir + "/" + this.Name + ".xml";
+
+            if (!Directory.Exists(profilesDir))
+                Directory.CreateDirectory(profilesDir);
 
             if (File.Exists(profilesXML))
             {
