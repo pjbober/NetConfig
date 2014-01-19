@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using System.Threading;
 
 
 namespace NetworkManager
@@ -102,6 +103,11 @@ namespace NetworkManager
 
         }
 
+        public bool IsActive()
+        {
+            return this.NetInterface.ActiveProfile == this;
+        }
+
         public void ToggleState()
         {
             //ProfileChangedEvent(this); // TODO
@@ -111,7 +117,7 @@ namespace NetworkManager
             {
                 case StateEnum.ON:
                     _interfaceRequestWorker.RunWorkerAsync();
-                    ProfileState = StateEnum.DEACTIVATING;
+                    //ProfileState = StateEnum.DEACTIVATING; // przeniesione do NetInterfaceModel
                     break;
                 case StateEnum.DEACTIVATING:
                     // ignorowanie TODO
@@ -120,12 +126,18 @@ namespace NetworkManager
                     break;
                 case StateEnum.OFF:
                     _interfaceRequestWorker.RunWorkerAsync();
-                    ProfileState = StateEnum.ACTIVATING;
+                    // ProfileState = StateEnum.ACTIVATING; // przeniesione do NetInterfaceModel
                     break;
                 default:
                     break;
             }
             Console.Out.WriteLine("ToggleState end " + this.Name);
+        }
+
+        public void ActivateAsync()
+        {
+            Thread t = new Thread(() => NetInterface.ActivateProfile(this));
+            t.Start();
         }
 
         internal void RequestProfileChange(object sender, System.ComponentModel.DoWorkEventArgs e)
@@ -135,7 +147,8 @@ namespace NetworkManager
 
         internal void ProfileChangeSuccess(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
-            if (Object.ReferenceEquals(NetInterface, this))
+            // TODO trzeba by pamiętać, na jaki stan chcieliśmy zmienić profil
+            //if (Object.ReferenceEquals(NetInterface, this))
 
             switch (ProfileState)
             {

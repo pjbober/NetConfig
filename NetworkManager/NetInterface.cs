@@ -193,6 +193,19 @@ namespace NetworkManager
 
         public bool ActivateProfile(ProfileModel p)
         {
+            // rozpoczęcie aktywacji nowego profilu oznacza potrzebę zmiany stanu na deaktywację starego
+            // i zmianę stanu na aktywację nowego
+
+            ProfileModel oldProfile = ActiveProfile;
+
+            if (oldProfile != null)
+            {
+                oldProfile.ProfileState = ProfileModel.StateEnum.DEACTIVATING;
+            }
+
+            p.ProfileState = ProfileModel.StateEnum.ACTIVATING;
+            
+
             try
             {
                 if (p.IsDHCP)
@@ -223,6 +236,8 @@ namespace NetworkManager
                 ActivateWifiSettings(p); // TODO: teraz niezależnie od wyniku...
             }
 
+            // być może niepotrzebne, ale bezpieczniejsze - każdy profil inny od aktywowanego
+            // powinien być w stanie wyłączonym
             foreach (var pro in Profiles)
             {
                 pro.ProfileState = ProfileModel.StateEnum.OFF;

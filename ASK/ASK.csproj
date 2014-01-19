@@ -73,8 +73,6 @@
     <Compile Include="Model\NetsList\NetsListModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="Model\NetsList\NetInterfaceModel.cs" />
-    <Compile Include="Model\NetsList\ProfileModel.cs" />
     <Compile Include="ViewModels\NetsList\NetInterfaceViewModel.cs" />
     <Compile Include="ViewModels\NetsList\ProfileButtonViewModel.cs" />
     <Compile Include="ViewModels\OptionsControl\OptionsPanelViewModel.cs" />
