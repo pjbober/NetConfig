@@ -8,17 +8,20 @@ using NetworkManager;
 
 namespace ASK.Model.NetsList
 {
-    public class NetsListModel
+    public class NetsListModel : IDisposable
     {
         public ObservableCollection<NetInterfaceModel> NetInterfacesCollection { get; private set; }
 
+        private NetInterfaceManager netInterfaceManager = new NetInterfaceManager();
+
+        private bool disposed = false;
         public NetsListModel()
         {
             // TODO: przesunąć wyżej
 
             NetInterfacesCollection = new ObservableCollection<NetInterfaceModel>();
 
-            var intfs = new NetInterfaceManager().Interfaces;
+            var intfs = netInterfaceManager.Interfaces;
             foreach (var i in intfs) NetInterfacesCollection.Add(i);
 
             //// dummy
@@ -48,6 +51,29 @@ namespace ASK.Model.NetsList
             //NetInterfacesCollection.Add(wirelessInt);
             //NetInterfacesCollection.Add(loopbackInt);
             //NetInterfacesCollection.Add(otherInt);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    if (netInterfaceManager != null)
+                    {
+                        netInterfaceManager.Dispose();
+                    }
+                }
+
+                netInterfaceManager = null;
+                disposed = true;
+            }
         }
 
     }

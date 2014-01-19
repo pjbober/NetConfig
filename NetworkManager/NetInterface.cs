@@ -8,6 +8,8 @@ using System.Management;
 using System.Net.Sockets;
 using System.Net;
 using NativeWifi;
+using System.Xml.Serialization;
+using System.IO;
 
 namespace NetworkManager
 {
@@ -85,6 +87,9 @@ namespace NetworkManager
             this.originalNetworkAdapter = netAdptr;
 
             CreateFromNetworkAdapter(netAdptr);
+
+            DeserializeProfiles();
+
             if (startWatchers)
                 StartEventWatchers();
         }
@@ -94,6 +99,9 @@ namespace NetworkManager
             this.originalNetworkAdapter = netAdptr;
 
             CreateFromNetworkAdapter(netAdptr, netIface);
+
+            DeserializeProfiles();
+
             if (startWatchers)
                 StartEventWatchers();
         }
@@ -190,6 +198,35 @@ namespace NetworkManager
             return this.adapterConfiguration != null;
         }
 
+
+
+        private void SerializeProfiles()
+        {
+            string profilesXML = @"profiles/" + this.Name + ".xml";
+
+            XmlSerializer serializer = new XmlSerializer(typeof(List<ProfileModel>));
+
+            StreamWriter file = new StreamWriter(profilesXML);
+            serializer.Serialize(file, Profiles);
+            file.Close();
+        }
+
+        private void DeserializeProfiles()
+        {
+            string profilesXML = @"profiles/" + this.Name + ".xml";
+
+            if (File.Exists(profilesXML))
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(List<ProfileModel>));
+
+                StreamReader file = new StreamReader(profilesXML);
+                this.Profiles = serializer.Deserialize(file) as List<ProfileModel>;
+                file.Close();
+
+                foreach (ProfileModel profile in this.Profiles)
+                    profile.NetInterface = this;
+            }
+        }
 
         public bool ActivateProfile(ProfileModel p)
         {
@@ -448,7 +485,13 @@ namespace NetworkManager
             AdapterWatcher.Stop();
             AdapterWatcher.Dispose();
 
+            Console.WriteLine("Serializing profiles... ");
+
+            SerializeProfiles();
+
             Console.WriteLine("Dispose end " + netshId);
+
+
         }
 
         public void AddNewProfile()

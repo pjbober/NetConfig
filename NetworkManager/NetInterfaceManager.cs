@@ -18,6 +18,9 @@ namespace NetworkManager
 
         private WlanClient client = new WlanClient();
 
+        private bool disposed = false;
+
+
         public NetInterfaceManager()
         {
             networkInterfaces = GetAllNetInterfaces();
@@ -99,6 +102,33 @@ namespace NetworkManager
             foreach (NetworkInterface n in adapters)
             {
                 Console.WriteLine("   {0} is {1}", n.Name, n.OperationalStatus);
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    if (networkInterfaces != null)
+                    {
+                        foreach(NetInterfaceModel niface in networkInterfaces)
+                            if (niface != null)
+                            {
+                                niface.Dispose();
+                            }
+                    }
+                }
+
+                networkInterfaces = null;
+                disposed = true;
             }
         }
 
