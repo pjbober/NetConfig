@@ -58,6 +58,11 @@
     <Compile Include="Netsh.cs" />
     <Compile Include="NetworkInterfaceComparer.cs" />
     <Compile Include="Profile.cs" />
+    <Compile Include="Profiles\AbstractProfileModel.cs" />
+    <Compile Include="Profiles\ProfileModel.cs" />
+    <Compile Include="Profiles\SystemProfileModel.cs" />
+    <Compile Include="Profiles\WifiProfileModel.cs" />
+    <Compile Include="Profiles\WiredProfileModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
