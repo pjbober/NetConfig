@@ -24,6 +24,7 @@ namespace ASK
     public partial class MainWindow : Window
     {
         private bool isExpanded;
+        private NetsListModel netsListModel;
 
         public static OptionsPanelViewModel OptionsPanelViewModel {
             get { return (((Application.Current.MainWindow as MainWindow).OptionsPanel.DataContext) as OptionsPanelViewModel); }
@@ -31,7 +32,7 @@ namespace ASK
 
         public MainWindow()
         {
-            NetsListModel netsListModel = new NetsListModel();
+            netsListModel = new NetsListModel();
 
             MainViewModel mainViewModel = new MainViewModel(netsListModel);
 
@@ -64,6 +65,7 @@ namespace ASK
 
         private void closingButton_Click(object sender, RoutedEventArgs e)
         {
+            netsListModel.Dispose();
             Application.Current.Shutdown();
         }
 
