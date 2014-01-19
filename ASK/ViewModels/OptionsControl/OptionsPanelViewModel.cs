@@ -9,6 +9,23 @@ using System.Threading;
 
 namespace ASK.ViewModels.OptionsControl
 {
+    public enum SecurityEnum
+    {
+        OPEN,
+        WEP,
+        SHARED,
+        WPA,
+        WPAPSK,
+        WPA2,
+        WPA2PSK
+    }
+
+    public enum AuthEnum
+    {
+        AES,
+        TKIP
+    }
+
     public class OptionsPanelViewModel : ViewModelBase
     {
         public OptionsPanelViewModel()
@@ -35,7 +52,6 @@ namespace ASK.ViewModels.OptionsControl
                     SubnetMask = profile.SubnetMask;
                     Gateway = profile.Gateway;
                     DNS = profile.DNS;
-                    MAC = profile.PhysicalAddress;
                     _isDHCP = profile.IsDHCP;
 
 
@@ -47,7 +63,6 @@ namespace ASK.ViewModels.OptionsControl
                     EmitPropertyChanged("SubnetMask");
                     EmitPropertyChanged("Gateway");
                     EmitPropertyChanged("DNS");
-                    EmitPropertyChanged("MAC");
 
                     EmitPropertyChanged("IsDHCP");
                 }
@@ -63,7 +78,6 @@ namespace ASK.ViewModels.OptionsControl
             profile.SubnetMask = SubnetMask;
             profile.Gateway = Gateway;
             profile.DNS = DNS;
-            profile.PhysicalAddress = MAC;
             profile.IsDHCP = _isDHCP;
 
             IsModified = true;
@@ -90,11 +104,11 @@ namespace ASK.ViewModels.OptionsControl
             if (oldProfile != null) oldProfile.EmitProfileEditEnd();
         }
 
-        // TODO przy modyfikacji któregokolowiek pola ustawiwać na true
+        // TODO będzie nieużywane w wersji 1.0
         public Boolean IsModified { get; set; }
 
         public Boolean IsVisible { get { return Profile != null; } }
-
+        
         public String ProfileName { get; set; }
         public String InterfaceName { get { return profile != null ? profile.NetInterface.Name : ""; } }
 
@@ -102,7 +116,6 @@ namespace ASK.ViewModels.OptionsControl
         public String SubnetMask { get; set; }
         public String Gateway { get; set; }
         public String DNS { get; set; }
-        public String MAC { get; set; }
 
         private bool _isDHCP;
         public Boolean IsDHCP
@@ -110,6 +123,44 @@ namespace ASK.ViewModels.OptionsControl
             get { return _isDHCP; }
             set { _isDHCP = value; EmitPropertyChanged("IsDHCP"); }
         }
+
+        // Wifi
+        
+        public String SSID { get; set; }
+        public SecurityEnum SecurityType { get; set; }
+        public String WifiPassword { get; set; }
+        public Boolean Use802 { get; set; }
+        public AuthEnum AuthenticationType { get; set; }
+        public String Certificate { get; set; }
+
+        // Opcje edytora dla WiFi
+
+        // WPA/WPA2 personal
+        public bool HasEncryptionOption { 
+            get {
+                return SecurityType == SecurityEnum.WPA
+                    || SecurityType == SecurityEnum.WPAPSK
+                    || SecurityType == SecurityEnum.WPA2
+                    || SecurityType == SecurityEnum.WPA2PSK;
+            } 
+        }
+
+        // otwarte, współdzielone, WEP, WPA/WPA2 Personal
+        public bool HasPasswordOption {
+            get {
+                return SecurityType == SecurityEnum.OPEN
+                    || SecurityType == SecurityEnum.SHARED
+                    || SecurityType == SecurityEnum.WEP;
+            }
+        }
+
+        // także cerfyfikat: WPA/WPA2 Enterprise
+        public bool HasAuthenticationOption {
+            get {
+                return SecurityType == SecurityEnum.WPA2
+                    || SecurityType == SecurityEnum.WPA;
+            }
+        }   
 
     }
 }

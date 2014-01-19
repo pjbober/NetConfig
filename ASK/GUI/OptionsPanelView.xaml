@@ -37,11 +37,11 @@
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/> <!-- nazwa-->
+                <RowDefinition Height="Auto"/> <!-- interfejs-->
+                <RowDefinition Height="Auto"/> <!-- dhcp -->
+                <RowDefinition Height="Auto"/> <!-- grid ipv4 -->
+                <RowDefinition Height="Auto"/> <!-- adres mac -->
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
@@ -57,9 +57,8 @@
             <!--<CheckBox Grid.Row="2" Grid.Column="2" Style="{StaticRessource ModernCheckBox}" IsChecked="{Binding IsDHCP}"/>-->
             <CheckBox Grid.Row="2" Grid.Column="2" IsChecked="{Binding IsDHCP, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
 
-            <!-- TODO: chowanie w zależności od stanu DHCP -->
-
-            <Grid Grid.Row="3" Grid.ColumnSpan="3" Visibility="{Binding IsDHCP, Converter={StaticResource InvBoolToVis}, UpdateSourceTrigger=PropertyChanged}" Background="#11FFFFFF">
+            <!-- grid DHCP - chowanie w zależności od stanu DHCP -->
+            <Grid Grid.Row="3" Grid.ColumnSpan="3" Visibility="{Binding IsDHCP, Converter={StaticResource InvBoolToVis}, UpdateSourceTrigger=PropertyChanged}" Background="{StaticResource DarkerColor}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="8"/>
@@ -85,9 +84,49 @@
                 <Label Grid.Row="3" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="Serwer DNS:"/>
                 <TextBox Grid.Row="3" Grid.Column="2" Text="{Binding DNS, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
+            
+            <!-- grid WiFi - chowanie w zależności od typu sieci -->
+            <Grid Grid.Row="4" Grid.ColumnSpan="3" Visibility="{Binding IsWiFi, Converter={StaticResource InvBoolToVis}, UpdateSourceTrigger=PropertyChanged}" Background="{StaticResource DarkerColor}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
 
-            <Label Grid.Row="4" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="Adres MAC:"/>
-            <TextBox Grid.Row="4" Grid.Column="2" Text="{Binding MAC, UpdateSourceTrigger=PropertyChanged}"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="SSID:"/>
+                <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding SSID, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label Grid.Row="1" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="Typ zabezpieczeń:"/>
+                <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding SecurityType, UpdateSourceTrigger=PropertyChanged}"/>
+                
+                <!-- Różne możliwe opcje dla zabezpieczeń WiFi -->
+
+                <Label Grid.Row="2" Grid.Column="0" Visibility="{Binding HasEncryptionOption, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource OptionsLabel}" Content="Szyfrowanie:"/>
+                <TextBox Grid.Row="2" Grid.Column="2" Visibility="{Binding HasEncryptionOption, UpdateSourceTrigger=PropertyChanged}" Text="{Binding SecurityType, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label Grid.Row="3" Grid.Column="0" Visibility="{Binding HasPasswordOption, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource OptionsLabel}" Content="Hasło:"/>
+                <TextBox Grid.Row="3" Grid.Column="2" Visibility="{Binding HasPasswordOption, UpdateSourceTrigger=PropertyChanged}" Text="{Binding WifiPassword, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label Grid.Row="4" Grid.Column="0" Visibility="{Binding HasAuthenticationOption, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource OptionsLabel}" Content="Użycie 801.2X:"/>
+                <CheckBox Grid.Row="4" Grid.Column="2" Visibility="{Binding HasAuthenticationOption, UpdateSourceTrigger=PropertyChanged}" IsChecked="{Binding Use802, UpdateSourceTrigger=PropertyChanged}"/>
+                
+                <Label Grid.Row="5" Grid.Column="0" Visibility="{Binding HasAuthenticationOption, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource OptionsLabel}" Content="Uwierzytelnianie:"/>
+                <TextBox Grid.Row="5" Grid.Column="2" Visibility="{Binding HasAuthenticationOption, UpdateSourceTrigger=PropertyChanged}" Text="{Binding AuthenticationType, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label Grid.Row="6" Grid.Column="0" Visibility="{Binding HasAuthenticationOption, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource OptionsLabel}" Content="Certyfikat:"/>
+                <TextBox Grid.Row="6" Grid.Column="2" Visibility="{Binding HasAuthenticationOption, UpdateSourceTrigger=PropertyChanged}" Text="{Binding Certificate, UpdateSourceTrigger=PropertyChanged}"/>
+
+            </Grid>
 
         </Grid>
     </StackPanel>
