@@ -5,6 +5,7 @@ using System.Text;
 using ASK.Model.NetsList;
 using System.ComponentModel;
 using NetworkManager;
+using System.Threading;
 
 namespace ASK.ViewModels.OptionsControl
 {
@@ -68,7 +69,15 @@ namespace ASK.ViewModels.OptionsControl
             IsModified = true;
 
             profile.EmitProfileDataChanged();
+
+            // jeśli zmieniliśmy profil, to należy go ponownie aktywować
+            if (Profile.IsActive())
+            {
+                Profile.ActivateAsync();
+            }
+
             SetProfile(null);
+
         }
 
         public void SetProfile(ProfileModel newProfile)
