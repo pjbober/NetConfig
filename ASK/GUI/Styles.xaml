@@ -184,7 +184,6 @@
     </Style>
 
     
-    <!-- TODO: wyjąć kolory -->
     <!-- Ikona -->
     <Style BasedOn="{StaticResource ModernButton}" x:Key="IconButton" TargetType="{x:Type Button}">
         <Setter Property="Background" Value="{StaticResource BlueColor}"/>
@@ -221,29 +220,6 @@
     </Style>
     
 
-    <!-- Oldies but goldies -->
-
-
-    <!--<Style x:Key="BlankButton" TargetType="{x:Type Button}">
-
-        <Setter Property="Background" Value="{StaticResource BlueColor}"/>
-        <Setter Property="Foreground" Value="{StaticResource StdForegroundColor}"/>
-        <Setter Property="TextBlock.TextAlignment" Value="Center"/>
-
-        <Setter Property="Template" Value="{StaticResource BlankButtonTemplate}" />
-
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True" >
-                <Setter Property="Background" Value="{StaticResource BlueHoverColor}" />
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True" >
-                <Setter Property="Background" Value="{StaticResource BluePressedColor}" />
-            </Trigger>
-        </Style.Triggers>
-
-    </Style>-->
-
-
     <Style x:Key="DefaultButton" TargetType="{x:Type Button}">
 
         <Setter Property="Background" Value="{StaticResource BlueColor}"/>
@@ -262,100 +238,6 @@
         </Style.Triggers>
 
     </Style>
-
-    <!--<Style x:Key="DefaultProfileButton" TargetType="{x:Type gui:ProfileButton}">
-
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True" >
-                <Setter Property="Background" Value="{StaticResource RedHoverColor}" />
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True" >
-                <Setter Property="Background" Value="{StaticResource BluePressedColor}" />
-            </Trigger>
-        </Style.Triggers>
-
-    </Style>-->
-
-    <!-- Profile -->
-
-    <!--<Style x:Key="ActiveButton" TargetType="{x:Type Button}">
-
-        <Setter Property="Background" Value="{StaticResource GreenColor}"/>
-        <Setter Property="Foreground" Value="{StaticResource StdForegroundColor}"/>
-        <Setter Property="TextBlock.TextAlignment" Value="Center"/>
-
-        <Setter Property="Template" Value="{DynamicResource ButtonTextTemplate}" />
-
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True" >
-                <Setter Property="Background" Value="{StaticResource GreenHoverColor}" />
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True" >
-                <Setter Property="Background" Value="{StaticResource GreenPressedColor}" />
-            </Trigger>
-        </Style.Triggers>
-
-    </Style>
-
-    <Style x:Key="ActivatingButton" TargetType="{x:Type Button}">
-
-        <Setter Property="Background" Value="{StaticResource YellowHoverColor}"/>
-        <Setter Property="Foreground" Value="{StaticResource StdForegroundColor}"/>
-        <Setter Property="TextBlock.TextAlignment" Value="Center"/>
-
-        <Setter Property="Template" Value="{DynamicResource ButtonTextTemplate}" />
-
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True" >
-                <Setter Property="Background" Value="{StaticResource BlueHoverColor}" />
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True" >
-                <Setter Property="Background" Value="{StaticResource BluePressedColor}" />
-            </Trigger>
-        </Style.Triggers>
-
-    </Style>
-
-    <Style x:Key="DeactivatingButton" TargetType="{x:Type Button}">
-
-        <Setter Property="Background" Value="{StaticResource RedColor}"/>
-        <Setter Property="Foreground" Value="{StaticResource StdForegroundColor}"/>
-        <Setter Property="TextBlock.TextAlignment" Value="Center"/>
-
-        <Setter Property="Template" Value="{DynamicResource ButtonTextTemplate}" />
-
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True" >
-                <Setter Property="Background" Value="{StaticResource RedHoverColor}" />
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True" >
-                <Setter Property="Background" Value="{StaticResource RedPressedColor}" />
-            </Trigger>
-        </Style.Triggers>
-
-    </Style>-->
-
-
-
-    <!--<Style x:Key="InterfaceButton" TargetType="{x:Type ToggleButton}">
-
-        <Setter Property="Background" Value="{StaticResource BlueColor}"/>
-        <Setter Property="Foreground" Value="{StaticResource StdForegroundColor}"/>
-        <Setter Property="TextBlock.TextAlignment" Value="Center"/>
-
-        <Setter Property="Template" Value="{DynamicResource ToggleButtonTextTemplate}" />
-
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True" >
-                <Setter Property="Background" Value="{StaticResource BlueHoverColor}" />
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True" >
-                <Setter Property="Background" Value="{StaticResource BluePressedColor}" />
-            </Trigger>
-        </Style.Triggers>
-
-    </Style>-->
-    
 
     <ControlTemplate x:Key="ButtonTextTemplate" TargetType="{x:Type Button}">
         <Grid x:Name="grid" ClipToBounds="True" Background="{TemplateBinding Background}" RenderTransformOrigin="0.5,0.5">
@@ -452,9 +334,6 @@
     </Style>
     
 
-
-
-
     <!--text box-->
 
     <Style TargetType="TextBox">
@@ -465,6 +344,152 @@
         <Setter Property="FontSize" Value="16"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
+
+
+    <!-- combobox -->
+
+
+
+    <!--<Style TargetType="ComboBox">
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Background" Value="Blue"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="Red"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBox">
+                    <Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver" />
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0" Storyboard.TargetName="DisabledVisualElement" Storyboard.TargetProperty="(UIElement.Opacity)" To=".55"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="FocusStates">
+                                <VisualState x:Name="Focused">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0" Storyboard.TargetName="FocusVisualElement" Storyboard.TargetProperty="(UIElement.Opacity)" To="1"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unfocused"/>
+                                <VisualState x:Name="FocusedDropDown">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="PopupBorder" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="ValidationStates">
+                                <VisualState x:Name="Valid"/>
+                                <VisualState x:Name="InvalidUnfocused">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ValidationErrorElement" Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0" >
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="InvalidFocused">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ValidationErrorElement" Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0" >
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="validationTooltip" Storyboard.TargetProperty="IsOpen">
+                                            <DiscreteObjectKeyFrame KeyTime="0" >
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <sys:Boolean>True</sys:Boolean>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Border x:Name="ContentPresenterBorder">
+                            <Grid>
+                                <ToggleButton x:Name="DropDownToggle" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Margin="0" HorizontalContentAlignment="Right" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
+                                    <Path x:Name="BtnArrow" Height="4" Width="8" Stretch="Uniform" Data="F1 M 301.14,-189.041L 311.57,-189.041L 306.355,-182.942L 301.14,-189.041 Z " Margin="0,0,6,0" HorizontalAlignment="Right">
+                                        <Path.Fill>
+                                            <SolidColorBrush x:Name="BtnArrowColor" Color="#FF333333"/>
+                                        </Path.Fill>
+                                    </Path>
+                                </ToggleButton>
+                                <ContentPresenter x:Name="ContentPresenter" 
+                                                Margin="{TemplateBinding Padding}"  
+                                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                    --><!--<TextBlock Text=" " />--><!--
+                                </ContentPresenter>
+                            </Grid>
+                        </Border>
+                        <Rectangle x:Name="DisabledVisualElement" RadiusX="3" RadiusY="3" Fill="White" Opacity="0" IsHitTestVisible="false" />
+                        <Rectangle x:Name="FocusVisualElement" RadiusX="2" RadiusY="2" Margin="1"  Stroke="#FF6DBDD1" StrokeThickness="1" Opacity="0" IsHitTestVisible="false" />
+                        <Border x:Name="ValidationErrorElement" BorderThickness="1" CornerRadius="1" BorderBrush="#FFDB000C" Visibility="Collapsed">
+                            <ToolTipService.ToolTip>
+                                <ToolTip x:Name="validationTooltip" Placement="Right" 
+                                           PlacementTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}" 
+                                           DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}">
+                                    <ToolTip.Triggers>
+                                        <EventTrigger RoutedEvent="Canvas.Loaded">
+                                            <EventTrigger.Actions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="validationTooltip" Storyboard.TargetProperty="IsHitTestVisible">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" >
+                                                                <DiscreteObjectKeyFrame.Value>
+                                                                    <sys:Boolean>true</sys:Boolean>
+                                                                </DiscreteObjectKeyFrame.Value>
+                                                            </DiscreteObjectKeyFrame>
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger.Actions>
+                                        </EventTrigger>
+                                    </ToolTip.Triggers>
+                                </ToolTip>
+                            </ToolTipService.ToolTip>
+                            <Grid Width="12" Height="12" HorizontalAlignment="Right" Margin="1,-4,-4,0" VerticalAlignment="Top" Background="Transparent">
+                                <Path Margin="1,3,0,0" Data="M 1,0 L6,0 A 2,2 90 0 1 8,2 L8,7 z" Fill="#FFDC000C"/>
+                                <Path Margin="1,3,0,0" Data="M 0,0 L2,0 L 8,6 L8,8" Fill="#ffffff"/>
+                            </Grid>
+                        </Border>
+                        <Popup x:Name="Popup">
+                            <Border x:Name="PopupBorder" HorizontalAlignment="Stretch" Height="Auto" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="3">
+                                <Border.Background>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="#FFFFFFFF" Offset="0"/>-->
+                                        <GradientStop Color="#FFFEFEFE" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <ScrollViewer x:Name="ScrollViewer" BorderThickness="0" Padding="1">
+                                    <ItemsPresenter/>
+                                </ScrollViewer>
+                            </Border>
+                        </Popup>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
 
 
 

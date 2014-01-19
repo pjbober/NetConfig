@@ -5,30 +5,14 @@
      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="ASK.MainWindow"
      Title="Net Config" 
         Height="{DynamicResource {x:Static SystemParameters.PrimaryScreenHeightKey}}" 
-        Width="480" ResizeMode="NoResize" Top="0" Topmost="True" Loaded="Window_Loaded" MouseLeave="Window_MouseLeave" MouseEnter="Window_MouseEnter" ShowInTaskbar="False" AllowsTransparency="True" WindowStyle="None" Background="{DynamicResource WindowBackgroundColor}">
-    <Grid x:Name="mainGrid">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
+        Width="480" ResizeMode="NoResize" Top="0" Topmost="True" Loaded="Window_Loaded" 
+    MouseLeave="Window_MouseLeave" MouseEnter="Window_MouseEnter" ShowInTaskbar="False" 
+    AllowsTransparency="True" WindowStyle="None" Background="{DynamicResource WindowBackgroundColor}">
+    
+    <DockPanel>
 
-         <!-- lewa strona (główna) z listą profili i edycją -->
-        <DockPanel Grid.Row="0" Grid.Column="0">
-            <!-- Lista interfejsów i profili (przewijalna) -->
-            <ScrollViewer DockPanel.Dock="Top" VerticalScrollBarVisibility="Hidden">
-                <ScrollViewer.Content>    
-                    <gui:NetsList x:Name="NetsList"  Margin="10" DataContext="{Binding}" />
-                </ScrollViewer.Content>
-            </ScrollViewer>
-            <!-- Edytor -->
-            <gui:OptionsPanel x:Name="OptionsPanel" DockPanel.Dock="Bottom" Margin="10" Grid.RowSpan="2"/>
-        </DockPanel>
-
-
-        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="1">
+        <!-- Prawa strona z zamykaniem i chowaniem -->
+        <StackPanel Orientation="Vertical" DockPanel.Dock="Right">
             <Button x:Name="closingButton" Style="{StaticResource CloseButton}"
                     HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top" Click="closingButton_Click" Width="22" Height="22">
                 <Button.Content>
@@ -42,8 +26,19 @@
                     <Image Source="Images/panel-hide.png" Width="16" Height="48" Margin="0,20"/>
                 </Button.Content>
             </Button>
-
         </StackPanel>
+        
+         <!-- Lewa strona (główna) z listą profili i edycją -->
+        <DockPanel DockPanel.Dock="Left">
+            <!-- Edytor -->
+            <gui:OptionsPanel x:Name="OptionsPanel" DockPanel.Dock="Bottom" Margin="10" Grid.RowSpan="2"/>
+            <!-- Lista interfejsów i profili (przewijalna) -->
+            <ScrollViewer DockPanel.Dock="Top" VerticalScrollBarVisibility="Hidden">
+                <ScrollViewer.Content>
+                    <gui:NetsList x:Name="NetsList" Margin="10" DataContext="{Binding}" />
+                </ScrollViewer.Content>
+            </ScrollViewer>
+        </DockPanel>
 
-    </Grid>
+    </DockPanel>
 </Window>

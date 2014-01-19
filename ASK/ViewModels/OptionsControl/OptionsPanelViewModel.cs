@@ -20,10 +20,16 @@ namespace ASK.ViewModels.OptionsControl
         WPA2PSK
     }
 
-    public enum AuthEnum
+    public enum EncryptionEnum
     {
         AES,
         TKIP
+    }
+
+    public enum AuthEnum
+    {
+        CARD,
+        PEAP
     }
 
     public class OptionsPanelViewModel : ViewModelBase
@@ -125,9 +131,35 @@ namespace ASK.ViewModels.OptionsControl
         }
 
         // Wifi
+
+        public Boolean IsWifi { get { return true; } }
+
+        // -- enumeracje
+
+        private static Array _allSecurityEnums = Enum.GetValues(typeof(SecurityEnum));
+        public Array AllSecurityEnums { get { return _allSecurityEnums; } }
         
+        private static Array _allEncryptionEnums = Enum.GetValues(typeof(EncryptionEnum));
+        public Array AllEncryptionEnums { get { return _allEncryptionEnums; } }
+
+        private static Array _allAuthEnums = Enum.GetValues(typeof(AuthEnum));
+        public Array AllAuthEnums { get { return _allAuthEnums; } }
+
+        // Wartości
         public String SSID { get; set; }
-        public SecurityEnum SecurityType { get; set; }
+
+        private SecurityEnum _securityType;
+        public SecurityEnum SecurityType {
+            get { return _securityType; }
+            set
+            {
+                _securityType = value;
+                EmitPropertyChanged("HasEncryptionOption");
+                EmitPropertyChanged("HasPasswordOption");
+                EmitPropertyChanged("HasAuthenticationOption");
+            }
+        }
+        public EncryptionEnum EncryptionType { get; set; }
         public String WifiPassword { get; set; }
         public Boolean Use802 { get; set; }
         public AuthEnum AuthenticationType { get; set; }
@@ -150,7 +182,9 @@ namespace ASK.ViewModels.OptionsControl
             get {
                 return SecurityType == SecurityEnum.OPEN
                     || SecurityType == SecurityEnum.SHARED
-                    || SecurityType == SecurityEnum.WEP;
+                    || SecurityType == SecurityEnum.WEP
+                    || SecurityType == SecurityEnum.WPAPSK
+                    || SecurityType == SecurityEnum.WPA2PSK;
             }
         }
 

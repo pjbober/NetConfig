@@ -58,7 +58,8 @@
             <CheckBox Grid.Row="2" Grid.Column="2" IsChecked="{Binding IsDHCP, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
 
             <!-- grid DHCP - chowanie w zależności od stanu DHCP -->
-            <Grid Grid.Row="3" Grid.ColumnSpan="3" Visibility="{Binding IsDHCP, Converter={StaticResource InvBoolToVis}, UpdateSourceTrigger=PropertyChanged}" Background="{StaticResource DarkerColor}">
+            <Grid Grid.Row="3" Grid.ColumnSpan="3" Margin="0,10,0,0"
+                  Visibility="{Binding IsDHCP, Converter={StaticResource InvBoolToVis}, UpdateSourceTrigger=PropertyChanged}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="8"/>
@@ -86,7 +87,8 @@
             </Grid>
             
             <!-- grid WiFi - chowanie w zależności od typu sieci -->
-            <Grid Grid.Row="4" Grid.ColumnSpan="3" Visibility="{Binding IsWiFi, Converter={StaticResource InvBoolToVis}, UpdateSourceTrigger=PropertyChanged}" Background="{StaticResource DarkerColor}">
+            <Grid Grid.Row="4" Grid.ColumnSpan="3" Margin="0,10,0,0"
+                  Visibility="{Binding IsWiFi, Converter={StaticResource InvBoolToVis}, UpdateSourceTrigger=PropertyChanged}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="8"/>
@@ -107,33 +109,39 @@
                 <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding SSID, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <Label Grid.Row="1" Grid.Column="0" Style="{StaticResource OptionsLabel}" Content="Typ zabezpieczeń:"/>
-                <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding SecurityType, UpdateSourceTrigger=PropertyChanged}"/>
+                <ComboBox Grid.Row="1" Grid.Column="2" ItemsSource="{Binding AllSecurityEnums, UpdateSourceTrigger=PropertyChanged}" Text="{Binding SecurityType}"/>
                 
                 <!-- Różne możliwe opcje dla zabezpieczeń WiFi -->
 
-                <Label Grid.Row="2" Grid.Column="0" Visibility="{Binding HasEncryptionOption, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource OptionsLabel}" Content="Szyfrowanie:"/>
-                <TextBox Grid.Row="2" Grid.Column="2" Visibility="{Binding HasEncryptionOption, UpdateSourceTrigger=PropertyChanged}" Text="{Binding SecurityType, UpdateSourceTrigger=PropertyChanged}"/>
-
-                <Label Grid.Row="3" Grid.Column="0" Visibility="{Binding HasPasswordOption, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource OptionsLabel}" Content="Hasło:"/>
-                <TextBox Grid.Row="3" Grid.Column="2" Visibility="{Binding HasPasswordOption, UpdateSourceTrigger=PropertyChanged}" Text="{Binding WifiPassword, UpdateSourceTrigger=PropertyChanged}"/>
-
-                <Label Grid.Row="4" Grid.Column="0" Visibility="{Binding HasAuthenticationOption, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource OptionsLabel}" Content="Użycie 801.2X:"/>
-                <CheckBox Grid.Row="4" Grid.Column="2" Visibility="{Binding HasAuthenticationOption, UpdateSourceTrigger=PropertyChanged}" IsChecked="{Binding Use802, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Grid.Row="2" Grid.Column="0" Visibility="{Binding HasEncryptionOption, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}"
+                       Style="{StaticResource OptionsLabel}" Content="Szyfrowanie:"/>
+                <ComboBox Grid.Row="2" Grid.Column="2" Visibility="{Binding HasEncryptionOption, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}"
+                         ItemsSource="{Binding AllEncryptionEnums, UpdateSourceTrigger=PropertyChanged}" Text="{Binding EncryptionType, UpdateSourceTrigger=PropertyChanged}"/>
                 
-                <Label Grid.Row="5" Grid.Column="0" Visibility="{Binding HasAuthenticationOption, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource OptionsLabel}" Content="Uwierzytelnianie:"/>
-                <TextBox Grid.Row="5" Grid.Column="2" Visibility="{Binding HasAuthenticationOption, UpdateSourceTrigger=PropertyChanged}" Text="{Binding AuthenticationType, UpdateSourceTrigger=PropertyChanged}"/>
+                
+                <Label Grid.Row="3" Grid.Column="0" Visibility="{Binding HasPasswordOption, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}"
+                       Style="{StaticResource OptionsLabel}" Content="Hasło:"/>
+                <TextBox Grid.Row="3" Grid.Column="2" Visibility="{Binding HasPasswordOption, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}"
+                         Text="{Binding WifiPassword, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <Label Grid.Row="6" Grid.Column="0" Visibility="{Binding HasAuthenticationOption, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource OptionsLabel}" Content="Certyfikat:"/>
-                <TextBox Grid.Row="6" Grid.Column="2" Visibility="{Binding HasAuthenticationOption, UpdateSourceTrigger=PropertyChanged}" Text="{Binding Certificate, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Grid.Row="4" Grid.Column="0" Visibility="{Binding HasAuthenticationOption, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}"
+                       Style="{StaticResource OptionsLabel}" Content="Użycie 801.2X:"/>
+                <CheckBox Grid.Row="4" Grid.Column="2" Visibility="{Binding HasAuthenticationOption, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}"
+                          HorizontalAlignment="Left" IsChecked="{Binding Use802, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label Grid.Row="5" Grid.Column="0" Visibility="{Binding HasAuthenticationOption, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}"
+                       Style="{StaticResource OptionsLabel}" Content="Uwierzytelnianie:"/>
+                <ComboBox Grid.Row="5" Grid.Column="2" Visibility="{Binding HasAuthenticationOption, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}"
+                         ItemsSource="{Binding AllAuthEnums, UpdateSourceTrigger=PropertyChanged}" Text="{Binding AuthenticationType, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label Grid.Row="6" Grid.Column="0" Visibility="{Binding HasAuthenticationOption, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}"
+                       Style="{StaticResource OptionsLabel}" Content="Certyfikat:"/>
+                <TextBox Grid.Row="6" Grid.Column="2" Visibility="{Binding HasAuthenticationOption, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}"
+                         Text="{Binding Certificate, UpdateSourceTrigger=PropertyChanged}"/>
 
             </Grid>
 
         </Grid>
     </StackPanel>
 
-
-    <!--<Button Style="{StaticResource DefaultButton}" Content="{Binding Profile.Name, Mode=TwoWay}" TextBlock.TextAlignment="Left" />
-        <Button Style="{StaticResource DefaultButton}" Content="{Binding Profile.SSID}" TextBlock.TextAlignment="Left" />
-        <Button Style="{StaticResource DefaultButton}" Content="{Binding Profile.Signal}"  TextBlock.TextAlignment="Left" />
-        <Button Style="{StaticResource DefaultButton}" Content="{Binding Profile.Authentication}"  TextBlock.TextAlignment="Left" />-->
 </UserControl>
