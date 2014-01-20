@@ -19,6 +19,18 @@ namespace ASK.ViewModels.NetsList
             this.Profile.ProfileStateChangedEvent += HandleProfileStateChange;
             this.Profile.ProfileDataChangedEvent += HandleProfileDataChange;
             this.Profile.ProfileEditEndEvent += HandleProfileEditEnd;
+            this.Profile.NetInterface.InterfaceDown += delegate()
+            {
+                EmitPropertyChanged("Style");
+                EmitPropertyChanged("ShouldBeEnabled");
+                EmitPropertyChanged("EditButtonStyle");
+            };
+            this.Profile.NetInterface.InterfaceUp += delegate()
+            {
+                EmitPropertyChanged("Style");
+                EmitPropertyChanged("ShouldBeEnabled");
+                EmitPropertyChanged("EditButtonStyle");
+            };
         }
 
         public String Name
@@ -34,17 +46,21 @@ namespace ASK.ViewModels.NetsList
         {
             get
             {
-                switch (Profile.ProfileState)
-                {
-                    default:
-                    case AbstractProfileModel.StateEnum.OFF:
-                        return GetStyle("ProfileButtonDefault");
-                    case AbstractProfileModel.StateEnum.ON:
-                        return GetStyle("ProfileButtonActive");
-                    case AbstractProfileModel.StateEnum.ACTIVATING:
-                        return GetStyle("ProfileButtonActivating");
-                    case AbstractProfileModel.StateEnum.DEACTIVATING:
-                        return GetStyle("ProfileButtonDeactivating");
+                if (!Profile.NetInterface.IsEnabled) {
+                    return GetStyle("ProfileButtonDisabled");
+                } else {
+                    switch (Profile.ProfileState)
+                    {
+                        default:
+                        case AbstractProfileModel.StateEnum.OFF:
+                            return GetStyle("ProfileButtonDefault");
+                        case AbstractProfileModel.StateEnum.ON:
+                            return GetStyle("ProfileButtonActive");
+                        case AbstractProfileModel.StateEnum.ACTIVATING:
+                            return GetStyle("ProfileButtonActivating");
+                        case AbstractProfileModel.StateEnum.DEACTIVATING:
+                            return GetStyle("ProfileButtonDeactivating");
+                    }
                 }
             }
         }
@@ -117,5 +133,11 @@ namespace ASK.ViewModels.NetsList
             MainWindow.OptionsPanelViewModel.SetProfile(Profile);
             EmitPropertyChanged("EditButtonStyle");
         }
+
+        public Boolean ShouldBeEnabled { get { return !IsSystemProfile && Profile.NetInterface.IsEnabled;  } }
+
+        public Boolean IsSystemProfile { get { return this.Profile is SystemProfileModel; } }
+
+        public Boolean IsNotSystemProfile { get { return !IsSystemProfile;  } }
     }
 }

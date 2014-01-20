@@ -29,6 +29,9 @@ namespace NetworkManager
 
         public static IPAddress GetSubnetMask(NetworkInterface iface)
         {
+            if (iface == null)
+                return IPAddress.Parse(BadIP);
+
             IPInterfaceProperties ipProperties = iface.GetIPProperties();
 
             foreach (UnicastIPAddressInformation ip in ipProperties.UnicastAddresses)
@@ -41,6 +44,9 @@ namespace NetworkManager
 
         public static IPAddress GetGatewayAddress(NetworkInterface iface)
         {
+            if (iface == null)
+                return IPAddress.Parse(BadIP);
+
             IPInterfaceProperties ipProperties = iface.GetIPProperties();
 
             foreach (GatewayIPAddressInformation ip in ipProperties.GatewayAddresses)
@@ -52,6 +58,9 @@ namespace NetworkManager
 
         public static IPAddress GetDNSAddress(NetworkInterface iface)
         {
+            if (iface == null)
+                return IPAddress.Parse(BadIP);
+
             IPInterfaceProperties ipProperties = iface.GetIPProperties();
 
             foreach (IPAddress ip in ipProperties.DnsAddresses)

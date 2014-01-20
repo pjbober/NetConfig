@@ -10,13 +10,14 @@
     <DockPanel Height="{Binding ElementName=profileButton, Path=Height}" VerticalAlignment="Center">
     
         <!-- przycisk edycji profilu -->
-        <Button DockPanel.Dock="Right" Style="{Binding EditButtonStyle, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,0" Click="EditButtonClick">
+        <!--Visibility="{Binding IsNotSystemProfile, Converter={StaticResource BoolToVis}}"-->
+        <Button DockPanel.Dock="Right" IsEnabled="{Binding ShouldBeEnabled, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding IsNotSystemProfile, Converter={StaticResource BoolToVis}}" Style="{Binding EditButtonStyle, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,0" Click="EditButtonClick">
             <Button.Content>
                 <Image Source="../Images/edit.png"  Margin="2" Width="24" Height="24"/>
             </Button.Content>
         </Button>
 
-        <Button DockPanel.Dock="Left" Style="{Binding Style, UpdateSourceTrigger=PropertyChanged}" Click="ProfileNameClick">
+        <Button DockPanel.Dock="Left"  IsEnabled="{Binding ShouldBeEnabled, UpdateSourceTrigger=PropertyChanged}"  Style="{Binding Style, UpdateSourceTrigger=PropertyChanged}" Click="ProfileNameClick">
             <DockPanel>
                 <!-- wskaźnik stanu -->
                 <Rectangle DockPanel.Dock="Left" Margin="0,0,8,0" Width="15" Height="{Binding ElementName=mainWrap, Path=Height}" Fill="{Binding ActiveRectColor, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left"/>

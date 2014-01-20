@@ -94,7 +94,19 @@
     </Style>
 
     <!-- Profile -->
-    
+
+    <Style BasedOn="{StaticResource ModernButton}" x:Key="ProfileButtonDisabled" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource GreyColor}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True" >
+                <Setter Property="Background" Value="{StaticResource GreyHoverColor}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True" >
+                <Setter Property="Background" Value="{StaticResource GreyPressedColor}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <Style BasedOn="{StaticResource ModernButton}" x:Key="ProfileButtonDefault" TargetType="{x:Type Button}">
         <Setter Property="Background" Value="{StaticResource BlueColor}"/>
         <Style.Triggers>
