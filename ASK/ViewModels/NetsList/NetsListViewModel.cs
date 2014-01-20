@@ -5,7 +5,6 @@ using System.Text;
 using System.Collections.ObjectModel;
 using ASK.Model.NetsList;
 using System.Windows.Input;
-using ASK.Logic;
 using System.ComponentModel;
 using NetworkManager;
 

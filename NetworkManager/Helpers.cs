@@ -11,19 +11,20 @@ namespace NetworkManager
 {
     public static class Helpers
     {
-
+        public const string BadIP = "0.0.0.0";
         public static IPAddress GetIP(NetworkInterface iface)
         {
             if (iface == null)
-                return null;
+                return IPAddress.Parse(BadIP);
 
             IPInterfaceProperties ipProperties = iface.GetIPProperties();
 
             foreach (UnicastIPAddressInformation ip in ipProperties.UnicastAddresses)
-                if (ip.Address.AddressFamily == AddressFamily.InterNetwork)
+                if (ip.Address.AddressFamily == AddressFamily.InterNetwork &&
+                    (ip.PrefixOrigin == PrefixOrigin.Manual || ip.SuffixOrigin == SuffixOrigin.Manual))
                     return ip.Address;
 
-            return null;
+            return IPAddress.Parse(BadIP);
         }
 
         public static IPAddress GetSubnetMask(NetworkInterface iface)
@@ -31,10 +32,11 @@ namespace NetworkManager
             IPInterfaceProperties ipProperties = iface.GetIPProperties();
 
             foreach (UnicastIPAddressInformation ip in ipProperties.UnicastAddresses)
-                if (ip.Address.AddressFamily == AddressFamily.InterNetwork)
+                if (ip.Address.AddressFamily == AddressFamily.InterNetwork &&
+                    (ip.PrefixOrigin == PrefixOrigin.Manual || ip.SuffixOrigin == SuffixOrigin.Manual))
                     return ip.IPv4Mask;
 
-            return null;
+            return IPAddress.Parse(BadIP);
         }
 
         public static IPAddress GetGatewayAddress(NetworkInterface iface)
@@ -45,7 +47,7 @@ namespace NetworkManager
                 if (ip.Address.AddressFamily == AddressFamily.InterNetwork)
                     return ip.Address;
 
-            return null;
+            return IPAddress.Parse(BadIP);
         }
 
         public static IPAddress GetDNSAddress(NetworkInterface iface)
@@ -56,12 +58,12 @@ namespace NetworkManager
                 if (ip.AddressFamily == AddressFamily.InterNetwork)
                     return ip;
 
-            return null;
+            return IPAddress.Parse(BadIP);
         }
 
         public static IPAddress GetDhcpAddress(NetworkInterface iface)
         {
-            return null;
+            return IPAddress.Parse(BadIP);
         }
 
         public static string BytesToString(byte[] bytes, int size = -1)

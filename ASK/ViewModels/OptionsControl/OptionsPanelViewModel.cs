@@ -5,7 +5,9 @@ using System.Text;
 using ASK.Model.NetsList;
 using System.ComponentModel;
 using NetworkManager;
+using NetworkManager.Profiles;
 using System.Threading;
+using System.Net;
 
 namespace ASK.ViewModels.OptionsControl
 {
@@ -39,9 +41,9 @@ namespace ASK.ViewModels.OptionsControl
             SetProfile(null);
         }
 
-        private ProfileModel profile;
+        private AbstractProfileModel profile;
 
-        public ProfileModel Profile
+        public AbstractProfileModel Profile
         {
             get { return profile; }
             set
@@ -51,26 +53,33 @@ namespace ASK.ViewModels.OptionsControl
 
                 if (profile != null)
                 {
-
-                    // wartości tymczasowe - nie są od razu zapisywane do modelu
                     ProfileName = profile.Name;
-                    IpAddress = profile.IpAddress;
-                    SubnetMask = profile.SubnetMask;
-                    Gateway = profile.Gateway;
-                    DNS = profile.DNS;
-                    _isDHCP = profile.IsDHCP;
 
-
-                    EmitPropertyChanged("Profile");
                     EmitPropertyChanged("ProfileName");
-                    EmitPropertyChanged("InterfaceName");
 
-                    EmitPropertyChanged("IpAddress");
-                    EmitPropertyChanged("SubnetMask");
-                    EmitPropertyChanged("Gateway");
-                    EmitPropertyChanged("DNS");
+                    if (profile is WiredProfileModel)
+                    {
+                        WiredProfileModel wiredProfile = profile as WiredProfileModel;
 
-                    EmitPropertyChanged("IsDHCP");
+                        // wartości tymczasowe - nie są od razu zapisywane do modelu
+                        IpAddress = wiredProfile.IP;
+                        SubnetMask = wiredProfile.SubnetMask;
+                        Gateway = wiredProfile.Gateway;
+                        DNS = wiredProfile.DNS;
+
+                        _isDHCP = wiredProfile.IsDHCP;
+
+
+                        EmitPropertyChanged("Profile");
+                        EmitPropertyChanged("InterfaceName");
+
+                        EmitPropertyChanged("IpAddress");
+                        EmitPropertyChanged("SubnetMask");
+                        EmitPropertyChanged("Gateway");
+                        EmitPropertyChanged("DNS");
+
+                        EmitPropertyChanged("IsDHCP");
+                    }
                 }
 
                 EmitPropertyChanged("IsVisible");
@@ -79,12 +88,19 @@ namespace ASK.ViewModels.OptionsControl
 
         public void SaveProfile()
         {
+
             profile.Name = ProfileName;
-            profile.IpAddress = IpAddress;
-            profile.SubnetMask = SubnetMask;
-            profile.Gateway = Gateway;
-            profile.DNS = DNS;
-            profile.IsDHCP = _isDHCP;
+
+            if (profile is WiredProfileModel)
+            {
+                WiredProfileModel wiredProfile = profile as WiredProfileModel;
+
+                wiredProfile.IP = IpAddress;
+                wiredProfile.SubnetMask = SubnetMask;
+                wiredProfile.Gateway = Gateway;
+                wiredProfile.DNS = DNS;
+                wiredProfile.IsDHCP = _isDHCP;
+            }
 
             IsModified = true;
 
@@ -100,9 +116,9 @@ namespace ASK.ViewModels.OptionsControl
 
         }
 
-        public void SetProfile(ProfileModel newProfile)
+        public void SetProfile(AbstractProfileModel newProfile)
         {
-            ProfileModel oldProfile = Profile;
+            AbstractProfileModel oldProfile = Profile;
 
             // TODO: ostrzeżenie, jeśli są niezapisane zmiany
             Profile = newProfile;

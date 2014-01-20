@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Xml.Serialization;
+using System.Net;
 
 namespace NetworkManager.Profiles
 {
@@ -12,7 +13,9 @@ namespace NetworkManager.Profiles
     public delegate void ProfileDataChangedEvent(AbstractProfileModel profile);
     public delegate void ProfileEditEndEvent(AbstractProfileModel profile);
 
-
+    [XmlInclude(typeof(SystemProfileModel))]
+    [XmlInclude(typeof(WiredProfileModel))]
+    [XmlInclude(typeof(WifiProfileModel))]
     public abstract class AbstractProfileModel
     {
 
@@ -23,15 +26,17 @@ namespace NetworkManager.Profiles
 
         public string Name { get; set; }
 
-        public string PhysicalAddress { get; set; }
-        public string Description { get; set; }
+        public virtual string PhysicalAddress { get; set; }
 
-        public virtual bool IsWifi { get; set; }
+        public virtual string Description { get; set; }
+
+        [XmlIgnoreAttribute]
+        public virtual bool IsWifi { get { return NetInterface.Type == NetInterfaceType.Wireless; } }
 
         private StateEnum profileState;
 
         [XmlIgnoreAttribute]
-        public NetInterfaceModel NetInterface { get; private set; }
+        public virtual NetInterfaceModel NetInterface { get; set; }
 
         
         public event ProfileStateChangedEvent ProfileStateChangedEvent;
@@ -55,7 +60,7 @@ namespace NetworkManager.Profiles
 
         public AbstractProfileModel()
         {
-
+            this.profileState = StateEnum.OFF;
         }
 
         public StateEnum ProfileState
@@ -76,16 +81,13 @@ namespace NetworkManager.Profiles
 
         public bool IsActive()
         {
-            // zmienic typ w NetInterface
-            //return this.NetInterface.ActiveProfile == this;
-            return true;
+            return this.NetInterface.ActiveProfile == this;
         }
 
         public void ActivateAsync()
         {
-            // zmienic typ w NetInterface
-            //Thread t = new Thread(() => NetInterface.ActivateProfile(this));
-            //t.Start();
+            Thread t = new Thread(() => NetInterface.ActivateProfile(this));
+            t.Start();
         }
 
         public void ToggleState()
@@ -106,6 +108,22 @@ namespace NetworkManager.Profiles
             }
             Console.Out.WriteLine("ToggleState end " + this.Name);
         }
-        
+
+
+        public void EmitProfileDataChanged()
+        {
+            if (ProfileDataChangedEvent != null)
+            {
+                ProfileDataChangedEvent(this);
+            }
+        }
+
+        public void EmitProfileEditEnd()
+        {
+            if (ProfileEditEndEvent != null)
+            {
+                ProfileEditEndEvent(this);
+            }
+        }
     }
 }

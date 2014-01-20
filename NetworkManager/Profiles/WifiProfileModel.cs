@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace NetworkManager.Profiles
 {
@@ -35,8 +36,6 @@ namespace NetworkManager.Profiles
             None
         }
 
-        public override bool IsWifi { get { return true; } }
-
         public virtual string SSID { get; set; }
         public virtual SecurityType Security { get; set; }
         public virtual EncryptionType Encryption { get; set; }
@@ -49,7 +48,22 @@ namespace NetworkManager.Profiles
         public WifiProfileModel(String name, NetInterfaceModel netInterface)
             : base(name, netInterface)
         {
-            
+            SystemProfileModel system = new SystemProfileModel(netInterface, true);
+
+            this.IsDHCP = system.IsDHCP;
+            this.IP = system.IP;
+            this.SubnetMask = system.SubnetMask;
+            this.Gateway = system.Gateway;
+            this.DNS = system.DNS;
+
+            this.SSID = system.SSID;
+            this.Security = system.Security;
+            this.Encryption = system.Encryption;
+            this.Authorization = system.Authorization;
+            this.UseOneX = system.UseOneX;
+            this.Key = system.Key;
+            this.CAName = system.CAName;
+            this.CAHash = system.CAHash;
         }
 
         public WifiProfileModel()

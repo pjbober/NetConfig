@@ -7,12 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Media;
+using NetworkManager.Profiles;
 
 namespace ASK.ViewModels.NetsList
 {
     public class ProfileButtonViewModel : ViewModelBase
     {
-        public ProfileButtonViewModel(ProfileModel profile)
+        public ProfileButtonViewModel(AbstractProfileModel profile)
         {
             this.Profile = profile;
             this.Profile.ProfileStateChangedEvent += HandleProfileStateChange;
@@ -25,7 +26,7 @@ namespace ASK.ViewModels.NetsList
             get { return Profile.Name; }
         }
 
-        public ProfileModel Profile { get; private set; }
+        public AbstractProfileModel Profile { get; private set; }
 
         // TODO: zamiast tego, można zrobić convertery
 
@@ -36,13 +37,13 @@ namespace ASK.ViewModels.NetsList
                 switch (Profile.ProfileState)
                 {
                     default:
-                    case ProfileModel.StateEnum.OFF:
+                    case AbstractProfileModel.StateEnum.OFF:
                         return GetStyle("ProfileButtonDefault");
-                    case ProfileModel.StateEnum.ON:
+                    case AbstractProfileModel.StateEnum.ON:
                         return GetStyle("ProfileButtonActive");
-                    case ProfileModel.StateEnum.ACTIVATING:
+                    case AbstractProfileModel.StateEnum.ACTIVATING:
                         return GetStyle("ProfileButtonActivating");
-                    case ProfileModel.StateEnum.DEACTIVATING:
+                    case AbstractProfileModel.StateEnum.DEACTIVATING:
                         return GetStyle("ProfileButtonDeactivating");
                 }
             }
@@ -70,9 +71,9 @@ namespace ASK.ViewModels.NetsList
                 switch (Profile.ProfileState)
                 {
                     default:
-                    case ProfileModel.StateEnum.OFF:
+                    case AbstractProfileModel.StateEnum.OFF:
                         return new SolidColorBrush(System.Windows.Media.Colors.Transparent);
-                    case ProfileModel.StateEnum.ON:
+                    case AbstractProfileModel.StateEnum.ON:
                         return GetBrush("LighterColor");
                 }
             }
@@ -88,20 +89,20 @@ namespace ASK.ViewModels.NetsList
 
         // -- Handlery --
 
-        public void HandleProfileStateChange(ProfileModel.StateEnum newState)
+        public void HandleProfileStateChange(AbstractProfileModel.StateEnum newState)
         {
             EmitPropertyChanged("ActiveRectColor");
             EmitPropertyChanged("Style");
             EmitPropertyChanged("EditButtonStyle");
         }
 
-        public void HandleProfileDataChange(ProfileModel p)
+        public void HandleProfileDataChange(AbstractProfileModel p)
         {
             EmitPropertyChanged("Name");
             EmitPropertyChanged("EditButtonStyle");
         }
 
-        public void HandleProfileEditEnd(ProfileModel p)
+        public void HandleProfileEditEnd(AbstractProfileModel p)
         {
             EmitPropertyChanged("EditButtonStyle");
         }

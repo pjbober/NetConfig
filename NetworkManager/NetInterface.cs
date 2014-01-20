@@ -11,10 +11,12 @@ using NativeWifi;
 using System.Xml.Serialization;
 using System.IO;
 using System.Xml;
+using NetworkManager.Profiles;
+
 
 namespace NetworkManager
 {
-    public delegate void ProfileAdded(ProfileModel newProfile);
+    public delegate void ProfileAdded(AbstractProfileModel newProfile);
 
     public delegate void InterfaceUp();
     public delegate void InterfaceDown();
@@ -26,8 +28,8 @@ namespace NetworkManager
     public delegate void WifiSettingsChanged();
 
     public delegate void NameChanged();
-    public delegate void ActiveProfileChanged(ProfileModel profile);
-    public delegate void ProfileActivationFailed(ProfileModel profile);
+    public delegate void ActiveProfileChanged(AbstractProfileModel profile);
+    public delegate void ProfileActivationFailed(AbstractProfileModel profile);
 
     public enum NetInterfaceType
     {
@@ -46,9 +48,12 @@ namespace NetworkManager
 
         public NetInterfaceType Type { get { return type; } }
 
-        public IList<ProfileModel> Profiles = new List<ProfileModel>();
+        [XmlElement(typeof(SystemProfileModel))]
+        [XmlElement(typeof(WiredProfileModel))]
+        [XmlElement(typeof(WifiProfileModel))]
+        public IList<AbstractProfileModel> Profiles = new List<AbstractProfileModel>();
 
-        public ProfileModel ActiveProfile = null;
+        public AbstractProfileModel ActiveProfile = null;
 
         public string MACAddress { get { return networkAdapter.MACAddress; } }
 
@@ -101,6 +106,8 @@ namespace NetworkManager
             this.originalNetworkAdapter = netAdptr;
 
             CreateFromNetworkAdapter(netAdptr, netIface);
+
+            AddSystemProfile();
 
             DeserializeProfiles();
 
@@ -202,15 +209,25 @@ namespace NetworkManager
 
 
 
+        // http://blog.coretech.dk/jgs/serializing-system-net-ipaddress-to-xml/
         private void SerializeProfiles()
         {
             string profilesXML = @"profiles/" + this.Name + ".xml";
 
-            XmlSerializer serializer = new XmlSerializer(typeof(List<ProfileModel>));
+            try
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(List<AbstractProfileModel>));
+                StreamWriter file = new StreamWriter(profilesXML);
 
-            StreamWriter file = new StreamWriter(profilesXML);
-            serializer.Serialize(file, Profiles);
-            file.Close();
+                IList<AbstractProfileModel> serializableProfiles = this.Profiles.Where(p => !(p is SystemProfileModel)).ToList();
+
+                serializer.Serialize(file, serializableProfiles);
+                file.Close();
+            }
+            catch (Exception e)
+            {
+                return;
+            }
         }
 
         private void DeserializeProfiles()
@@ -223,53 +240,59 @@ namespace NetworkManager
 
             if (File.Exists(profilesXML))
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(List<ProfileModel>));
-                bool profileActivated = false;
-
-                StreamReader file = new StreamReader(profilesXML);
-                this.Profiles = serializer.Deserialize(file) as List<ProfileModel>;
-                file.Close();
-
-                foreach (ProfileModel profile in this.Profiles)
+                try
                 {
-                    profile.NetInterface = this;
-                    if (!profileActivated && profile.ProfileState == ProfileModel.StateEnum.ON)
+                    XmlSerializer serializer = new XmlSerializer(typeof(List<AbstractProfileModel>));
+
+                    StreamReader file = new StreamReader(profilesXML);
+                    foreach (AbstractProfileModel profile in serializer.Deserialize(file) as List<AbstractProfileModel>)
                     {
-                        profile.ToggleState();
-                        profileActivated = true;
+                        profile.NetInterface = this;
+                        this.Profiles.Add(profile);
                     }
+
+                    file.Close();
+                }
+                catch (Exception)
+                {
+                    this.Profiles.Clear();
                 }
             }
         }
 
-        public bool ActivateProfile(ProfileModel p)
+        public bool ActivateProfile(AbstractProfileModel p)
         {
             // rozpoczęcie aktywacji nowego profilu oznacza potrzebę zmiany stanu na deaktywację starego
             // i zmianę stanu na aktywację nowego
 
-            ProfileModel oldProfile = ActiveProfile;
+            AbstractProfileModel oldProfile = ActiveProfile;
 
             if (oldProfile != null)
             {
-                oldProfile.ProfileState = ProfileModel.StateEnum.DEACTIVATING;
+                oldProfile.ProfileState = AbstractProfileModel.StateEnum.DEACTIVATING;
             }
 
-            p.ProfileState = ProfileModel.StateEnum.ACTIVATING;
+            p.ProfileState = AbstractProfileModel.StateEnum.ACTIVATING;
             
 
             try
             {
-                if (p.IsDHCP)
-                    EnableDhcp();
-                else
+                if (p is WiredProfileModel)
                 {
-                    IPAddress ip = IPAddress.Parse(p.IpAddress);
-                    IPAddress netmask = IPAddress.Parse(p.SubnetMask);
-                    IPAddress gateway = IPAddress.Parse(p.Gateway);
-                    IPAddress dns = IPAddress.Parse(p.DNS);
+                    WiredProfileModel wired = p as WiredProfileModel;
 
-                    SetAddress(ip, netmask, gateway);
-                    SetStaticDNS(dns);
+                    if (wired.IsDHCP)
+                        EnableDhcp();
+                    else
+                    {
+                        SetAddress(IPAddress.Parse(wired.IP), IPAddress.Parse(wired.SubnetMask), IPAddress.Parse(wired.Gateway));
+                        SetStaticDNS(IPAddress.Parse(wired.DNS));
+                    }
+                }
+
+                if (p is WiredProfileModel)
+                {
+                    ActivateWifiProfile(p as WiredProfileModel); // TODO: teraz niezależnie od wyniku...
                 }
             }
             catch (Exception e)
@@ -277,21 +300,20 @@ namespace NetworkManager
                 return false;
             }
 
-            ActiveProfile = p;
 
-            if (this.type == NetInterfaceType.Wireless)
-            {
-                ActivateWifiSettings(p); // TODO: teraz niezależnie od wyniku...
-            }
+
+
+
+            ActiveProfile = p;
 
             // być może niepotrzebne, ale bezpieczniejsze - każdy profil inny od aktywowanego
             // powinien być w stanie wyłączonym
-            foreach (var pro in Profiles)
+            foreach (AbstractProfileModel pro in Profiles)
             {
-                pro.ProfileState = ProfileModel.StateEnum.OFF;
+                pro.ProfileState = AbstractProfileModel.StateEnum.OFF;
             }
-            
-            ActiveProfile.ProfileState = ProfileModel.StateEnum.ON;
+
+            ActiveProfile.ProfileState = AbstractProfileModel.StateEnum.ON;
 
             if (ActiveProfileChanged != null) ActiveProfileChanged(ActiveProfile);
 
@@ -299,7 +321,7 @@ namespace NetworkManager
         }
 
 
-        public bool ActivateWifiSettings(ProfileModel p)
+        public bool ActivateWifiProfile(WiredProfileModel p)
         {
 
 
@@ -716,12 +738,25 @@ namespace NetworkManager
 
         }
 
-        public void AddNewProfile()
+        public void AddSystemProfile()
         {
-            AddProfile(new ProfileModel("Nowy profil", this));
+            foreach (AbstractProfileModel profile in this.Profiles)
+                if (profile is SystemProfileModel)
+                    return;
+
+            AddProfile(new SystemProfileModel(this));
         }
 
-        public void AddProfile(ProfileModel profile)
+        public void AddNewProfile(string name = "Nowy profil")
+        {
+            if (this.Type == NetInterfaceType.Wired)
+                AddProfile(new WiredProfileModel(name, this));
+
+            else if (this.Type == NetInterfaceType.Wireless)
+                AddProfile(new WifiProfileModel(name, this));
+        }
+
+        public void AddProfile(AbstractProfileModel profile)
         {
             Profiles.Add(profile);
             if (ProfileAddedEvent != null)

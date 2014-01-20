@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using NetworkManager;
+using NetworkManager.Profiles;
 
 namespace ASK.ViewModels.NetsList
 {
@@ -56,7 +57,7 @@ namespace ASK.ViewModels.NetsList
             NetInterfaceModel = netInterface;
 
             Profiles = new ObservableCollection<ProfileButtonViewModel>();
-            foreach (ProfileModel profile in netInterface.Profiles)
+            foreach (AbstractProfileModel profile in netInterface.Profiles)
             {
                 Profiles.Add(new ProfileButtonViewModel(profile));
             }
@@ -64,7 +65,7 @@ namespace ASK.ViewModels.NetsList
             IsExpanded = true;
         }
 
-        void HandleProfileAddedEvent(ProfileModel newProfile)
+        void HandleProfileAddedEvent(AbstractProfileModel newProfile)
         {
             Profiles.Add(new ProfileButtonViewModel(newProfile));
         }
@@ -85,7 +86,7 @@ namespace ASK.ViewModels.NetsList
             }
         }
 
-        private void HandleProfileActivation(ProfileModel profile)
+        private void HandleProfileActivation(AbstractProfileModel profile)
         {
             foreach (var p in Profiles)
             {
