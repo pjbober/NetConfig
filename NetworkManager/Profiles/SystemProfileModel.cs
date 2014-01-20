@@ -66,5 +66,18 @@ namespace NetworkManager.Profiles
         {
 
         }
+
+        public override bool Equals(AbstractProfileModel other)
+        {
+            if (other is SystemProfileModel)
+                return Equals(other as SystemProfileModel);
+
+            return false;
+        }
+
+        public bool Equals(SystemProfileModel other)
+        {
+            return other.NetInterface.MACAddress == this.NetInterface.MACAddress;
+        }
     }
 }

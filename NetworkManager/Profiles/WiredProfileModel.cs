@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 
 namespace NetworkManager.Profiles
 {
-    public class WiredProfileModel : AbstractProfileModel
+    public class WiredProfileModel : AbstractProfileModel, IEquatable<WiredProfileModel>
     {
 
         public virtual bool IsDHCP { get; set; }
@@ -33,6 +33,23 @@ namespace NetworkManager.Profiles
             : base()
         {
 
+        }
+
+        public override bool Equals(AbstractProfileModel other)
+        {
+            if (other is WiredProfileModel)
+                return Equals(other as WiredProfileModel);
+
+            return false;
+        }
+
+        public bool Equals(WiredProfileModel other)
+        {
+            return other.IsDHCP == this.IsDHCP &&
+                    other.IP == this.IP &&
+                    other.SubnetMask == this.SubnetMask &&
+                    other.Gateway == this.Gateway &&
+                    other.DNS == this.DNS;
         }
     }
 }

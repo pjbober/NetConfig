@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 
 namespace NetworkManager.Profiles
 {
-    public class WifiProfileModel : WiredProfileModel
+    public class WifiProfileModel : WiredProfileModel, IEquatable<WifiProfileModel>
     {
         public enum SecurityType
         {
@@ -70,6 +70,29 @@ namespace NetworkManager.Profiles
             : base()
         {
 
+        }
+
+        public override bool Equals(AbstractProfileModel other)
+        {
+            if (other is WifiProfileModel)
+                return Equals(other as WifiProfileModel);
+
+            return false;
+        }
+
+
+        public bool Equals(WifiProfileModel other)
+        {
+            return (other as WiredProfileModel).Equals(this as WiredProfileModel) &&
+
+                    other.SSID == this.SSID &&
+                    other.Security == this.Security &&
+                    other.Encryption == this.Encryption &&
+                    other.Authorization == this.Authorization &&
+                    other.UseOneX == this.UseOneX &&
+                    other.Key == this.Key &&
+                    other.CAName == this.CAName &&
+                    other.CAHash == this.CAHash;
         }
     }
 }

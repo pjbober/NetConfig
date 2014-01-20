@@ -16,7 +16,7 @@ namespace NetworkManager.Profiles
     [XmlInclude(typeof(SystemProfileModel))]
     [XmlInclude(typeof(WiredProfileModel))]
     [XmlInclude(typeof(WifiProfileModel))]
-    public abstract class AbstractProfileModel
+    public abstract class AbstractProfileModel : IEquatable<AbstractProfileModel>
     {
 
         public enum StateEnum
@@ -124,6 +124,11 @@ namespace NetworkManager.Profiles
             {
                 ProfileEditEndEvent(this);
             }
+        }
+
+        public virtual bool Equals(AbstractProfileModel other)
+        {
+            return true;
         }
     }
 }
