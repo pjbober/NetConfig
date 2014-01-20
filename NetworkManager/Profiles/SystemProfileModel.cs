@@ -26,9 +26,9 @@ namespace NetworkManager.Profiles
 
         #region WifiProfileModel overwritten settings
         public override string SSID { get { return NetInterface.GetSSID(); } set { } }
-        public override SecurityType Security { get { return NetInterface.GetSecurityType(); } set { } }
-        public override EncryptionType Encryption { get { return NetInterface.GetEncryptionType(); } set { } }
-        public override AuthorizationMethod Authorization { get { return NetInterface.GetAuthMethod(); } set { } }
+        public override SecurityEnum Security { get { return NetInterface.GetSecurityType(); } set { } }
+        public override EncryptionEnum Encryption { get { return NetInterface.GetEncryptionType(); } set { } }
+        public override AuthEnum Authorization { get { return NetInterface.GetAuthMethod(); } set { } }
         public override bool UseOneX { get { return NetInterface.IsUsingOneX(); } set { } }
         public override string Key { get { return NetInterface.GetKey(); } set { } }
         public override string CAName

@@ -136,8 +136,8 @@
 
                 <Label Grid.Row="6" Grid.Column="0" Visibility="{Binding HasAuthenticationOption, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}"
                        Style="{StaticResource OptionsLabel}" Content="Certyfikat:"/>
-                <TextBox Grid.Row="6" Grid.Column="2" Visibility="{Binding HasAuthenticationOption, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}"
-                         Text="{Binding Certificate, UpdateSourceTrigger=PropertyChanged}"/>
+                <ComboBox Grid.Row="6" Grid.Column="2" Visibility="{Binding HasAuthenticationOption, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}"
+                        ItemsSource="{Binding AllCertEnums, UpdateSourceTrigger=PropertyChanged}" Text="{Binding Cert, UpdateSourceTrigger=PropertyChanged}"/>
 
             </Grid>
 

@@ -555,7 +555,7 @@ namespace NetworkManager
                 return "";
         }
 
-        public Profiles.WifiProfileModel.SecurityType GetSecurityType()
+        public Profiles.WifiProfileModel.SecurityEnum GetSecurityType()
         {
             if (wifiInterface != null)
             {
@@ -567,27 +567,27 @@ namespace NetworkManager
                 switch (auth)
                 {
                     case Wlan.Dot11AuthAlgorithm.IEEE80211_Open:
-                        return NetworkManager.Profiles.WifiProfileModel.SecurityType.OPEN;
+                        return NetworkManager.Profiles.WifiProfileModel.SecurityEnum.OPEN;
                     case Wlan.Dot11AuthAlgorithm.IEEE80211_SharedKey:
-                        return NetworkManager.Profiles.WifiProfileModel.SecurityType.SHARED;
+                        return NetworkManager.Profiles.WifiProfileModel.SecurityEnum.SHARED;
                     case Wlan.Dot11AuthAlgorithm.WPA:
-                        return NetworkManager.Profiles.WifiProfileModel.SecurityType.WPA;
+                        return NetworkManager.Profiles.WifiProfileModel.SecurityEnum.WPA;
                     case Wlan.Dot11AuthAlgorithm.WPA_PSK:
-                        return NetworkManager.Profiles.WifiProfileModel.SecurityType.WPAPSK;
+                        return NetworkManager.Profiles.WifiProfileModel.SecurityEnum.WPAPSK;
                     case Wlan.Dot11AuthAlgorithm.RSNA:
-                        return NetworkManager.Profiles.WifiProfileModel.SecurityType.WPA2;
+                        return NetworkManager.Profiles.WifiProfileModel.SecurityEnum.WPA2;
                     case Wlan.Dot11AuthAlgorithm.RSNA_PSK:
-                        return NetworkManager.Profiles.WifiProfileModel.SecurityType.WPA2PSK;
+                        return NetworkManager.Profiles.WifiProfileModel.SecurityEnum.WPA2PSK;
                     default:
-                        return NetworkManager.Profiles.WifiProfileModel.SecurityType.Other;
+                        return NetworkManager.Profiles.WifiProfileModel.SecurityEnum.Other;
                 }
             }
             else
-                return NetworkManager.Profiles.WifiProfileModel.SecurityType.Other;
+                return NetworkManager.Profiles.WifiProfileModel.SecurityEnum.Other;
         }
 
         
-        public Profiles.WifiProfileModel.EncryptionType GetEncryptionType()
+        public Profiles.WifiProfileModel.EncryptionEnum GetEncryptionType()
         {
             if (wifiInterface != null)
             {
@@ -599,30 +599,30 @@ namespace NetworkManager
                 switch (encryption)
                 {
                     case Wlan.Dot11CipherAlgorithm.None:
-                        return NetworkManager.Profiles.WifiProfileModel.EncryptionType.None;
+                        return NetworkManager.Profiles.WifiProfileModel.EncryptionEnum.None;
 
                     case Wlan.Dot11CipherAlgorithm.WEP:
                     case Wlan.Dot11CipherAlgorithm.WEP40:
                     case Wlan.Dot11CipherAlgorithm.WEP104:
-                        return NetworkManager.Profiles.WifiProfileModel.EncryptionType.WEP;
+                        return NetworkManager.Profiles.WifiProfileModel.EncryptionEnum.WEP;
 
                     case Wlan.Dot11CipherAlgorithm.TKIP:
-                        return NetworkManager.Profiles.WifiProfileModel.EncryptionType.TKIP;
+                        return NetworkManager.Profiles.WifiProfileModel.EncryptionEnum.TKIP;
 
                     case Wlan.Dot11CipherAlgorithm.CCMP:
-                        return NetworkManager.Profiles.WifiProfileModel.EncryptionType.AES;
+                        return NetworkManager.Profiles.WifiProfileModel.EncryptionEnum.AES;
 
                     // sa jeszcze 2 typy szyfrowan: RSN i WPA, ale w windowsach nikt o nich nigdzie nie wspomina...
                     default:
-                        return NetworkManager.Profiles.WifiProfileModel.EncryptionType.Other;
+                        return NetworkManager.Profiles.WifiProfileModel.EncryptionEnum.Other;
                 }
             }
             else
-                return NetworkManager.Profiles.WifiProfileModel.EncryptionType.Other;
+                return NetworkManager.Profiles.WifiProfileModel.EncryptionEnum.Other;
         }
 
 
-        public Profiles.WifiProfileModel.AuthorizationMethod GetAuthMethod()
+        public Profiles.WifiProfileModel.AuthEnum GetAuthMethod()
         {
             // http://www.iana.org/assignments/eap-numbers/eap-numbers.xhtml
 
@@ -638,17 +638,17 @@ namespace NetworkManager
                 int eap_type = int.Parse(node.InnerText);
 
                 if (eap_type == 13)
-                    return NetworkManager.Profiles.WifiProfileModel.AuthorizationMethod.Card;
+                    return NetworkManager.Profiles.WifiProfileModel.AuthEnum.Card;
                 else if (eap_type == 25)
-                    return NetworkManager.Profiles.WifiProfileModel.AuthorizationMethod.PEAP;
+                    return NetworkManager.Profiles.WifiProfileModel.AuthEnum.PEAP;
                 else
-                    return NetworkManager.Profiles.WifiProfileModel.AuthorizationMethod.None;
+                    return NetworkManager.Profiles.WifiProfileModel.AuthEnum.None;
             }
             catch (Exception)
             {
             }
 
-            return NetworkManager.Profiles.WifiProfileModel.AuthorizationMethod.None;
+            return NetworkManager.Profiles.WifiProfileModel.AuthEnum.None;
         }
 
 

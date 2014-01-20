@@ -9,31 +9,10 @@ using NetworkManager.Profiles;
 using System.Threading;
 using System.Net;
 
+using NetworkManager.Profiles;
+
 namespace ASK.ViewModels.OptionsControl
 {
-    public enum SecurityEnum
-    {
-        OPEN,
-        WEP,
-        SHARED,
-        WPA,
-        WPAPSK,
-        WPA2,
-        WPA2PSK
-    }
-
-    public enum EncryptionEnum
-    {
-        AES,
-        TKIP
-    }
-
-    public enum AuthEnum
-    {
-        CARD,
-        PEAP
-    }
-
     public class OptionsPanelViewModel : ViewModelBase
     {
         public OptionsPanelViewModel()
@@ -139,6 +118,8 @@ namespace ASK.ViewModels.OptionsControl
         public String Gateway { get; set; }
         public String DNS { get; set; }
 
+        public Certificate Cert { get; set; }
+
         private bool _isDHCP;
         public Boolean IsDHCP
         {
@@ -152,20 +133,24 @@ namespace ASK.ViewModels.OptionsControl
 
         // -- enumeracje
 
-        private static Array _allSecurityEnums = Enum.GetValues(typeof(SecurityEnum));
+        private static Array _allSecurityEnums = Enum.GetValues(typeof(NetworkManager.Profiles.WifiProfileModel.SecurityEnum));
         public Array AllSecurityEnums { get { return _allSecurityEnums; } }
         
-        private static Array _allEncryptionEnums = Enum.GetValues(typeof(EncryptionEnum));
+        private static Array _allEncryptionEnums = Enum.GetValues(typeof(NetworkManager.Profiles.WifiProfileModel.EncryptionEnum));
         public Array AllEncryptionEnums { get { return _allEncryptionEnums; } }
 
-        private static Array _allAuthEnums = Enum.GetValues(typeof(AuthEnum));
+        private static Array _allAuthEnums = Enum.GetValues(typeof(NetworkManager.Profiles.WifiProfileModel.AuthEnum));
         public Array AllAuthEnums { get { return _allAuthEnums; } }
+
+        private static IList<Certificate> _allCertEnums = CertificateCollection.Certificates;
+        public IList<Certificate> AllCertEnums { get { return _allCertEnums; } }
 
         // Wartości
         public String SSID { get; set; }
 
-        private SecurityEnum _securityType;
-        public SecurityEnum SecurityType {
+        private WifiProfileModel.SecurityEnum _securityType;
+        public WifiProfileModel.SecurityEnum SecurityType
+        {
             get { return _securityType; }
             set
             {
@@ -175,40 +160,40 @@ namespace ASK.ViewModels.OptionsControl
                 EmitPropertyChanged("HasAuthenticationOption");
             }
         }
-        public EncryptionEnum EncryptionType { get; set; }
+        public WifiProfileModel.EncryptionEnum EncryptionType { get; set; }
         public String WifiPassword { get; set; }
         public Boolean Use802 { get; set; }
-        public AuthEnum AuthenticationType { get; set; }
-        public String Certificate { get; set; }
+        public WifiProfileModel.AuthEnum AuthenticationType { get; set; }
+        //public String Certificate { get; set; }
 
         // Opcje edytora dla WiFi
 
         // WPA/WPA2 personal
         public bool HasEncryptionOption { 
             get {
-                return SecurityType == SecurityEnum.WPA
-                    || SecurityType == SecurityEnum.WPAPSK
-                    || SecurityType == SecurityEnum.WPA2
-                    || SecurityType == SecurityEnum.WPA2PSK;
+                return SecurityType == WifiProfileModel.SecurityEnum.WPA
+                    || SecurityType == WifiProfileModel.SecurityEnum.WPAPSK
+                    || SecurityType == WifiProfileModel.SecurityEnum.WPA2
+                    || SecurityType == WifiProfileModel.SecurityEnum.WPA2PSK;
             } 
         }
 
         // otwarte, współdzielone, WEP, WPA/WPA2 Personal
         public bool HasPasswordOption {
             get {
-                return SecurityType == SecurityEnum.OPEN
-                    || SecurityType == SecurityEnum.SHARED
-                    || SecurityType == SecurityEnum.WEP
-                    || SecurityType == SecurityEnum.WPAPSK
-                    || SecurityType == SecurityEnum.WPA2PSK;
+                return SecurityType == WifiProfileModel.SecurityEnum.OPEN
+                    || SecurityType == WifiProfileModel.SecurityEnum.SHARED
+                    || SecurityType == WifiProfileModel.SecurityEnum.WEP
+                    || SecurityType == WifiProfileModel.SecurityEnum.WPAPSK
+                    || SecurityType == WifiProfileModel.SecurityEnum.WPA2PSK;
             }
         }
 
         // także cerfyfikat: WPA/WPA2 Enterprise
         public bool HasAuthenticationOption {
             get {
-                return SecurityType == SecurityEnum.WPA2
-                    || SecurityType == SecurityEnum.WPA;
+                return SecurityType == WifiProfileModel.SecurityEnum.WPA2
+                    || SecurityType == WifiProfileModel.SecurityEnum.WPA;
             }
         }   
 

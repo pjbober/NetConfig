@@ -8,7 +8,7 @@ namespace NetworkManager.Profiles
 {
     public class WifiProfileModel : WiredProfileModel, IEquatable<WifiProfileModel>
     {
-        public enum SecurityType
+        public enum SecurityEnum
         {
             OPEN,       // Otwarte
             WEP,        // WEP
@@ -20,7 +20,7 @@ namespace NetworkManager.Profiles
             Other       // ?
         }
 
-        public enum EncryptionType
+        public enum EncryptionEnum
         {
             WEP,
             TKIP,
@@ -29,7 +29,7 @@ namespace NetworkManager.Profiles
             None
         }
 
-        public enum AuthorizationMethod
+        public enum AuthEnum
         {
             PEAP,
             Card,
@@ -37,9 +37,9 @@ namespace NetworkManager.Profiles
         }
 
         public virtual string SSID { get; set; }
-        public virtual SecurityType Security { get; set; }
-        public virtual EncryptionType Encryption { get; set; }
-        public virtual AuthorizationMethod Authorization { get; set; }
+        public virtual SecurityEnum Security { get; set; }
+        public virtual EncryptionEnum Encryption { get; set; }
+        public virtual AuthEnum Authorization { get; set; }
         public virtual bool UseOneX { get; set; }
         public virtual string Key { get; set; }
         public virtual string CAName { get; set; }
@@ -83,16 +83,16 @@ namespace NetworkManager.Profiles
 
         public bool Equals(WifiProfileModel other)
         {
-            return (other as WiredProfileModel).Equals(this as WiredProfileModel) &&
-
-                    other.SSID == this.SSID &&
-                    other.Security == this.Security &&
-                    other.Encryption == this.Encryption &&
-                    other.Authorization == this.Authorization &&
-                    other.UseOneX == this.UseOneX &&
-                    other.Key == this.Key &&
-                    other.CAName == this.CAName &&
-                    other.CAHash == this.CAHash;
+            return (other as WiredProfileModel).Equals(this as WiredProfileModel); // &&
+                
+                    //other.SSID == this.SSID &&
+                    //other.Security == this.Security &&
+                    //other.Encryption == this.Encryption &&
+                    //other.Authorization == this.Authorization &&
+                    //other.UseOneX == this.UseOneX &&
+                    //other.Key == this.Key &&
+                    //other.CAName == this.CAName &&
+                    //other.CAHash == this.CAHash;
         }
     }
 }

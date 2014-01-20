@@ -41,6 +41,11 @@ namespace NetworkManager
 
             return name;
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 
 
