@@ -26,6 +26,7 @@ namespace NetworkManager.Profiles
         public string PhysicalAddress { get; set; }
         public string Description { get; set; }
 
+        public virtual bool IsWifi { get; set; }
 
         private StateEnum profileState;
 

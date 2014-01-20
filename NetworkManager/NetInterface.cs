@@ -10,10 +10,10 @@ using System.Net;
 using NativeWifi;
 using System.Xml.Serialization;
 using System.IO;
+using System.Xml;
 
 namespace NetworkManager
 {
-
     public delegate void ProfileAdded(ProfileModel newProfile);
 
     public delegate void InterfaceUp();
@@ -71,7 +71,7 @@ namespace NetworkManager
 
         private NetworkInterface networkInterface;
 
-        WlanClient.WlanInterface wlanInterface;
+        WlanClient.WlanInterface wifiInterface;
 
         private NetworkAdapter networkAdapter;
         private NetworkAdapter originalNetworkAdapter;
@@ -81,7 +81,7 @@ namespace NetworkManager
 
         private ManagementEventWatcher AdapterWatcher;
 
-
+        /*
         public NetInterfaceModel(NetworkAdapter netAdptr, bool startWatchers = true)
         {
             this.originalNetworkAdapter = netAdptr;
@@ -93,6 +93,8 @@ namespace NetworkManager
             if (startWatchers)
                 StartEventWatchers();
         }
+        */
+
 
         public NetInterfaceModel(NetworkAdapter netAdptr, NetworkInterface netIface = null, bool startWatchers = true)
         {
@@ -119,7 +121,7 @@ namespace NetworkManager
 
         public bool SetWlanInterface(WlanClient.WlanInterface wlanIface)
         {
-            this.wlanInterface = wlanIface;
+            this.wifiInterface = wlanIface;
             return true;
         }
 
@@ -266,11 +268,8 @@ namespace NetworkManager
                     IPAddress gateway = IPAddress.Parse(p.Gateway);
                     IPAddress dns = IPAddress.Parse(p.DNS);
 
-                    IList<IPAddress> dnss = new List<IPAddress>();
-                    dnss.Add(dns);
-
                     SetAddress(ip, netmask, gateway);
-                    SetStaticDNSes(dnss);
+                    SetStaticDNS(dns);
                 }
             }
             catch (Exception e)
@@ -313,14 +312,11 @@ namespace NetworkManager
         {
             IList<string> networks = new List<string>();
 
-            if (this.type != NetInterfaceType.Wireless || this.wlanInterface == null)
+            if (this.type != NetInterfaceType.Wireless || this.wifiInterface == null)
                 return networks;
 
-            foreach (var w in wlanInterface.GetAvailableNetworkList(Wlan.WlanGetAvailableNetworkFlags.IncludeAllAdhocProfiles)) {
-                byte[] ssid = w.dot11Ssid.SSID;
-                string ssid_string = System.Text.Encoding.Default.GetString(ssid, 0, (int) w.dot11Ssid.SSIDLength);
-                networks.Add(ssid_string);
-                networks.Add(ssid_string.Trim());
+            foreach (var w in wifiInterface.GetAvailableNetworkList(Wlan.WlanGetAvailableNetworkFlags.IncludeAllAdhocProfiles)) {
+                networks.Add(Helpers.BytesToString(w.dot11Ssid.SSID));
             }
 
             return networks;
@@ -361,15 +357,17 @@ namespace NetworkManager
         }
 
 
+        #region IPv4 settings
+
         public bool IsDhcpEnabled()
         {
             return networkInterface != null && networkInterface.GetIPProperties().GetIPv4Properties().IsDhcpEnabled;
         }
 
-
         public void EnableDhcp()
         {
             Netsh.invoke("interface ip set address " + netshId + " dhcp");
+            SetDynamicDNSes();
         }
 
         public void SetAddress(IPAddress address)
@@ -414,11 +412,10 @@ namespace NetworkManager
         }
 
         // http://superuser.com/questions/204046/how-can-i-set-my-dns-settings-using-the-command-promp
-        public void SetStaticDNSes(IList<IPAddress> dnses)
+        public void SetStaticDNS(IPAddress dns)
         {
-            string cmd = "interface ip set dns " + netshId;
-            foreach (IPAddress dns in dnses)
-                cmd += " " + dns.ToString();
+            string cmd = "interface ip set dns " + netshId + " static ";
+            cmd += dns.ToString();
 
             Netsh.invoke(cmd);
         }
@@ -445,10 +442,223 @@ namespace NetworkManager
         }
 
 
-        public IPAddressCollection GetDNSes()
+        public IPAddress GetDNS()
         {
-            return networkInterface.GetIPProperties().DnsAddresses;
+            return Helpers.GetDNSAddress(this.networkInterface);
         }
+
+        #endregion
+
+
+
+
+        #region Wifi settings
+
+        public string GetSSID()
+        {
+            if (wifiInterface != null)
+            {
+                Wlan.WlanAssociationAttributes attr = wifiInterface.CurrentConnection.wlanAssociationAttributes;
+                return (Helpers.BytesToString(attr.dot11Ssid.SSID, (int)attr.dot11Ssid.SSIDLength));
+            }
+            else
+                return "";
+        }
+
+        public string GetBSSID()
+        {
+            if (wifiInterface != null)
+            {
+                Wlan.WlanAssociationAttributes attr = wifiInterface.CurrentConnection.wlanAssociationAttributes;
+                return attr.Dot11Bssid.ToString();
+            }
+            else
+                return "";
+        }
+
+        public Profiles.WifiProfileModel.SecurityType GetSecurityType()
+        {
+            if (wifiInterface != null)
+            {
+                Wlan.WlanSecurityAttributes attr = wifiInterface.CurrentConnection.wlanSecurityAttributes;
+                Wlan.Dot11AuthAlgorithm auth = attr.dot11AuthAlgorithm;
+
+                // https://github.com/rainmeter/rainmeter/blob/master/Plugins/PluginWifiStatus/WifiStatus.cpp
+
+                switch (auth)
+                {
+                    case Wlan.Dot11AuthAlgorithm.IEEE80211_Open:
+                        return NetworkManager.Profiles.WifiProfileModel.SecurityType.OPEN;
+                    case Wlan.Dot11AuthAlgorithm.IEEE80211_SharedKey:
+                        return NetworkManager.Profiles.WifiProfileModel.SecurityType.SHARED;
+                    case Wlan.Dot11AuthAlgorithm.WPA:
+                        return NetworkManager.Profiles.WifiProfileModel.SecurityType.WPA;
+                    case Wlan.Dot11AuthAlgorithm.WPA_PSK:
+                        return NetworkManager.Profiles.WifiProfileModel.SecurityType.WPAPSK;
+                    case Wlan.Dot11AuthAlgorithm.RSNA:
+                        return NetworkManager.Profiles.WifiProfileModel.SecurityType.WPA2;
+                    case Wlan.Dot11AuthAlgorithm.RSNA_PSK:
+                        return NetworkManager.Profiles.WifiProfileModel.SecurityType.WPA2PSK;
+                    default:
+                        return NetworkManager.Profiles.WifiProfileModel.SecurityType.Other;
+                }
+            }
+            else
+                return NetworkManager.Profiles.WifiProfileModel.SecurityType.Other;
+        }
+
+        
+        public Profiles.WifiProfileModel.EncryptionType GetEncryptionType()
+        {
+            if (wifiInterface != null)
+            {
+                Wlan.WlanSecurityAttributes attr = wifiInterface.CurrentConnection.wlanSecurityAttributes;
+                Wlan.Dot11CipherAlgorithm encryption = attr.dot11CipherAlgorithm;
+
+                // https://github.com/rainmeter/rainmeter/blob/master/Plugins/PluginWifiStatus/WifiStatus.cpp
+
+                switch (encryption)
+                {
+                    case Wlan.Dot11CipherAlgorithm.None:
+                        return NetworkManager.Profiles.WifiProfileModel.EncryptionType.None;
+
+                    case Wlan.Dot11CipherAlgorithm.WEP:
+                    case Wlan.Dot11CipherAlgorithm.WEP40:
+                    case Wlan.Dot11CipherAlgorithm.WEP104:
+                        return NetworkManager.Profiles.WifiProfileModel.EncryptionType.WEP;
+
+                    case Wlan.Dot11CipherAlgorithm.TKIP:
+                        return NetworkManager.Profiles.WifiProfileModel.EncryptionType.TKIP;
+
+                    case Wlan.Dot11CipherAlgorithm.CCMP:
+                        return NetworkManager.Profiles.WifiProfileModel.EncryptionType.AES;
+
+                    // sa jeszcze 2 typy szyfrowan: RSN i WPA, ale w windowsach nikt o nich nigdzie nie wspomina...
+                    default:
+                        return NetworkManager.Profiles.WifiProfileModel.EncryptionType.Other;
+                }
+            }
+            else
+                return NetworkManager.Profiles.WifiProfileModel.EncryptionType.Other;
+        }
+
+
+        public Profiles.WifiProfileModel.AuthorizationMethod GetAuthMethod()
+        {
+            // http://www.iana.org/assignments/eap-numbers/eap-numbers.xhtml
+
+            try
+            {
+                string profile = wifiInterface.GetProfileXml(wifiInterface.CurrentConnection.profileName);
+                XmlDocument profileXml = new XmlDocument();
+
+                profileXml.LoadXml(profile);
+
+                XmlNode node = profileXml.SelectSingleNode("/*/*/*/*/*/*/*/*[local-name()='Type']");
+
+                int eap_type = int.Parse(node.InnerText);
+
+                if (eap_type == 13)
+                    return NetworkManager.Profiles.WifiProfileModel.AuthorizationMethod.Card;
+                else if (eap_type == 25)
+                    return NetworkManager.Profiles.WifiProfileModel.AuthorizationMethod.PEAP;
+                else
+                    return NetworkManager.Profiles.WifiProfileModel.AuthorizationMethod.None;
+            }
+            catch (Exception)
+            {
+            }
+
+            return NetworkManager.Profiles.WifiProfileModel.AuthorizationMethod.None;
+        }
+
+
+        public bool IsUsingOneX()
+        {
+            try
+            {
+                string profile = wifiInterface.GetProfileXml(wifiInterface.CurrentConnection.profileName);
+                XmlDocument profileXml = new XmlDocument();
+
+                profileXml.LoadXml(profile);
+
+                XmlNode node = profileXml.SelectSingleNode("/*/*/*/*/*[local-name()='useOneX']");
+
+                return bool.Parse(node.InnerText);
+
+            }
+            catch (Exception)
+            {
+            }
+
+            return false;
+        }
+
+
+        public string GetKey()
+        {
+            try
+            {
+                string profile = wifiInterface.GetProfileXml(wifiInterface.CurrentConnection.profileName);
+                XmlDocument profileXml = new XmlDocument();
+
+                profileXml.LoadXml(profile);
+
+                XmlNode node = profileXml.SelectSingleNode("/*/*/*/*/*[local-name()='keyMaterial']");
+
+                return node.InnerText;
+
+            }
+            catch (Exception)
+            {
+            }
+
+            return "";
+        }
+
+
+        public string GetCertHash()
+        {
+            try
+            {
+                string profile = wifiInterface.GetProfileXml(wifiInterface.CurrentConnection.profileName);
+                XmlDocument profileXml = new XmlDocument();
+
+                profileXml.LoadXml(profile);
+
+                XmlNode node = profileXml.SelectSingleNode("/*/*/*/*/*/*/*/*/*/*/*[local-name()='TrustedRootCA']");
+
+                string hash = node.InnerText.Replace(" ", "");
+
+                return hash.ToUpper();
+
+            }
+            catch (Exception)
+            {
+            }
+
+            return "";
+        }
+
+        public Certificate GetCert()
+        {
+            string hash = GetCertHash();
+
+            if (String.IsNullOrWhiteSpace(hash))
+                return null;
+
+            foreach (Certificate cert in CertificateCollection.Certificates)
+            {
+                if (cert.TrustedRootCA == hash)
+                    return cert;
+            }
+
+            return null;
+
+        }
+        #endregion
+
+
 
 
         private void WmiAdapterEventHandler(object sender, EventArrivedEventArgs e)

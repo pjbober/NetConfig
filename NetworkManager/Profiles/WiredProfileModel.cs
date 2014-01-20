@@ -8,11 +8,14 @@ namespace NetworkManager.Profiles
 {
     public class WiredProfileModel : AbstractProfileModel
     {
-        public bool IsDHCP { get; set; }
-        public IPAddress IP { get; set; }
-        public IPAddress SubnetMask { get; set; }
-        public IPAddress Gateway { get; set; }
-        public IPAddress DNS { get; set; }
+
+        public override bool IsWifi { get { return false; } }
+
+        public virtual bool IsDHCP { get; set; }
+        public virtual IPAddress IP { get; set; }
+        public virtual IPAddress SubnetMask { get; set; }
+        public virtual IPAddress Gateway { get; set; }
+        public virtual IPAddress DNS { get; set; }
 
         public WiredProfileModel(String name, NetInterfaceModel netInterface)
             : base(name, netInterface)

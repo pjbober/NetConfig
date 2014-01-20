@@ -9,13 +9,14 @@ namespace NetworkManager.Profiles
     {
         public enum SecurityType
         {
-            OPEN,
-            WEP,
-            SHARED,
-            WPA,
-            WPAPSK,
-            WPA2,
-            WPA2PSK
+            OPEN,       // Otwarte
+            WEP,        // WEP
+            SHARED,     // Udostepnione
+            WPA,        // WPA-Enterprise
+            WPAPSK,     // WPA-Personal
+            WPA2,       // WPA2-Enterprise
+            WPA2PSK,    // WPA2-Personal
+            Other       // ?
         }
 
         public enum EncryptionType
@@ -23,6 +24,7 @@ namespace NetworkManager.Profiles
             WEP,
             TKIP,
             AES,
+            Other,
             None
         }
 
@@ -33,14 +35,16 @@ namespace NetworkManager.Profiles
             None
         }
 
-        public string SSID { get; set; }
-        public SecurityType Security { get; set; }
-        public EncryptionType Encryption { get; set; }
-        public AuthorizationMethod Authorization { get; set; }
-        public bool UseOneX { get; set; }
-        public string Key { get; set; }
-        public string CAName { get; set; }
-        public string CAHash { get; set; }
+        public override bool IsWifi { get { return true; } }
+
+        public virtual string SSID { get; set; }
+        public virtual SecurityType Security { get; set; }
+        public virtual EncryptionType Encryption { get; set; }
+        public virtual AuthorizationMethod Authorization { get; set; }
+        public virtual bool UseOneX { get; set; }
+        public virtual string Key { get; set; }
+        public virtual string CAName { get; set; }
+        public virtual string CAHash { get; set; }
 
         public WifiProfileModel(String name, NetInterfaceModel netInterface)
             : base(name, netInterface)

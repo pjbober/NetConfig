@@ -48,10 +48,29 @@ namespace NetworkManager
             return null;
         }
 
+        public static IPAddress GetDNSAddress(NetworkInterface iface)
+        {
+            IPInterfaceProperties ipProperties = iface.GetIPProperties();
+
+            foreach (IPAddress ip in ipProperties.DnsAddresses)
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                    return ip;
+
+            return null;
+        }
 
         public static IPAddress GetDhcpAddress(NetworkInterface iface)
         {
             return null;
+        }
+
+        public static string BytesToString(byte[] bytes, int size = -1)
+        {
+            if (size == -1)
+                size = bytes.Count();
+
+            string str = System.Text.Encoding.Default.GetString(bytes, 0, size);
+            return str;
         }
     }
 }
