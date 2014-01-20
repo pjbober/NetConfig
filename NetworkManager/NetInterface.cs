@@ -12,6 +12,7 @@ using System.Xml.Serialization;
 using System.IO;
 using System.Xml;
 using NetworkManager.Profiles;
+using System.Threading;
 
 
 namespace NetworkManager
@@ -48,12 +49,16 @@ namespace NetworkManager
 
         public NetInterfaceType Type { get { return type; } }
 
+        /*
         [XmlElement(typeof(SystemProfileModel))]
         [XmlElement(typeof(WiredProfileModel))]
         [XmlElement(typeof(WifiProfileModel))]
+        */
         public IList<AbstractProfileModel> Profiles = new List<AbstractProfileModel>();
 
         public AbstractProfileModel ActiveProfile = null;
+
+        private SystemProfileModel SystemProfile;
 
         public string MACAddress { get { return networkAdapter.MACAddress; } }
 
@@ -86,33 +91,60 @@ namespace NetworkManager
 
         private ManagementEventWatcher AdapterWatcher;
 
-        /*
-        public NetInterfaceModel(NetworkAdapter netAdptr, bool startWatchers = true)
+        private Thread statusCheckThread;
+        private const int POLL_TIME = 3000;
+        private bool alive = true;
+
+        private NetInterfaceManager networkManager = null;
+
+        public void SetNetInterfaceManager(NetInterfaceManager netManager)
         {
-            this.originalNetworkAdapter = netAdptr;
-
-            CreateFromNetworkAdapter(netAdptr);
-
-            DeserializeProfiles();
-
-            if (startWatchers)
-                StartEventWatchers();
+            this.networkManager = netManager;
         }
-        */
+
+        private void CheckStatus()
+        {
+            this.networkManager.RefreshNetworkInterfaces();
+
+            if (ActiveProfile != null && SystemProfile != null && !ActiveProfile.Equals(SystemProfile))
+            {
+                SystemProfile.ToggleState();
+            }
+        }
+
+        private void CheckStatusThread()
+        {
+            int short_time = 500;
+            int i = 0;
+
+            while (alive)
+            {
+                i++;
+
+                if (i * short_time == POLL_TIME)
+                {
+                    CheckStatus();
+                    i = 0;
+                }
+
+                Thread.Sleep(short_time);
+            }
+        }
 
 
-        public NetInterfaceModel(NetworkAdapter netAdptr, NetworkInterface netIface = null, bool startWatchers = true)
+        public NetInterfaceModel(NetworkAdapter netAdptr, NetworkInterface netIface = null, bool createFullObject = true)
         {
             this.originalNetworkAdapter = netAdptr;
 
             CreateFromNetworkAdapter(netAdptr, netIface);
 
-            AddSystemProfile();
+            statusCheckThread = new Thread(CheckStatusThread);
 
-            DeserializeProfiles();
-
-            if (startWatchers)
+            if (createFullObject)
+            {
+                LoadProfiles();
                 StartEventWatchers();
+            }
         }
 
         public bool SetNetworkInterface(NetworkInterface niface)
@@ -132,9 +164,20 @@ namespace NetworkManager
             return true;
         }
 
+
+        private void LoadProfiles()
+        {
+            AddSystemProfile();
+
+            DeserializeProfiles();
+
+            InitActiveProfile();
+        }
+
         private void StartEventWatchers()
         {
             StartAdapterEventWatcher();
+            statusCheckThread.Start();
         }
 
 
@@ -260,6 +303,22 @@ namespace NetworkManager
             }
         }
 
+        private void InitActiveProfile()
+        {
+            foreach (AbstractProfileModel profile in Profiles)
+            {
+                if (!(profile is SystemProfileModel) && profile.Equals(SystemProfile))
+                {
+                    this.ActiveProfile = profile;
+                    this.ActiveProfile.ProfileState = AbstractProfileModel.StateEnum.ON;
+                    return;
+                }
+            }
+
+            this.ActiveProfile = SystemProfile;
+            this.ActiveProfile.ProfileState = AbstractProfileModel.StateEnum.ON;
+        }
+
         public bool ActivateProfile(AbstractProfileModel p)
         {
             // rozpoczęcie aktywacji nowego profilu oznacza potrzebę zmiany stanu na deaktywację starego
@@ -273,36 +332,34 @@ namespace NetworkManager
             }
 
             p.ProfileState = AbstractProfileModel.StateEnum.ACTIVATING;
-            
 
-            try
+            if (!(p is SystemProfileModel))
             {
-                if (p is WiredProfileModel)
+                try
                 {
-                    WiredProfileModel wired = p as WiredProfileModel;
-
-                    if (wired.IsDHCP)
-                        EnableDhcp();
-                    else
+                    if (p is WiredProfileModel)
                     {
-                        SetAddress(IPAddress.Parse(wired.IP), IPAddress.Parse(wired.SubnetMask), IPAddress.Parse(wired.Gateway));
-                        SetStaticDNS(IPAddress.Parse(wired.DNS));
+                        WiredProfileModel wired = p as WiredProfileModel;
+
+                        if (wired.IsDHCP)
+                            EnableDhcp();
+                        else
+                        {
+                            SetAddress(IPAddress.Parse(wired.IP), IPAddress.Parse(wired.SubnetMask), IPAddress.Parse(wired.Gateway));
+                            SetStaticDNS(IPAddress.Parse(wired.DNS));
+                        }
+                    }
+
+                    if (p is WifiProfileModel)
+                    {
+                        ActivateWifiProfile(p as WifiProfileModel); // TODO: teraz niezależnie od wyniku...
                     }
                 }
-
-                if (p is WiredProfileModel)
+                catch (Exception e)
                 {
-                    ActivateWifiProfile(p as WiredProfileModel); // TODO: teraz niezależnie od wyniku...
+                    return false;
                 }
             }
-            catch (Exception e)
-            {
-                return false;
-            }
-
-
-
-
 
             ActiveProfile = p;
 
@@ -321,7 +378,7 @@ namespace NetworkManager
         }
 
 
-        public bool ActivateWifiProfile(WiredProfileModel p)
+        public bool ActivateWifiProfile(WifiProfileModel p)
         {
 
 
@@ -733,6 +790,9 @@ namespace NetworkManager
 
             SerializeProfiles();
 
+            alive = false;
+            statusCheckThread.Join();
+
             Console.WriteLine("Dispose end " + netshId);
 
 
@@ -744,7 +804,8 @@ namespace NetworkManager
                 if (profile is SystemProfileModel)
                     return;
 
-            AddProfile(new SystemProfileModel(this));
+            this.SystemProfile = new SystemProfileModel(this);
+            AddProfile(this.SystemProfile);
         }
 
         public void AddNewProfile(string name = "Nowy profil")

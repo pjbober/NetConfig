@@ -23,7 +23,9 @@ namespace NetworkManager
 
             proc.Start();
 
-            return proc.StandardOutput.ReadToEnd();
+            string msg = proc.StandardOutput.ReadToEnd();
+
+            return msg;
         }
 
         public static IList<string> GetLines(string str)

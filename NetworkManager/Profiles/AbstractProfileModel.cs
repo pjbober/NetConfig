@@ -63,7 +63,8 @@ namespace NetworkManager.Profiles
             this.profileState = StateEnum.OFF;
         }
 
-        public StateEnum ProfileState
+        [XmlIgnoreAttribute]
+        public virtual StateEnum ProfileState
         {
             get
             {
@@ -79,18 +80,18 @@ namespace NetworkManager.Profiles
             }
         }
 
-        public bool IsActive()
+        public virtual bool IsActive()
         {
             return this.NetInterface.ActiveProfile == this;
         }
 
-        public void ActivateAsync()
+        public virtual void ActivateAsync()
         {
             Thread t = new Thread(() => NetInterface.ActivateProfile(this));
             t.Start();
         }
 
-        public void ToggleState()
+        public virtual void ToggleState()
         {
             Console.Out.WriteLine("ToggleState start " + this.Name);
             switch (ProfileState)

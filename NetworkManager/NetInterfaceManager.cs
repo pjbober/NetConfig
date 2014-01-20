@@ -45,8 +45,11 @@ namespace NetworkManager
         }
 
 
-        private void RefreshNetworkInterfaces() 
+        public void RefreshNetworkInterfaces() 
         {
+            if (this.networkInterfaces == null)
+                return;
+
             IDictionary<string, NetworkInterface> ifaceDict = NetworkInterface.GetAllNetworkInterfaces().ToDictionary(i => i.Name);
 
             foreach (NetInterfaceModel netIface in this.networkInterfaces)
@@ -73,10 +76,15 @@ namespace NetworkManager
             foreach (NetworkAdapter adapter in adapters)
             {
                 NetworkInterface value;
+                NetInterfaceModel niface = null;
+
                 if (ifaceDict.TryGetValue(adapter.NetConnectionID, out value))
-                    interfaces.Add(new NetInterfaceModel(adapter, value));
+                    niface = new NetInterfaceModel(adapter, value);
                 else
-                    interfaces.Add(new NetInterfaceModel(adapter, null));
+                    niface = new NetInterfaceModel(adapter, null);
+
+                niface.SetNetInterfaceManager(this);
+                interfaces.Add(niface);
             }
 
             return interfaces;

@@ -21,7 +21,7 @@ namespace NetworkManager
 
             foreach (UnicastIPAddressInformation ip in ipProperties.UnicastAddresses)
                 if (ip.Address.AddressFamily == AddressFamily.InterNetwork &&
-                    (ip.PrefixOrigin == PrefixOrigin.Manual || ip.SuffixOrigin == SuffixOrigin.Manual))
+                    (ip.PrefixOrigin != PrefixOrigin.WellKnown && ip.SuffixOrigin != SuffixOrigin.LinkLayerAddress))
                     return ip.Address;
 
             return IPAddress.Parse(BadIP);
